@@ -5,17 +5,17 @@ const {validateLogin} = require('../auth/validation')
 const {
     loginView,
     loginAdmin
-} = require('../controller/loginController')
+} = require('../controller/adminController')
 
 //const {loginCheck} = require('../auth/jwt')
 
 
 //view
-router.get('/admin/login',validateLogin,loginView)
+router.get('/admin/login',loginView)
 
 
 //register and login
-router.post('/admin/dashboard',loginAdmin)
+router.post('/admin/dashboard',validateLogin,loginAdmin)
 // router.get("/adminReg",loginController.reg)
 
 
