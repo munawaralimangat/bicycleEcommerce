@@ -11,12 +11,12 @@ const {protectRoute} = require('../auth/protect')
 const {loginCheck} = require('../auth/passport')
 
 //view
-router.get('/admin/login',validateLogin,loginView)
-router.get('/admin/dashboard', protectRoute, dashboardView);
+router.get('/login',validateLogin,loginView)
+router.get('/dashboard', protectRoute, dashboardView);
 
 
 //register and login
-router.post('/admin/login',loginAdmin)
+router.post('/login',loginAdmin)
 
 
 

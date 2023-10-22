@@ -37,8 +37,8 @@ const loginAdmin = async (req, res, next) => {
 
 // Use passport.authenticate as middleware
 passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/login',
+    successRedirect: '/admin/dashboard',
+    failureRedirect: '/admin/login',
     failureFlash: true
 })(req, res);
 

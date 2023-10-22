@@ -1,35 +1,40 @@
 const createError = require('http-errors');
 const dotenv = require('dotenv')
 const express = require('express');
+const app = express();
 const passport = require('passport')
 const session = require('express-session')
+const {loginCheck} = require('./auth/passport')
+loginCheck(passport)
+const flash = require('connect-flash')
+
+const connectDB = require('./model/connection/connection')
+connectDB()
 
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
-
-const {loginCheck} = require('./auth/passport')
-loginCheck(passport)
-
-dotenv.config({path:'config.env'})
-//const nocache = require('nocache')
-const PORT = process.env.PORT || 4000;
-const app = express();
-
-app.use(passport.initialize());
 app.use(session({
   secret:"oneboy",
   saveUninitialized:false,
   resave:false
 }))
 
-const connectDB = require('./model/connection/connection')
 
-connectDB()
+dotenv.config({path:'config.env'})
+//const nocache = require('nocache')
+const PORT = process.env.PORT || 4000;
 
-// main router
-const routes = require('./routes/routes');
+app.use(flash())
+app.use(passport.initialize());
+app.use(passport.session())
+
+app.use((req, res, next) => {
+  res.locals.message = req.flash('successMessage');
+  res.locals.message = req.flash('errorMessage');
+  res.locals.user = req.user;
+  next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,11 +47,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
-//main route
-app.use('/',routes);
+// main router
+const routes = require('./routes/routes');
+app.use('/admin/',routes);
 // app.use(nocache());
-
 
 app.listen(PORT,()=>{
   console.log(`server is running on http://localhost:${PORT}/admin/login`)
