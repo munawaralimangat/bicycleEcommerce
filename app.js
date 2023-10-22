@@ -1,12 +1,28 @@
 const createError = require('http-errors');
 const dotenv = require('dotenv')
 const express = require('express');
+const passport = require('passport')
+const session = require('express-session')
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+
+
+const {loginCheck} = require('./auth/passport')
+loginCheck(passport)
+
 dotenv.config({path:'config.env'})
 //const nocache = require('nocache')
 const PORT = process.env.PORT || 4000;
+const app = express();
+
+app.use(passport.initialize());
+app.use(session({
+  secret:"oneboy",
+  saveUninitialized:false,
+  resave:false
+}))
 
 const connectDB = require('./model/connection/connection')
 
@@ -14,7 +30,6 @@ connectDB()
 
 // main router
 const routes = require('./routes/routes');
-const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
