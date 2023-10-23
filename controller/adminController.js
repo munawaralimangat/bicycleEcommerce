@@ -8,42 +8,48 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {authenticate} = require('../auth/jwt')
 const validateLogin = require('../auth/validation')
-const secretKey = "helllo"
+const flash = require('connect-flash')
 
 dotenv.config({path:'config.env'})
 
+
+
+
 //view admin
-const loginView = async (req, res, next) =>{
-    res.render('login', { errors: false});
+const loginView = async (req, res, next) => {
+  let additionalErrors =  req.flash('error');
+  res.render('login', { errors:additionalErrors });
 };
 
-
-//login admin
+// login admin
 const loginAdmin = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(req.method)
-  
-  const errors = validationResult(req);
-  console.log(errors.array()); // Debugging
+  console.log(req.method);
+  const additionalErrors = [];
 
   if (!email || !password) {
-    const message = "Please fill in all fields";
-    return res.render("login", {
-        email,
-        password,
-        errors
-    });
-}
+    additionalErrors.push("Please fill in all fields");
+  }
 
-// Use passport.authenticate as middleware
-passport.authenticate('local', {
+  if (additionalErrors.length > 0) {
+    return res.render("login", {
+      email,
+      password,
+      errors: additionalErrors
+    });
+  }
+
+  // Use passport.authenticate as middleware
+  passport.authenticate('local', {
     successRedirect: '/admin/dashboard',
     failureRedirect: '/admin/login',
     failureFlash: true
-})(req, res);
-
+  })(req, res);
 };
 
+
+
+//dashboaed view
 const dashboardView = (req,res)=>{
   res.render('dashboard')
   console.log(req.method)

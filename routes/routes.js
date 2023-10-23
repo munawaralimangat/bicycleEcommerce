@@ -4,6 +4,7 @@ const jwt=require('../auth/jwt')
 const passport = require('passport')
 const {validateLogin} = require('../auth/validation')
 
+
 const {loginView,loginAdmin,dashboardView} = require('../controller/adminController')
 //const {loginCheck} = require('../auth/jwt')
 
@@ -11,7 +12,7 @@ const {protectRoute} = require('../auth/protect')
 const {loginCheck} = require('../auth/passport')
 
 //view
-router.get('/login',validateLogin,loginView)
+router.get('/login',loginView)
 router.get('/dashboard', protectRoute, dashboardView);
 
 
