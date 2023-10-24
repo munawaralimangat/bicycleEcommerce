@@ -6,7 +6,7 @@ const Admin = require('../model/schema/adminSchema');
 
 const loginCheck = (passport) => {
   passport.use(
-    new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+    new LocalStrategy({ usernameField: 'email',passwordField:'password' }, (email, password, done) => {
       // Check customer
       Admin.findOne({ email: email })
         .then((admin) => {

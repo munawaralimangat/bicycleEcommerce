@@ -18,7 +18,7 @@ dotenv.config({path:'config.env'})
 //view admin
 const loginView = async (req, res, next) => {
   let additionalErrors =  req.flash('error');
-  res.render('login', { errors:additionalErrors });
+  res.render('admin/login', { errors:additionalErrors });
 };
 
 // login admin
@@ -29,10 +29,12 @@ const loginAdmin = async (req, res, next) => {
 
   if (!email || !password) {
     additionalErrors.push("Please fill in all fields");
+  }else if(email.length <=8){
+    additionalErrors.push("email must have atleast five char");//change express validator later
   }
 
   if (additionalErrors.length > 0) {
-    return res.render("login", {
+    return res.render("admin/login", {
       email,
       password,
       errors: additionalErrors
@@ -50,16 +52,41 @@ const loginAdmin = async (req, res, next) => {
 
 
 //dashboaed view
-const dashboardView = (req,res)=>{
-  res.render('dashboard')
+const dashboardView = async (req,res)=>{
+  res.render('admin/dashboard')
   console.log(req.method)
 }
 
+const logOut = async (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error('Error during logout:', err);
+    }
+    req.session.destroy((sessionErr) => {
+      if (sessionErr) {
+        console.error('Error destroying session:', sessionErr);
+      }
+      res.header('Cache-Control', 'no-store, no-cache, must-revalidate');
+      res.header('Expires', '0');
+      res.header('Pragma', 'no-cache');
+      res.redirect('/admin/login'); // Redirect the user to the login page
+    });
+  });
+}
+
+// const logOut = (req, res, next) => {
+// 	res.clearCookie('connect.sid');  // clear the cookie
+// 	req.logout(function(err) {
+// 		console.log(err)
+// 		res.redirect('/admin/login'); // send to the client
+// 	})
+// }
 
 module.exports = {
     loginView,
     loginAdmin,
-    dashboardView
+    dashboardView,
+    logOut,
     // reg
 };
 

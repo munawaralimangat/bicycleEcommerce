@@ -5,7 +5,7 @@ const passport = require('passport')
 const {validateLogin} = require('../auth/validation')
 
 
-const {loginView,loginAdmin,dashboardView} = require('../controller/adminController')
+const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/adminloginController')
 //const {loginCheck} = require('../auth/jwt')
 
 const {protectRoute} = require('../auth/protect')
@@ -19,7 +19,8 @@ router.get('/dashboard', protectRoute, dashboardView);
 //register and login
 router.post('/login',loginAdmin)
 
-
+//logout
+router.get('/logout',logOut)
 
 
 
