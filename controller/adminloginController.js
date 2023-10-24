@@ -13,8 +13,6 @@ const flash = require('connect-flash')
 dotenv.config({path:'config.env'})
 
 
-
-
 //view admin
 const loginView = async (req, res, next) => {
   let additionalErrors =  req.flash('error');
@@ -23,31 +21,37 @@ const loginView = async (req, res, next) => {
 
 // login admin
 const loginAdmin = async (req, res, next) => {
-  const { email, password } = req.body;
-  console.log(req.method);
-  const additionalErrors = [];
+  try {
+    const { email, password } = req.body;
+    console.log(req.method);
+    const additionalErrors = [];
 
-  if (!email || !password) {
-    additionalErrors.push("Please fill in all fields");
-  }else if(email.length <=8){
-    additionalErrors.push("email must have atleast five char");//change express validator later
+    if (!email || !password) {
+      additionalErrors.push("Please fill in all fields");
+    } else if (email.length <= 8) {
+      additionalErrors.push("Email must have at least five characters"); // Change express validator later
+    }
+
+    if (additionalErrors.length > 0) {
+      return res.render("admin/login", {
+        email,
+        password,
+        errors: additionalErrors
+      });
+    }
+
+    // Use passport.authenticate as middleware
+    passport.authenticate('local', {
+      successRedirect: '/admin/dashboard',
+      failureRedirect: '/admin/login',
+      failureFlash: true
+    })(req, res);
+  } catch (error) {
+    // Handle any errors that occur during the execution of this function
+    next(error); // Pass the error to the next middleware
   }
-
-  if (additionalErrors.length > 0) {
-    return res.render("admin/login", {
-      email,
-      password,
-      errors: additionalErrors
-    });
-  }
-
-  // Use passport.authenticate as middleware
-  passport.authenticate('local', {
-    successRedirect: '/admin/dashboard',
-    failureRedirect: '/admin/login',
-    failureFlash: true
-  })(req, res);
 };
+
 
 
 

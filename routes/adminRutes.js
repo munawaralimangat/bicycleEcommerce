@@ -28,12 +28,4 @@ router.get('/logout',logOut)
 
 /* GET users listing. */
 
-
-
-
-
-
-
-
-
 module.exports = router;

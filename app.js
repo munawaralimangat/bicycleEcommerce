@@ -49,12 +49,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // main router
-const routes = require('./routes/routes');
-app.use('/admin/',routes);
+const routes = require('./routes/adminRutes');
+const userRoutes = require('./routes/userRoutes');
+app.use('/admin',routes);
+app.use('/brepublic',userRoutes)
 // app.use(nocache());
 
 app.listen(PORT,()=>{
   console.log(`server is running on http://localhost:${PORT}/admin/login`)
+  console.log(`server is running on http://localhost:${PORT}/brepublic/landing`)
 })
 
 
