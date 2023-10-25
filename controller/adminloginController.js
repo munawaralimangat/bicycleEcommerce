@@ -29,7 +29,9 @@ const loginAdmin = async (req, res, next) => {
     if (!email || !password) {
       additionalErrors.push("Please fill in all fields");
     } else if (email.length <= 8) {
-      additionalErrors.push("Email must have at least five characters"); // Change express validator later
+      additionalErrors.push("Email must have at least eight characters"); // Change express validator later
+    }else if(password.length <=5){
+      additionalErrors.push("password must have at least five characters"); // Change express validator later
     }
 
     if (additionalErrors.length > 0) {

@@ -1,12 +1,17 @@
 const express = require('express')
 const router = express.Router()
 
-const {userLoginView,userLoginPost} = require('../controller/userLoginController')
+const {userLandingView,userLoginView,userLoginPost,userRegView} = require('../controller/userLoginController')
 
 //landing page
-router.get('/landing',userLoginView)
+router.get('/landing',userLandingView)
 
 //user login view
-router.get('/landing/login',userLoginPost)
+router.get('/landing/login',userLoginView)
+//user registration view
+router.get('/landing/register',userRegView)
+
+//user login
+router.post('/landing/login',userLoginPost)
 
 module.exports = router
