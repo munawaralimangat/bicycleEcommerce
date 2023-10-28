@@ -62,8 +62,7 @@ const userRegPost = async (req, res) => {
             user_secondName,
             user_email,
             user_number,
-            user_password: encryptedPassword,
-            confirm_password: encryptedPassword
+            user_password: encryptedPassword
         })
         //generate a token for user
         const token = jwt.sign(
@@ -101,48 +100,73 @@ const userLoginView = async (req, res) => {
 
 const userLoginPost = async (req, res) => {
     try {
-        //get all data from 
-        const {user_email,user_password} = req.body
-        //validation
-        if(!(user_email&&user_password)){
-            let error = 'email and password required'
-            res.status(400).render('user/userLogin',{
-            regLog: "Register",
-            formurl: "register"
-            })
-        }
-        //find user in DB
-        const user = await findOne({email})
-        //if user is not there
+        // Get user_email and user_password from the request body
+        const { user_email, user_password } = req.body;
 
-        //match the password
-        if(user && (await bcryptjs.compare(user_password,user.user_password))){
+        // Validate if both user_email and user_password are provided
+        if (!(user_email && user_password)) {
+            console.log(user_email, user_password);
+            return res.status(400).render('user/userLogin', {
+                regLog: "Register",
+                formurl: "register",
+                errors: "Email and password are required"
+            });
+        }
+
+        // Find the user in the database
+        const user = await User.findOne({ user_email });
+
+        // If the user is not found, send an error response
+        if (!user) {
+            return res.status(401).render('user/userLogin', {
+                regLog: "Register",
+                formurl: "register",
+                errors: "Invalid email or password"
+            });
+        }
+
+        // Check if the provided password matches the hashed password in the database
+        const passwordMatches = await bcryptjs.compare(user_password, user.user_password);
+
+        if (passwordMatches) {
+            // Generate a token
             const token = jwt.sign(
-                {id:user._id},
+                { id: user._id },
                 'shhhh',
-            {
-                expiresIn: '1h'
-            }
-            )
-            user.token = token
-            user.user_password = undefined
-            //cookie section
-            const options = {
-                expires: new Date(Date.now( + 3 * 24 * 60 * 60 * 1000)),
-                httpOnly:true
-            }
-            res.status(201).json(user)
-        }
-        //send a token
-        res.render('user/userLogin', {
-        regLog: "Register",
-        formurl: "register"
-        })
-    } catch (error) {
-        console.log(error)
-    }
+                {
+                    expiresIn: '1h'
+                }
+            );
 
-}
+            // Set the token in a cookie
+            const options = {
+                expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+                httpOnly: true
+            };
+            res.cookie('token', token, options);
+
+            // Render the "user/userLogin" page with the token
+            return res.status(200).render('user/userHome', {
+                regLog: "Register",
+                formurl: "register",
+                token: token
+            });
+        } else {
+            // If the password doesn't match, send an error response
+            return res.status(401).render('user/userLogin', {
+                regLog: "Register",
+                formurl: "register",
+                errors: "Invalid email or password"
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        // Handle any other errors gracefully
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
 
 
 module.exports = { userLandingView, userLoginView, userLoginPost, userRegView, userRegPost }//login
