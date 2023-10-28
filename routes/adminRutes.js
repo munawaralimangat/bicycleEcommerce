@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt=require('../auth/jwt')
 const passport = require('passport')
-const {validateLogin} = require('../auth/validation')
+const {validateLogin} = require('../services/validation')
 
 
 const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/adminloginController')

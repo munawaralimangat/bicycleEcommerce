@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const dotenv = require('dotenv')
 const express = require('express');
 const app = express();
+const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const session = require('express-session')
 const {loginCheck} = require('./auth/passport')
@@ -50,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // main router
 const routes = require('./routes/adminRutes');
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userroutes');
 app.use('/admin',routes);
 app.use('/brepublic',userRoutes)
 // app.use(nocache());

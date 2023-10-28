@@ -7,7 +7,7 @@ const Admin = require('../model/schema/adminSchema')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {authenticate} = require('../auth/jwt')
-const validateLogin = require('../auth/validation')
+const validateLogin = require('../services/validation')
 const flash = require('connect-flash')
 
 dotenv.config({path:'config.env'})
