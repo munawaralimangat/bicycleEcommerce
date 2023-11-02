@@ -2,38 +2,45 @@
 <header>
     <%-include('../includes/userNav')  %>
 
-    <section class="bg-gray-50 dark:bg-gray-900">
+    <section class="bg-gray-50 dark:bg-gray-900 ">
         <div class="flex items-center justify-center p-4 bg-gray-500 bg-cover bg-no-repeat w-full" style="background-image: url('/images/backround-login.jpg')">
             <div class="w-full bg-gray-50 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-900 dark:border-gray-700">
               <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Register
                 </h1>
-                <form class="space-y-4 md:space-y-6" action="/brepublic/landing/register/" method="post">
+                <form class="space-y-4 md:space-y-6" action="brepublic/landing/register" method="post">
+                  <div class="error-container"></div>
+                  <div class=" text-red-600 firstName error"></div>
                     <div>
                         <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your first name</label>
-                        <input type="firstName" name="user_firstName" id="firstName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First name" >
+                        <input type="text" name="user_firstName" id="firstName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First name" >
                     </div>
+                    <div class=" text-red-600 secondName error"></div>
                     <div>
                       <label for="secondName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your second name</label>
-                      <input type="secondName" name="user_secondName" id="secondName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Second name">
+                      <input type="text" name="user_secondName" id="secondName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Second name">
                   </div>
+                  <div class=" text-red-600 email error"></div>
                   <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                    <input type="email" name="user_email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="your@email.com">
+                    <input type="text" name="user_email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="your@email.com">
                 </div>
+                <div class=" text-red-600 number error"></div>
                   <div>
-                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile number</label>
-                    <input type="number" name="user_number" id="mobileNumber" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com">
+                    <label for="number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile number</label>
+                    <input type="text" name="user_number" id="number" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com">
                 </div>
+                <div class="text-red-600 text-sm password error"></div>
                     <div>
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                         <input type="password" name="user_password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
+                    <div class="confirm error text-red-600 text-sm"></div>
                     <div>
-                      <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                      <input type="password" name="confirm_password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  </div>
+                      <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm Password</label>
+                      <input type="password" name="confirm_password" id="confirm_password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                           <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="">
@@ -47,10 +54,71 @@
                         Already have an account? <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
                     </p>
                 </form>
-                
             </div>
         </div>
       </div>
     </section>
   </header>
+  <body>
+  <script>
+    const form = document.querySelector('form');
+
+    const emailError = document.querySelector('.email.error')
+    const passwordError = document.querySelector('.password.error')
+    const numberError = document.querySelector('.number.error')
+    const firstNameError = document.querySelector('.firstName.error')
+    const secondNameError = document.querySelector('.secondName.error')
+    
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault()
+
+      //reset errors
+      emailError.textContent = "";
+      passwordError.textContent = "";
+
+      //get the value
+      const firstName = form.user_firstName.value;
+      const secondName = form.user_secondName.value;
+      const email = form.user_email.value;
+      const number = form.user_number.value;
+      const password = form.user_password.value;
+      const confirm_password = form.confirm_password.value;
+      
+      if(password !== confirm_password){
+        let confirmErr = "password must be same as above"
+        return false
+      }
+
+      try {
+        const res = await fetch('/brepublic/landing/register',{
+          method:'POST',
+          body: JSON.stringify({
+            firstName,
+            secondName,
+            email,
+            number,
+            password,
+          }),
+          headers:{'Content-Type':'application/json'}
+        })
+        const data = await res.json()
+        console.log(data)
+        if(data.errors){
+          emailError.textContent = data.errors.user_email;
+          passwordError.textContent = data.errors.user_password;
+          firstNameError.textContent = data.errors.user_firstName;
+          secondNameError.textContent = data.errors.user_secondName;
+          numberError.textContent = data.errors.user_number
+        }
+        if(data.user){
+          location.assign('/brepublic/landing/userHome')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+
+
+    })
+  </script>
     <%-include('../includes/userEnd')  %>

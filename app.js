@@ -54,7 +54,24 @@ const routes = require('./routes/adminRutes');
 const userRoutes = require('./routes/userroutes');
 app.use('/admin',routes);
 app.use('/brepublic',userRoutes)
-// app.use(nocache());
+
+//cookies
+app.get('/set-cookies',(req,res)=>{
+
+  // res.setHeader('Set-Cookie','newUser=true')
+  res.cookie('newUser',false)
+  res.cookie('newEmploy',true,{ maxAge: 1000 * 60 * 60 * 24, httpOnly: true })
+  res.send('you get the cookie')
+})
+
+app.get('/read-cookies',(req,res)=>{
+
+  const cookies = req.cookies;
+  console.log(cookies)
+  
+  res.json(cookies)
+
+})
 
 app.listen(PORT,()=>{
   console.log(`server is running on http://localhost:${PORT}/admin/login`)

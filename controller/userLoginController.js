@@ -5,16 +5,57 @@ const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 
 
-module.exports.landingView =(req,res)=>{
+const handleErrors = (err)=>{
+    console.log(err.message,err.code);
+    let errors = {
+        user_firstName:"",
+        user_secondName:"",
+        user_email:"",
+        user_number:"",
+        user_password:"",
+    }
+    //incorrect email
+    if(err.message === 'Incorrect email'){
+        errors.email = 'That email is not registered'
+    }
+
+    if(err.message === 'Incorrect password'){
+        errors.password = 'Incorrect password'
+    }
+
+
+    //duplicate errors
+    if(err.code===11000){
+        errors.user_email = 'That email is already registered';
+        return errors;
+    }
+
+    //validation errors
+    if(err.message.includes('User validation failed')){
+        Object.values(err.errors).forEach(({properties}) =>{
+            errors[properties.path] = properties.message
+        })
+    }
+    return errors;
+}
+
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id)=>{
+    return jwt.sign({id},'mwrmwr',{
+        expiresIn:maxAge
+    })
+}
+
+module.exports.landingView = async (req,res)=>{
     res.render('user/landing',{
                 regLog: "Log In",
                 formurl: "login"
             })
 }
 
+////////////////////////////////////////////////////////////////////////
 
-
-module.exports.userRegView =(req,res)=>{
+module.exports.userRegView = async (req,res)=>{
     res.render('user/userReg', {
                 regLog: "Log In",
                 formurl: "login",
@@ -22,11 +63,33 @@ module.exports.userRegView =(req,res)=>{
             })
 }
 
-module.exports.userRegPost =(req,res)=>{
-    res.render('user/userReg')
+module.exports.userRegPost = async (req,res)=>{
+    const { 
+        firstName,
+        secondName,
+        email,
+        number,
+        password} = req.body
+        console.log('reqbody', req.body)
+    try {
+        const user = await User.create({
+            user_firstName:firstName,
+            user_secondName:secondName,
+            user_email:email,
+            user_number:number,
+            user_password:password,
+        })
+        const token = createToken(user._id)
+        res.cookie('jwt',token,{httpOnly:true, maxAge:maxAge * 1000 })
+            res.status(201).send({user:user._id})
+        
+    } catch (err) {
+         const errors = handleErrors(err)
+         res.status(400).json({errors})
+    }
 }
 
-module.exports.userLoginView =(req,res)=>{
+module.exports.userLoginView = async (req,res)=>{
     res.render('user/userLogin', {
                 regLog: "Register",
                 formurl: "register",
@@ -34,11 +97,26 @@ module.exports.userLoginView =(req,res)=>{
             })
 }
 
-module.exports.userLoginPost =(req,res)=>{
-    res.render('user/userReg')
+module.exports.userLoginPost =async (req,res)=>{
+    const {email,password} = req.body;
+    console.log(req.body)
+
+    try{
+        const user = await User.login(email,password)
+        const token = createToken(user._id)
+        res.cookie('jwt',token,{httpOnly:true, maxAge:maxAge * 1000 })
+        res.status(200).json({user:user._id})
+
+    }catch(err){
+        const errors = handleErrors(err)
+        res.status(400).json({errors})
+    }
 }
 
-module.exports.userHome =(req,res)=>{
+///////////////////////////////////////////////////////////////////////////
+
+
+module.exports.userHomeView =(req,res)=>{
     res.render('user/userHome')
 }
 

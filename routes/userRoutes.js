@@ -7,13 +7,13 @@ const router = express.Router()
 router.get('/landing',userController.landingView)
 
 
-router.get('/landing/register',userController.userRegView)
-router.post('/landing/register',userController.userRegPost)
-router.get('/landing/login',userController.userLoginView)
-router.post('/landing/login',userController.userLoginPost)
+router.get('/landing/register',userController.userRegView)//signup get
+router.post('/landing/register',userController.userRegPost)//signup post
+router.get('/landing/login',userController.userLoginView)//login get
+router.post('/landing/login',userController.userLoginPost)//login post
 
 
-router.get('/landing/userHome',userController.landingView)
+router.get('/landing/userHome',userController.userHomeView)
 
 
 
