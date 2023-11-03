@@ -1,5 +1,6 @@
 const express = require('express')
 const userController = require('../controller/userLoginController')
+const {requireAuth} = require('../middleware/authMiddleware')
 const router = express.Router()
 
 
@@ -13,7 +14,8 @@ router.get('/landing/login',userController.userLoginView)//login get
 router.post('/landing/login',userController.userLoginPost)//login post
 
 
-router.get('/landing/userHome',userController.userHomeView)
+router.get('/landing/userHome',requireAuth,userController.userHomeView)
+router.get('/logout',userController.logout)
 
 
 

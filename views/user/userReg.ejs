@@ -26,11 +26,11 @@
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                     <input type="text" name="user_email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="your@email.com">
                 </div>
-                <div class=" text-red-600 number error"></div>
+                <!-- <div class=" text-red-600 number error"></div>
                   <div>
                     <label for="number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile number</label>
                     <input type="text" name="user_number" id="number" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com">
-                </div>
+                </div> -->
                 <div class="text-red-600 text-sm password error"></div>
                     <div>
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
@@ -68,6 +68,42 @@
     const numberError = document.querySelector('.number.error')
     const firstNameError = document.querySelector('.firstName.error')
     const secondNameError = document.querySelector('.secondName.error')
+
+  function isEmailValid(email) {
+  const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return regex.test(email.trim());
+}
+
+function isPasswordStrong(password) {
+  // Check if the password is long enough
+  if (password.length < 8) {
+    return false;
+  }
+
+  // Check if the password contains at least one uppercase letter
+  if (!/[A-Z]/.test(password)) {
+    return false;
+  }
+
+  // Check if the password contains at least one lowercase letter
+  if (!/[a-z]/.test(password)) {
+    return false;
+  }
+
+  // Check if the password contains at least one number
+  if (!/[0-9]/.test(password)) {
+    return false;
+  }
+
+  // Check if the password contains at least one special character
+  if (!/[^a-zA-Z0-9]/.test(password)) {
+    return false;
+  }
+
+  // The password is strong
+  return true;
+}
+
     
 
     form.addEventListener('submit', async (e)=>{
@@ -76,28 +112,46 @@
       //reset errors
       emailError.textContent = "";
       passwordError.textContent = "";
+      firstNameError.textContent = "";
 
       //get the value
       const firstName = form.user_firstName.value;
       const secondName = form.user_secondName.value;
       const email = form.user_email.value;
-      const number = form.user_number.value;
+      // const number = form.user_number.value;
       const password = form.user_password.value;
       const confirm_password = form.confirm_password.value;
-      
-      if(password !== confirm_password){
-        let confirmErr = "password must be same as above"
-        return false
-      }
+
+      // Validate the form
+  if (!firstName || !secondName || !email || !password || !confirm_password) {
+    console.log('enter all fields')
+    firstNameError.textContent = "Enter all fields"
+    return;
+  }
+
+  if (!isEmailValid(email)) {
+    emailError.textContent = 'Email is not valid.';
+    return;
+  }
+
+  if (!isPasswordStrong(password)) {
+    passwordError.textContent = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
+    return;
+  }
+
+  if (password !== confirm_password) {
+    passwordError.textContent = 'Password and confirm password must match.';
+    return;
+  }
 
       try {
         const res = await fetch('/brepublic/landing/register',{
           method:'POST',
-          body: JSON.stringify({
+          body: JSON.stringify({  
             firstName,
             secondName,
             email,
-            number,
+            // number,
             password,
           }),
           headers:{'Content-Type':'application/json'}
@@ -109,7 +163,7 @@
           passwordError.textContent = data.errors.user_password;
           firstNameError.textContent = data.errors.user_firstName;
           secondNameError.textContent = data.errors.user_secondName;
-          numberError.textContent = data.errors.user_number
+          // numberError.textContent = data.errors.user_number
         }
         if(data.user){
           location.assign('/brepublic/landing/userHome')

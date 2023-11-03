@@ -39,6 +39,7 @@ const handleErrors = (err)=>{
     return errors;
 }
 
+
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id)=>{
     return jwt.sign({id},'mwrmwr',{
@@ -76,7 +77,7 @@ module.exports.userRegPost = async (req,res)=>{
             user_firstName:firstName,
             user_secondName:secondName,
             user_email:email,
-            user_number:number,
+            // user_number:number,
             user_password:password,
         })
         const token = createToken(user._id)
@@ -118,6 +119,11 @@ module.exports.userLoginPost =async (req,res)=>{
 
 module.exports.userHomeView =(req,res)=>{
     res.render('user/userHome')
+}
+
+module.exports.logout =(req,res)=>{
+    res.cookie('jwt', '',{maxAge:1})
+    res.redirect('/brepublic/landing/login')
 }
 
 
