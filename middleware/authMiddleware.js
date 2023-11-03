@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const User = require('../model/schema/userSchema')
 
 const requireAuth = (req,res,next)=>{
 
@@ -23,8 +24,19 @@ const checkUser = async (req,res,next)=>{
     const token = await req.cookies.jwt;
 
     if(token){
-
-    }else{
+        jwt.verify(token,'net ninja secret',async (err,decodedToken)=>{
+            if(err){
+                console.log(err.message);
+                next()
+            }else{
+                console.log(decodedToken)
+                let user = await User.findById(decodedToken.id);
+                res.locals.user = user;
+                next()
+            }
+        })
+    }
+    else{
 
     }
 }
