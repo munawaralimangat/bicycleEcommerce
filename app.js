@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const session = require('express-session')
 const {loginCheck} = require('./auth/passport')
-loginCheck(passport)
+// loginCheck(passport)
 const flash = require('connect-flash')
 
 const connectDB = require('./model/connection/connection')

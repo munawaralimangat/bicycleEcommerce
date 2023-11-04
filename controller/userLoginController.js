@@ -122,6 +122,7 @@ module.exports.userHomeView =(req,res)=>{
 }
 
 module.exports.logout =(req,res)=>{
+    console.log("logout")
     res.cookie('jwt', '',{maxAge:1})
     res.redirect('/brepublic/landing/login')
 }

@@ -8,12 +8,12 @@ const {validateLogin} = require('../services/validation')
 const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/adminloginController')
 //const {loginCheck} = require('../auth/jwt')
 
-const {protectRoute} = require('../auth/protect')
-const {loginCheck} = require('../auth/passport')
+// const {protectRoute} = require('../auth/protect')
+// const {loginCheck} = require('../auth/passport')
 
 //view
 router.get('/login',loginView)
-router.get('/dashboard', protectRoute, dashboardView);
+router.get('/dashboard', dashboardView);
 
 
 //register and login

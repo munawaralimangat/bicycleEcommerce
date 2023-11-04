@@ -56,11 +56,6 @@ userSchema.statics.login = async function(user_email, user_password) {
   throw new Error('Incorrect email');
 };
 
-
-
-// userSchema.methods.comparePassword = function(candidatePassword) {
-//     return bcryptjs.compare(candidatePassword, this.user_password);
-// }
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

@@ -1,21 +1,23 @@
 const express = require('express')
 const userController = require('../controller/userLoginController')
-const {requireAuth} = require('../middleware/authMiddleware')
+const {requireAuth,checkUser} = require('../middleware/authMiddleware')
 const router = express.Router()
 
 
+router.use('*',checkUser)
 
+//user landing controller
 router.get('/landing',userController.landingView)
 
-
+//user login controller
 router.get('/landing/register',userController.userRegView)//signup get
 router.post('/landing/register',userController.userRegPost)//signup post
 router.get('/landing/login',userController.userLoginView)//login get
 router.post('/landing/login',userController.userLoginPost)//login post
 
-
+//user home controller
 router.get('/landing/userhome',requireAuth,userController.userHomeView)
-router.get('/logout',userController.logout)
+router.get('/logout',requireAuth,userController.logout)
 
 
 
