@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jwt=require('../auth/jwt')
+const {requireAuth,checkAdmin} = require('../middleware/adminAuth')
 const passport = require('passport')
 const {validateLogin} = require('../services/validation')
 
@@ -11,9 +11,11 @@ const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/admin
 // const {protectRoute} = require('../auth/protect')
 // const {loginCheck} = require('../auth/passport')
 
+router.get('*',checkAdmin)
+
 //view
 router.get('/login',loginView)
-router.get('/dashboard', dashboardView);
+router.get('/dashboard',requireAuth, dashboardView);
 
 
 //register and login

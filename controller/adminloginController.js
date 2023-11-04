@@ -1,15 +1,12 @@
 const axios = require('axios')
 const dotenv = require('dotenv')
 const {check,validationResult} = require('express-validator')
-const passport = require('passport')
 const mongoose = require('mongoose')
 const Admin = require('../model/schema/adminSchema')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {authenticate} = require('../auth/jwt')
 const validateLogin = require('../services/validation')
 const flash = require('connect-flash')
-const User = require('../model/schema/userSchema')
 const cookieParser = require('cookie-parser')
 
 dotenv.config({path:'config.env'})
@@ -81,20 +78,9 @@ const dashboardView = async (req,res)=>{
 }
 
 const logOut = async (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      console.error('Error during logout:', err);
-    }
-    req.session.destroy((sessionErr) => {
-      if (sessionErr) {
-        console.error('Error destroying session:', sessionErr);
-      }
-      res.header('Cache-Control', 'no-store, no-cache, must-revalidate');
-      res.header('Expires', '0');
-      res.header('Pragma', 'no-cache');
-      res.redirect('/admin/login'); // Redirect the user to the login page
-    });
-  });
+  console.log("logout")
+    res.cookie('jwt', '',{maxAge:1})
+    res.redirect('/admin/login')
 }
 
 // const logOut = (req, res, next) => {
