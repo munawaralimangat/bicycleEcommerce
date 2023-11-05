@@ -6,6 +6,8 @@ const {validateLogin} = require('../services/validation')
 
 
 const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/adminloginController')
+const adminUserController = require('../controller/adminUserController')
+const adminProductController = require('../controller/adminProductController')
 //const {loginCheck} = require('../auth/jwt')
 
 // const {protectRoute} = require('../auth/protect')
@@ -24,10 +26,16 @@ router.post('/login',loginAdmin)
 //logout
 router.get('/logout',logOut)
 
+/* GET users listing. */
 
+router.get('/users',requireAuth,adminUserController.usersView)
+// router.get('/users',adminUserController.getUsers)
+
+//GET product
+router.get('/products',adminProductController.productsView)
 
 // router.get("/adminReg",loginController.reg)
 
-/* GET users listing. */
+
 
 module.exports = router;
