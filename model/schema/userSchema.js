@@ -18,10 +18,10 @@ const userSchema = new mongoose.Schema({
     lowercase:true,
     validate:[isEmail,"Please enter a valid email"]
   },
-  // user_number: {
-  //   type: Number,
-  //   required:[true,"Please enter a mobile number"]
-  // },
+  user_access: {
+    type: Boolean,
+    default:true
+  },
   user_password: {
     type: String,
     required: [true,"Please enter a password"],
@@ -51,6 +51,7 @@ userSchema.statics.login = async function(user_email, user_password) {
     if (auth) {
       return user;
     }
+    console.log(user_password, user.user_password)
     throw new Error('Incorrect password');
   }
   throw new Error('Incorrect email');

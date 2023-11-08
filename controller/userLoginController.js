@@ -16,11 +16,11 @@ const handleErrors = (err)=>{
     }
     //incorrect email
     if(err.message === 'Incorrect email'){
-        errors.email = 'That email is not registered'
+        errors.user_email = 'That email is not registered'
     }
 
     if(err.message === 'Incorrect password'){
-        errors.password = 'Incorrect password'
+        errors.user_password = 'Incorrect password'
     }
 
 
@@ -110,6 +110,8 @@ module.exports.userLoginPost =async (req,res)=>{
 
     }catch(err){
         const errors = handleErrors(err)
+        console.log(err)
+        console.log(errors)
         res.status(400).json({errors})
     }
 }
@@ -117,7 +119,7 @@ module.exports.userLoginPost =async (req,res)=>{
 ///////////////////////////////////////////////////////////////////////////
 
 
-module.exports.userHomeView =(req,res)=>{
+module.exports.userHomeView = async (req,res)=>{
     res.render('user/userHome')
 }
 

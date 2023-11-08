@@ -29,7 +29,7 @@ router.get('/logout',logOut)
 /* GET users listing. */
 
 router.get('/users',requireAuth,adminUserController.usersView)
-// router.get('/users',adminUserController.getUsers)
+router.post('/users/block/:Id',adminUserController.userBlock)
 
 //GET product
 router.get('/products',adminProductController.productsView)

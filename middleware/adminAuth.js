@@ -34,7 +34,7 @@ const checkAdmin = async (req,res,next)=>{
                 // console.log(decodedToken)
                 let admin = await Admin.findById(decodedToken.id);
                 res.locals.user = admin;
-                console.log("oyoyoyyooy",admin)
+                console.log("this is admin",admin)
                 next()
             }
         })
