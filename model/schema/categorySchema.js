@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const categorySchema = new mongoose.Schema({
-    categoryName: {
+    category_name: {
       type: String,
       required: true,
       unique: true, 
@@ -9,3 +9,4 @@ const categorySchema = new mongoose.Schema({
   });
   
   const Category = mongoose.model('Category', categorySchema);
+  module.exports = Category
