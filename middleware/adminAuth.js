@@ -20,7 +20,7 @@ const requireAuth = async (req,res,next)=>{
     }
 }
 
-//check current user
+//check if admin
 const checkAdmin = async (req,res,next)=>{
     const token = await req.cookies.jwt;
 
@@ -41,7 +41,7 @@ const checkAdmin = async (req,res,next)=>{
     }
     else{
         res.locals.user = null
-        console.log('user not logged')
+        console.log('admin not logged')
         next()
     }
 }

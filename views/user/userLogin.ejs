@@ -120,10 +120,11 @@ form.addEventListener('submit',async (e)=>{
           headers:{'Content-Type':'application/json'}
         })
         const data = await res.json()
-        console.log(data)
+        console.log("hhh",data)
         if(data.errors){
           emailError.textContent = data.errors.email;
           passwordError.textContent = data.errors.password;
+          errorField.textContent = data.errors.error
         }
         if(data.user){
           location.assign('/brepublic/landing/userHome')

@@ -10,8 +10,7 @@ const adminUserController = require('../controller/adminUserController')
 const adminProductController = require('../controller/adminProductController')
 //const {loginCheck} = require('../auth/jwt')
 
-// const {protectRoute} = require('../auth/protect')
-// const {loginCheck} = require('../auth/passport')
+
 
 router.get('*',checkAdmin)
 
@@ -26,13 +25,15 @@ router.post('/login',loginAdmin)
 //logout
 router.get('/logout',logOut)
 
-/* GET users listing. */
 
+//users routes
 router.get('/users',requireAuth,adminUserController.usersView)
 router.post('/users/block/:Id',adminUserController.userBlock)
 
-//GET product
+//product routes
 router.get('/products',adminProductController.productsView)
+router.get('/product/:productId',adminProductController.getProduct)
+router.post('/product/addproduct',adminProductController.createProduct)
 
 // router.get("/adminReg",loginController.reg)
 

@@ -13,6 +13,7 @@ const handleErrors = (err)=>{
         user_email:"",
         user_number:"",
         user_password:"",
+        error:""
     }
     //incorrect email
     if(err.message === 'Incorrect email'){
@@ -21,6 +22,10 @@ const handleErrors = (err)=>{
 
     if(err.message === 'Incorrect password'){
         errors.user_password = 'Incorrect password'
+    }
+
+    if(err.message === 'User access is disabled'){
+        errors.error = 'user blocked'
     }
 
 
@@ -104,19 +109,26 @@ module.exports.userLoginPost =async (req,res)=>{
 
     try{
         const user = await User.login(email,password)
+
+        // Check if user_access is false in the database
+        if (!user.user_access) {
+            const error = new Error('User access is disabled');
+            error.status = 400;
+            throw error;
+        }
+
         const token = createToken(user._id)
         res.cookie('jwt',token,{httpOnly:true, maxAge:maxAge * 1000 })
         res.status(200).json({user:user._id})
 
     }catch(err){
         const errors = handleErrors(err)
-        console.log(err)
         console.log(errors)
         res.status(400).json({errors})
     }
 }
 
-///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 
 
 module.exports.userHomeView = async (req,res)=>{
