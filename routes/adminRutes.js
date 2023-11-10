@@ -14,7 +14,7 @@ const { route } = require('./userroutes');
 
 
 
-router.get('*',checkAdmin)
+// router.get('*',checkAdmin)
 
 //view
 router.get('/login',loginView)
@@ -34,10 +34,11 @@ router.post('/users/block/:Id',adminUserController.userBlock)
 
 //category routes
 router.get('/category',adminCategoryController.getCategories)
+router.post('/category/addcategory',adminCategoryController.addCategories)
 
 
 //product routes
-router.get('/products',adminProductController.productsView)
+router.get('/products',requireAuth,adminProductController.productsView)
 router.get('/product/:productId',adminProductController.getProduct)
 router.post('/product/addproduct',adminProductController.createProduct)
 

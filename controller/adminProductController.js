@@ -41,7 +41,6 @@ module.exports.createProduct = async (req,res)=>{
           //
         } = req.body;
     
-        // Create a new Product instance
         const newProduct = new Product({
           product_name:productName,
           product_price:productPrice,
@@ -53,7 +52,6 @@ module.exports.createProduct = async (req,res)=>{
           product_imgurl:productImage,
         });
     
-        // Save the new product to the database
         const savedProduct = await newProduct.save();
     
         res.status(201).json(savedProduct);

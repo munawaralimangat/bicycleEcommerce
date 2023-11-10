@@ -199,9 +199,9 @@
                                         <label for="productColour" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size</label>
                                         <select id="productColour" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                             <option disabled selected="">Select size</option>
-                                            <option value="TV">Black</option>
-                                            <option value="PC">White</option>
-                                            <option value="GA">Red</option>
+                                            <option value="Black">Black</option>
+                                            <option value="White">White</option>
+                                            <option value="Red">Red</option>
                                         </select>
                                     </div>
                                     <div>
@@ -270,7 +270,7 @@
     const form = document.querySelector('form')
 
     form.addEventListener('submit',async (e)=>{
-        e.preventDefault()
+        // e.preventDefault()
 
         const productName = form.productName.value;
         const productPrice = form.productPrice.value;
@@ -286,7 +286,7 @@
         console.log(productImage);
 
         try {
-            const res = await fetch('/product/addproduct',{
+            const res = await fetch('/admin/product/addproduct',{
                 method:'post',
                 body:JSON.stringify({
                     productName,
@@ -305,7 +305,7 @@
             console.log(data)
 
         } catch (err) {
-            
+            console.log(err)
         }
        
     })
