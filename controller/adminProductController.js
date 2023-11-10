@@ -29,28 +29,28 @@ module.exports.getProduct = async (req,res)=>{
 module.exports.createProduct = async (req,res)=>{
     try {
         const {
-          product_name,
-          product_brand,
-          product_imgurl,
-          product_colour,
-          product_qty,
-          product_size,
-          product_price,
-          discount_price,
+          productName,
+          productPrice,
+          productCategory,
+          productQty,
+          productSize,
+          productColour,
+          discountPrice,
+          productImage
           //availablity
           //
         } = req.body;
     
         // Create a new Product instance
         const newProduct = new Product({
-          product_name,
-          product_brand,
-          product_imgurl,
-          product_colour,
-          product_qty,
-          product_size,
-          product_price,
-          discount_price,
+          product_name:productName,
+          product_price:productPrice,
+          category_name:productCategory,
+          product_qty:productQty,
+          product_size:productSize,
+          product_colour:productColour,
+          discount_price:discountPrice,
+          product_imgurl:productImage,
         });
     
         // Save the new product to the database

@@ -25,7 +25,7 @@ const handleErrors = (err)=>{
     }
 
     if(err.message === 'User access is disabled'){
-        errors.error = 'user blocked'
+        errors.error = 'User blocked'
     }
 
 
