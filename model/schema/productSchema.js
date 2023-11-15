@@ -6,7 +6,8 @@ const productSchema = new mongoose.Schema({
       required: true,
     },
     category_name: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'Category',
       required: true,
     },
     product_imgurl: {
@@ -31,11 +32,11 @@ const productSchema = new mongoose.Schema({
     },
     discount_price: {
       type: Number,
-      default: 0, // Assuming the default discount is 0
+      default: 0, 
     },
   });
   
 
 const Product = mongoose.model('Product', productSchema);
 
-module.exports = Product
+module.exports = Product;

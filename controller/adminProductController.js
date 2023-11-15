@@ -1,8 +1,9 @@
 const Product = require('../model/schema/productSchema')
+const Category = require('../model/schema/categorySchema')
 
 module.exports.productsView = async (req,res)=>{
-    const product = await Product.find()
     try {
+      const product = await Product.find().populate('category_name')
         res.render('admin/adminProducts',{product:product})
       } catch (error){
         res.status(500).json({error:"error fetching product"});
@@ -13,7 +14,8 @@ module.exports.getProduct = async (req,res)=>{
     try {
         const productId = req.params.productId;
     
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId).populate('category_name')
+        console.log(product)
     
         if (!product) {
           return res.status(404).json({ error: 'Product not found' });
@@ -40,11 +42,17 @@ module.exports.createProduct = async (req,res)=>{
           //availablity
           //
         } = req.body;
-    
+
+        let existingCategory = await Category.findOne({category_name:productCategory})
+        console.log(existingCategory);
+        if(!existingCategory){
+          existingCategory = new Category({category_name:productCategory})
+          existingCategory = await existingCategory.save()
+        }
         const newProduct = new Product({
           product_name:productName,
           product_price:productPrice,
-          category_name:productCategory,
+          category_name:existingCategory._id,
           product_qty:productQty,
           product_size:productSize,
           product_colour:productColour,
