@@ -460,7 +460,7 @@
                                         <%=productData.product_price %>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <%=productData.product_imgurl %>
+                                        <img src="/uploads/<%= productData.product_imgurl %>" alt="Product Image" class="w-16 h-16 object-cover rounded"> <!--class="w-32 h-32 object-cover rounded">-->
                                     </td>
                                     <td class="flex items-center px-6 py-4 space-x-3">
                                         <a href="#"
@@ -555,23 +555,22 @@
 
                     const fileInput = document.getElementById('file_input');
                     const file = fileInput.files[0];
-                    const productImage = file.name
-                    console.log(productImage);
+
+                    const formData = new FormData();
+                    formData.append('productName', productName);
+                    formData.append('productPrice', productPrice);
+                    formData.append('productCategory', productCategory);
+                    formData.append('productQty', productQty);
+                    formData.append('productSize', productSize);
+                    formData.append('productColour', productColour);
+                    formData.append('discountPrice', discountPrice);
+                    formData.append('productImage', file);
 
                     try {
                         const res = await fetch('/admin/product/addproduct', {
                             method: 'post',
-                            body: JSON.stringify({
-                                productName,
-                                productPrice,
-                                productCategory,
-                                productQty,
-                                productSize,
-                                productColour,
-                                discountPrice,
-                                productImage
-                            }),
-                            headers: {'Content-type': 'application/json'}
+                            body: formData,
+                            // headers: {'Content-type': 'application/json'}
                         })
                         const data = await res.json()
 

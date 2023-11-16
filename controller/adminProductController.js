@@ -1,5 +1,7 @@
+
 const Product = require('../model/schema/productSchema')
 const Category = require('../model/schema/categorySchema')
+
 
 module.exports.productsView = async (req,res)=>{
     try {
@@ -38,10 +40,11 @@ module.exports.createProduct = async (req,res)=>{
           productSize,
           productColour,
           discountPrice,
-          productImage
           //availablity
           //
         } = req.body;
+
+        const productImage = req.file.filename
 
         let existingCategory = await Category.findOne({category_name:productCategory})
         console.log(existingCategory);

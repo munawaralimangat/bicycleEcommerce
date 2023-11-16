@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer')
 const {requireAuth,checkAdmin} = require('../middleware/adminAuth');
 const passport = require('passport');
 const {validateLogin} = require('../services/validation');
-
+const multerConfig = require('../multer/config.multer')
+const upload = multer(multerConfig)
 
 const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/adminloginController');
 const adminUserController = require('../controller/adminUserController')
@@ -42,7 +44,7 @@ router.put('/category/:categoryId',adminCategoryController.editCategory)
 //product routes
 router.get('/products',requireAuth,adminProductController.productsView);
 router.get('/product/:productId',adminProductController.getProduct);
-router.post('/product/addproduct',adminProductController.createProduct);
+router.post('/product/addproduct',upload.single('productImage'),adminProductController.createProduct);
 
 // router.get("/adminReg",loginController.reg)
 
