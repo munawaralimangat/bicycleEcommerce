@@ -44,7 +44,7 @@ module.exports.createProduct = async (req,res)=>{
           //
         } = req.body;
 
-        const productImage = req.file.filename
+        const productImage = req.file.filename;aaaa
 
         let existingCategory = await Category.findOne({category_name:productCategory})
         console.log(existingCategory);
@@ -70,4 +70,13 @@ module.exports.createProduct = async (req,res)=>{
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
       }
+}
+
+module.exports.updateProduct = async (req,res)=>{
+  try{
+    const productId = req.params.productId
+    console.log(productId)
+  }catch(error){
+    console.log('error')
+  }
 }

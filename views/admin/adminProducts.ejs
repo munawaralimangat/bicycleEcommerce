@@ -351,6 +351,7 @@
                                                                 <input type="text" name="editProductName" id="editProductName"
                                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                                     placeholder="Type product name" required="">
+                                                                    <input type="hidden" id="editProductId" name="editProductId">
                                                             </div>
                                                             <div class="w-full">
                                                                 <label for="editProductPrice"
@@ -423,7 +424,7 @@
                                       <textarea id="description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
                                   </div> -->
                                                         </div>
-                                                        <button type="submit"
+                                                        <button type="submit" onclick="editProduct(event)"
                                                             class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-black bg-yellow-400 hover:bg-blue-800 bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                                                             Confirm
                                                         </button>
@@ -462,7 +463,7 @@
                                     <td class="px-6 py-4">
                                         <img src="/uploads/<%= productData.product_imgurl %>" alt="Product Image" class="w-16 h-16 object-cover rounded"> <!--class="w-32 h-32 object-cover rounded">-->
                                     </td>
-                                    <td class="flex items-center px-6 py-4 space-x-3">
+                                    <td class="flex items-center px-6 py-10 space-x-3">
                                         <a href="#"
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline openModalBtn">Edit</a>
                                         <a href="#"
@@ -491,6 +492,8 @@
                 const modalProductSize = document.getElementById('editProductSize');
                 const modalProductColour = document.getElementById('editProductColour');
                 const modalDiscountPrice = document.getElementById('editDiscountPrice');
+                // const modalFileInput = document.getElementById('file_input')
+                const modalProductId = document.getElementById('editProductId')
 
                 // Assuming there's only one element with the class 'openModalBtn'
                 const openModalBtnc = openModalBtnElements[0];
@@ -506,15 +509,18 @@
                         fetch(`/admin/product/${productId}`)
                             .then((response) => response.json())
                             .then((productDetails) => {
-                                // Populate the modal with product details
+
                                 console.log(productDetails)
+
                                 modalProductName.value = productDetails.product_name;
                                 modalProductPrice.value = productDetails.product_price;
                                 modalProductCategory.value = productDetails.category_name.category_name;
                                 modalProductQty.value = productDetails.product_qty;
                                 modalProductSize.value = productDetails.product_size;
                                 modalProductColour.value = productDetails.product_colour;
-                                modalDiscountPrice.value = productDetails.discount_price
+                                modalDiscountPrice.value = productDetails.discount_price;
+                                // modalFileInput.innerText = productDetails.product_imgurl; //ask reviewer
+                                modalProductId.value = productDetails._id;
                                 console.log(modalProductName.value);
 
                                 // ... Populate other modal inputs ...
@@ -537,6 +543,68 @@
                         defaultModalc.style.display = 'none';
                     }
                 });
+            </script>
+
+            <!--update product-->
+            <script>
+                async function editProduct(event) {
+                    event.preventDefault()
+                    const productIdInput = document.getElementById('editProductId');
+
+                    if (productIdInput) {
+                        const productId = productIdInput.value;
+                        const editProductName = modalProductName.value;
+                        const editProductPrice = modalProductPrice.value;
+                        const editProductCategory = modalProductCategory.value;
+                        const editProductQty = modalProductQty.value;
+                        const editProductSize = modalProductSize.value;
+                        const editProductColour = modalProductColour.value;
+                        const editDiscountPrice = modalDiscountPrice.value;
+
+                        const formData = new FormData();
+                        formData.append('productName', editProductName);
+                        formData.append('productPrice', editProductPrice);
+                        formData.append('productCategory', editProductCategory);
+                        formData.append('productQty', editProductQty);
+                        formData.append('productSize', editProductSize);
+                        formData.append('productColour', editProductColour);
+                        formData.append('discountPrice', editDiscountPrice);
+
+                        // Assuming modalFileInput is your file input element
+                        const fileInput = document.getElementById('file_input');
+                        const file = fileInput.files[0];
+
+                        if (file) {
+                            formData.append('productImage', file);
+                        }
+
+                        console.log(editProductName)
+                        console.log(`productid ${productId}`);
+
+                        try {
+                            const response = await fetch(`/admin/product/${productId}`, {
+                                method: 'put',
+                                headers: {
+                                    // 'Content-type': 'application/json'
+                                },
+                                body: formData,
+                            })
+                            if (response.ok) {
+                                console.log('product updated');
+                            } else {
+                                const text = await response.text();
+                                console.error('Error updating product:', response);
+                            }
+
+
+                        } catch (error) {
+                            console.log(error)
+                        }
+
+                    }
+
+                }
+
             </script>
 
             <script>
@@ -570,7 +638,7 @@
                         const res = await fetch('/admin/product/addproduct', {
                             method: 'post',
                             body: formData,
-                            // headers: {'Content-type': 'application/json'}
+                            headers: {'Content-type': 'application/json'}
                         })
                         const data = await res.json()
 
