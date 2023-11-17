@@ -44,7 +44,7 @@ module.exports.createProduct = async (req,res)=>{
           //
         } = req.body;
 
-        const productImage = req.file.filename;aaaa
+        const productImage = req.file.filename;
 
         let existingCategory = await Category.findOne({category_name:productCategory})
         console.log(existingCategory);
@@ -73,10 +73,55 @@ module.exports.createProduct = async (req,res)=>{
 }
 
 module.exports.updateProduct = async (req,res)=>{
-  try{
-    const productId = req.params.productId
-    console.log(productId)
-  }catch(error){
-    console.log('error')
-  }
+  try {
+    const productId = req.params.productId;
+    const {
+        productName,
+        productPrice,
+        productCategory,
+        productQty,
+        productSize,
+        productColour,
+        discountPrice,
+    } = req.body;
+    console.log(req.body)
+    console.log(req.file)
+  
+    const productImage = req.file.filename;
+
+    let existingCategory = await Category.findOne({ category_name: productCategory });
+
+    if (!existingCategory) {
+        existingCategory = new Category({ category_name: productCategory });
+        existingCategory = await existingCategory.save();
+    }
+
+    // Assuming you have a Product model with the appropriate schema
+    const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        {
+            product_name: productName,
+            product_price: productPrice,
+            category_name: existingCategory._id,
+            product_qty: productQty,
+            product_size: productSize,
+            product_colour: productColour,
+            discount_price: discountPrice,
+            product_imgurl: productImage,
+        },
+        { new: true } // to return the updated document
+    );
+
+    if (!updatedProduct) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json({
+        message: 'Product updated successfully',
+        product: updatedProduct,
+    });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+}
 }

@@ -414,10 +414,10 @@
                                                             <div class="w-full">
                                                                 <label
                                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                                    for="file_input">Upload image</label>
-                                                                <input id="file_input"
+                                                                    for="updateFile_input">Upload image</label>
+                                                                <input
                                                                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                                    id="file_input" type="file">
+                                                                    id="updateFile_input" type="file">
                                                             </div>
                                                             <!-- <div class="sm:col-span-2">
                                       <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -479,9 +479,9 @@
             </div>
             <script src="/javascripts/createModal.js"></script> <!--working of create modal-->
 
-            <!---->
+            <!--fetch data to the modal of edit-->
             <script>
-                // Get the modal and button
+
                 const defaultModalc = document.getElementById(`default-modalc`);
                 const openModalBtnElements = document.getElementsByClassName('openModalBtn');
                 const closeBtn = document.getElementById('closeBtn');
@@ -495,17 +495,14 @@
                 // const modalFileInput = document.getElementById('file_input')
                 const modalProductId = document.getElementById('editProductId')
 
-                // Assuming there's only one element with the class 'openModalBtn'
                 const openModalBtnc = openModalBtnElements[0];
 
-                // Add event listener to each element with the class 'openModalBtn'
                 for (const openModalBtn of openModalBtnElements) {
                     openModalBtn.addEventListener('click', (event) => {
                         event.preventDefault();
                         const productId = event.target.closest('tr').dataset.productId;
                         console.log(productId)
 
-                        // Fetch product details using productId (modify the endpoint accordingly)
                         fetch(`/admin/product/${productId}`)
                             .then((response) => response.json())
                             .then((productDetails) => {
@@ -523,7 +520,6 @@
                                 modalProductId.value = productDetails._id;
                                 console.log(modalProductName.value);
 
-                                // ... Populate other modal inputs ...
                                 defaultModalc.style.display = 'block';
                             })
                             .catch((error) => {
@@ -547,7 +543,7 @@
 
             <!--update product-->
             <script>
-                async function editProduct(event) {
+                    async function editProduct(event) {
                     event.preventDefault()
                     const productIdInput = document.getElementById('editProductId');
 
@@ -570,9 +566,10 @@
                         formData.append('productColour', editProductColour);
                         formData.append('discountPrice', editDiscountPrice);
 
-                        // Assuming modalFileInput is your file input element
-                        const fileInput = document.getElementById('file_input');
-                        const file = fileInput.files[0];
+                        const updateFileInput = document.getElementById('updateFile_input');
+                        console.log(updateFileInput);
+                        const file = updateFileInput.files[0];
+                        console.log(file)
 
                         if (file) {
                             formData.append('productImage', file);
@@ -580,6 +577,7 @@
 
                         console.log(editProductName)
                         console.log(`productid ${productId}`);
+                        console.log(editProductCategory)
 
                         try {
                             const response = await fetch(`/admin/product/${productId}`, {
@@ -589,22 +587,18 @@
                                 },
                                 body: formData,
                             })
-                            if (response.ok) {
-                                console.log('product updated');
-                            } else {
-                                const text = await response.text();
-                                console.error('Error updating product:', response);
-                            }
-
-
+                            let data  = await response.json()
+                            console.log(data)
+                            
                         } catch (error) {
                             console.log(error)
                         }
-
                     }
-
                 }
 
+
+
+                
             </script>
 
             <script>
@@ -638,10 +632,9 @@
                         const res = await fetch('/admin/product/addproduct', {
                             method: 'post',
                             body: formData,
-                            headers: {'Content-type': 'application/json'}
+                            // headers: {'Content-type': 'application/json'}
                         })
                         const data = await res.json()
-
                         console.log(data)
 
                     } catch (err) {

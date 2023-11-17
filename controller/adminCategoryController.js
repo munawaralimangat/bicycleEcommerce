@@ -51,6 +51,7 @@ module.exports.editCategory = async(req,res)=>{
   try {
     const categoryId = req.params.categoryId;
     const { editCategoryName } = req.body;
+    console.log(req.body)
 
     if (!editCategoryName) {
       return res.status(400).json({ error: 'New category name is required.' });

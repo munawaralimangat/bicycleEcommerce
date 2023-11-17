@@ -45,7 +45,7 @@ router.put('/category/:categoryId',adminCategoryController.editCategory);
 router.get('/products',requireAuth,adminProductController.productsView);
 router.get('/product/:productId',adminProductController.getProduct);
 router.post('/product/addproduct',upload.single('productImage'),adminProductController.createProduct);
-router.put('/product/:productId',adminProductController.updateProduct);
+router.put('/product/:productId',upload.single('productImage'),adminProductController.updateProduct); //ask reviewer
 
 // router.get("/adminReg",loginController.reg)
 
