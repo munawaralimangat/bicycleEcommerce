@@ -87,7 +87,7 @@ module.exports.updateProduct = async (req,res)=>{
     console.log(req.body)
     console.log(req.file)
   
-    const productImage = req.file.filename;
+    const productImage = req.file ? req.file.filename : undefined;
 
     let existingCategory = await Category.findOne({ category_name: productCategory });
 
@@ -124,4 +124,8 @@ module.exports.updateProduct = async (req,res)=>{
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
 }
+}
+
+module.exports.deleteProduct = async ()=>{
+  
 }

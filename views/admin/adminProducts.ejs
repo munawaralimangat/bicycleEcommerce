@@ -544,7 +544,7 @@
             <!--update product-->
             <script>
                     async function editProduct(event) {
-                    event.preventDefault()
+                    // event.preventDefault()
                     const productIdInput = document.getElementById('editProductId');
 
                     if (productIdInput) {
@@ -589,6 +589,7 @@
                             })
                             let data  = await response.json()
                             console.log(data)
+                            location.reload()
                             
                         } catch (error) {
                             console.log(error)

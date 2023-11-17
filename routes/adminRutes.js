@@ -46,6 +46,7 @@ router.get('/products',requireAuth,adminProductController.productsView);
 router.get('/product/:productId',adminProductController.getProduct);
 router.post('/product/addproduct',upload.single('productImage'),adminProductController.createProduct);
 router.put('/product/:productId',upload.single('productImage'),adminProductController.updateProduct); //ask reviewer
+router.delete('/product/:productId',adminProductController.deleteProduct)
 
 // router.get("/adminReg",loginController.reg)
 
