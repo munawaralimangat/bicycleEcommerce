@@ -1,4 +1,5 @@
-const Category = require('../model/schema/categorySchema')
+const Category = require('../model/schema/categorySchema');
+const Product = require('../model/schema/productSchema');
 
 module.exports.categoriesView = async (req,res)=>{
     const category = await Category.find()
@@ -71,5 +72,24 @@ module.exports.editCategory = async(req,res)=>{
   } catch (error) {
     console.error('Error editing category:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// adminCategoryController.js
+module.exports.deleteCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const deletedCategory = await Category.findByIdAndDelete(categoryId);
+
+    if (!deletedCategory) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.json({
+      message: "Category deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };

@@ -39,14 +39,15 @@ router.get('/category',requireAuth,adminCategoryController.categoriesView);
 router.get('/category/:categoryId',adminCategoryController.getCategories);
 router.post('/category/addcategory',adminCategoryController.createCategories);
 router.put('/category/:categoryId',adminCategoryController.editCategory);
+router.delete('/category/:categoryId',adminCategoryController.deleteCategory);
 
 
 //product routes
 router.get('/products',requireAuth,adminProductController.productsView);
 router.get('/product/:productId',adminProductController.getProduct);
 router.post('/product/addproduct',upload.single('productImage'),adminProductController.createProduct);
-router.put('/product/:productId',upload.single('productImage'),adminProductController.updateProduct); //ask reviewer
-router.delete('/product/:productId',adminProductController.deleteProduct)
+router.put('/product/:productId',upload.single('productImage'),adminProductController.updateProduct);
+router.delete('/product/:productId',adminProductController.deleteProduct);
 
 // router.get("/adminReg",loginController.reg)
 
