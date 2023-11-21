@@ -1,5 +1,7 @@
 const express = require('express')
-const userController = require('../controller/userLoginController')
+const userLoginController = require('../controller/userLoginController')
+const userMountainBikesController = require('../controller/userMountainBikesController')
+const userRoadBikesController = require('../controller/userRoadBikesController')
 const {requireAuth,checkUser} = require('../middleware/authMiddleware')
 const router = express.Router()
 
@@ -7,18 +9,21 @@ const router = express.Router()
 router.use('*',checkUser)
 
 //user landing controller
-router.get('/landing',userController.landingView)
+router.get('/landing',userLoginController.landingView)
 
-//user login controller
-router.get('/landing/register',userController.userRegView)//signup get
-router.post('/landing/register',userController.userRegPost)//signup post
-router.get('/landing/login',userController.userLoginView)//login get
-router.post('/landing/login',userController.userLoginPost)//login post
+//user login and signup controller
+router.get('/landing/register',userLoginController.userRegView)//signup get
+router.post('/landing/register',userLoginController.userRegPost)//signup post
+router.get('/landing/login',userLoginController.userLoginView)//login get
+router.post('/landing/login',userLoginController.userLoginPost)//login post
 
 //user home controller
-router.get('/landing/userhome',requireAuth,userController.userHomeView)
-router.get('/logout',requireAuth,userController.logout)
+router.get('/landing/userhome',requireAuth,userLoginController.userHomeView)
+router.get('/logout',requireAuth,userLoginController.logout)
 
+//category routes
+router.get('/mountainbikes',userMountainBikesController.viewMountain)
+router.get('/roadbikes',userRoadBikesController.viewRoadBikes)
 
 
 

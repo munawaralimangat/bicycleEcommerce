@@ -6,7 +6,9 @@ const Category = require('../model/schema/categorySchema')
 module.exports.productsView = async (req,res)=>{
     try {
       const product = await Product.find().populate('category_name')
-        res.render('admin/adminProducts',{product:product})
+        res.render('admin/adminProducts',{
+          product:product
+        })
       } catch (error){
         res.status(500).json({error:"error fetching product"});
       }     
@@ -126,6 +128,18 @@ module.exports.updateProduct = async (req,res)=>{
 }
 }
 
-module.exports.deleteProduct = async ()=>{
-  
+module.exports.deleteProduct = async (req,res)=>{
+  try {
+    const productId = req.params.productId;
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+
+    if(!deletedProduct){
+      return res.status(404).json({message:"product not found"})
+    }
+
+    res.json({message:"product deleted successfully"})
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 }

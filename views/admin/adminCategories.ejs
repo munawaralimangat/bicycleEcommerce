@@ -414,57 +414,57 @@
         }
     }
         </script>
-        <!--remove modal-->
+        <!--modal for delelete-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-    const removeButtons = document.querySelectorAll('.removeBtn');
-    const confirmationModal = document.getElementById('confirmationModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const confirmRemoveBtn = document.getElementById('confirmRemoveBtn');
+            const removeButtons = document.querySelectorAll('.removeBtn');
+            const confirmationModal = document.getElementById('confirmationModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const confirmRemoveBtn = document.getElementById('confirmRemoveBtn');
 
-    let categoryId = null;
+            let categoryId = null;
 
-    removeButtons.forEach(function (button) {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
-            categoryId = this.closest('tr').dataset.categoryId;
-            console.log(categoryId);
-            confirmationModal.classList.remove('hidden');
+            removeButtons.forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    categoryId = this.closest('tr').dataset.categoryId;
+                    console.log(categoryId);
+                    confirmationModal.classList.remove('hidden');
+                });
+            });
+
+            closeModalBtn.addEventListener('click', function () {
+                confirmationModal.classList.add('hidden');
+            });
+
+            confirmRemoveBtn.addEventListener('click', function () {
+                // Make a fetch request to remove the item based on the categoryId
+                fetch(`/admin/category/${categoryId}`, {
+                    method: 'DELETE', // Adjust the method based on your API
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // You may need to include additional headers depending on your API requirements
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Item removed successfully:', data);
+                    // Update the UI or perform any other necessary actions
+                })
+                .catch(error => {
+                    console.error('Error removing item:', error);
+                })
+                .finally(() => {
+                    // Close the modal
+                    confirmationModal.classList.add('hidden');
+                });
+            });
         });
-    });
-
-    closeModalBtn.addEventListener('click', function () {
-        confirmationModal.classList.add('hidden');
-    });
-
-    confirmRemoveBtn.addEventListener('click', function () {
-        // Make a fetch request to remove the item based on the categoryId
-        fetch(`/admin/category/${categoryId}`, {
-            method: 'DELETE', // Adjust the method based on your API
-            headers: {
-                'Content-Type': 'application/json',
-                // You may need to include additional headers depending on your API requirements
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Item removed successfully:', data);
-            // Update the UI or perform any other necessary actions
-        })
-        .catch(error => {
-            console.error('Error removing item:', error);
-        })
-        .finally(() => {
-            // Close the modal
-            confirmationModal.classList.add('hidden');
-        });
-    });
-});
 
         </script>
         

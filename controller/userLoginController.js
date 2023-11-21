@@ -21,7 +21,7 @@ const handleErrors = (err)=>{
     }
 
     if(err.message === 'Incorrect password'){
-        errors.user_password = 'Incorrect password'
+        errors.error = 'Incorrect password'
     }
 
     if(err.message === 'User access is disabled'){
@@ -140,6 +140,7 @@ module.exports.logout =(req,res)=>{
     res.cookie('jwt', '',{maxAge:1})
     res.redirect('/brepublic/landing/login')
 }
+
 
 
 
