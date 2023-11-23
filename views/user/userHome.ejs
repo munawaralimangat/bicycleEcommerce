@@ -1,12 +1,17 @@
 <%-include('../includes/userStart')  %>
 <body class="dark:bg-gray-800 bg-white">
-    <header class="relative min-h-screen bg-cover bg-center text-white flex flex-col justify-center items-center" style="background-image: url('/images/howard-bouchevereau-BRDO4C-0h_s-unsplash.jpg');">
+    <header class="relative min-h-screen bg-cover bg-center text-white flex flex-col justify-center items-center" id="slideshow">
+        <!--Nav bar here-->
         <%-include('../includes/userHomeNav')  %>
+        <!--nav bar closes here-->
+
+        <!--banner starts here-->
+        <%-include('../includes/components/banner')  %>
+        <!--banner closes here-->
     </header>
-    <!--banner starts here-->
-    <%-include('../includes/components/banner')  %>
     
-  <!--banner closes here-->
+    
+  
   <div class="flex items-baseline m-4 justify-between border-b border-gray-200 pb-6 pt-24">
     <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">New Arrivals</h1>
   </div>
@@ -61,7 +66,29 @@
 
 
 
+<script>
+    let slideIndex = 0;
 
+    function showSlides() {
+        const slides = document.getElementById('slideshow'); //slideshow on header
+        const images = [
+            '/images/Caya-Banner_2197-×-1200-px-002-min.jpg',
+            '/images/howard-bouchevereau-BRDO4C-0h_s-unsplash.jpg',
+            // Add more image URLs as needed
+        ];
+
+        slideIndex++;
+
+        if (slideIndex >= images.length) {
+            slideIndex = 0;
+        }
+
+        slides.style.backgroundImage = `url('${images[slideIndex]}')`;
+        setTimeout(showSlides, 5000); // Change image every 5 seconds
+    }
+
+    showSlides(); // Start the slideshow
+</script>
   
   
 
