@@ -53,7 +53,7 @@ const createToken = (id)=>{
 }
 
 module.exports.landingView = async (req,res)=>{
-    res.render('user/landing',{
+    res.render('user/userHome',{
                 regLog: "Log In",
                 formurl: "login"
             })
