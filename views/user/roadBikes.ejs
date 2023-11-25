@@ -438,10 +438,10 @@
             <!-- Product grid -->
             <div class="lg:col-span-4">
               <div class="container mx-auto mt-8">
-                <div class="flex flex-wrap justify-around">
+                <div class="flex flex-wrap justify-start">
                     <!-- Product Card 1 -->
                     <% roadBikesProducts.forEach((product, index) => { %>
-                    <div class="w-64 border rounded-md shadow-md mb-4">
+                    <div class="w-64 mr-16 border rounded-md shadow-md mb-4">
                       <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
                         <img class="object-cover" src="/uploads/<%= product.product_imgurl %>" alt="product image" />
                         <span class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39% OFF</span>

@@ -101,7 +101,6 @@
         passwordError.textContent = data.errors.password;
       }
       if(data.admin){
-        window.history.replaceState({ token: data.token }, '', '/admin/dashboard');
         location.assign('/admin/dashboard');
         console.log("admin token is active")
       }
