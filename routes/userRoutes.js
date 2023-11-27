@@ -28,6 +28,7 @@ router.get('/mountainbikes',userProductController.viewMountain)
 router.get('/roadbikes',userProductController.viewRoadBikes)
 
 //cart routes
+router.get('/cart',userCartController.viewCart)
 router.post('/addtocart',userCartController.addToCart)
 
 //wishlist route

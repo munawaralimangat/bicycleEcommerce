@@ -1,6 +1,10 @@
 const Cart = require('../model/schema/cartSchema')
 const Product = require('../model/schema/productSchema')
 
+module.exports.viewCart = async (req,res)=>{
+    res.render('user/cart')
+}
+
 module.exports.addToCart = async (req,res)=>{
     console.log("hello")
     try {
