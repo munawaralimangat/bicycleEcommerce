@@ -2,6 +2,7 @@ const express = require('express')
 const userLoginController = require('../controller/userLoginController')
 const userProductController = require('../controller/userProductController')
 const userCartController = require('../controller/cartController')
+const userWishlistController = require('../controller/wishlistController')
 
 const {requireAuth,checkUser} = require('../middleware/authMiddleware')
 const router = express.Router()
@@ -28,6 +29,9 @@ router.get('/roadbikes',userProductController.viewRoadBikes)
 
 //cart routes
 router.post('/addtocart',userCartController.addToCart)
+
+//wishlist route
+router.post('/addtowishlist',userWishlistController.addToWishlist)
 
 
 
