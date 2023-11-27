@@ -1,7 +1,8 @@
 const express = require('express')
 const userLoginController = require('../controller/userLoginController')
-const userMountainBikesController = require('../controller/userMountainBikesController')
-const userRoadBikesController = require('../controller/userRoadBikesController')
+const userProductController = require('../controller/userProductController')
+const userCartController = require('../controller/cartController')
+
 const {requireAuth,checkUser} = require('../middleware/authMiddleware')
 const router = express.Router()
 
@@ -22,8 +23,11 @@ router.get('/landing/userhome',requireAuth,userLoginController.userHomeView)
 router.get('/logout',requireAuth,userLoginController.logout)
 
 //category routes
-router.get('/mountainbikes',userMountainBikesController.viewMountain)
-router.get('/roadbikes',userRoadBikesController.viewRoadBikes)
+router.get('/mountainbikes',userProductController.viewMountain)
+router.get('/roadbikes',userProductController.viewRoadBikes)
+
+//cart routes
+router.post('/addtocart',userCartController.addToCart)
 
 
 
