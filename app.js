@@ -9,19 +9,18 @@ const {loginCheck} = require('./auth/passport')
 // loginCheck(passport)
 const flash = require('connect-flash')
 
-const connectDB = require('./model/connection/connection')
+const connectDB = require('./model/connection/connection');
 connectDB()
-
 
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+
 app.use(session({
   secret:"oneboy",
   saveUninitialized:false,
   resave:false
 }))
-
 
 dotenv.config({path:'config.env'})
 //const nocache = require('nocache')
@@ -47,7 +46,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 // main router
 const routes = require('./routes/adminRutes');

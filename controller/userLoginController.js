@@ -130,7 +130,6 @@ module.exports.userLoginPost =async (req,res)=>{
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-
 module.exports.userHomeView = async (req,res)=>{
     res.render('user/userHome')
 }
