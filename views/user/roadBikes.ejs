@@ -517,28 +517,7 @@
         
     </body>
     <!-- <%-include('../includes/components/userFooter')  %> -->
-    <%-include('../includes/userEnd')  %><!--add to cart added-->
-    <script>
-      function addToWishlist(productId,userId){
-        console.log(productId)
-        console.log(userId)
-        fetch('/brepublic/addtowishlist',{
-          method:'post',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            userId:userId,
-            productId:productId
-          }),
-        })
-        .then(res => res.json())
-        .then(data =>{
-          console.log('added to wishlist') //ui set- msg
-        })
-        .catch(error =>{
-          console.error('error adding to wishlist') //set err msg on ui
-        })
-      }
-    </script>
+    <%-include('../includes/userEnd')  %><!--add to cart added--> <!--add to wishlist added-->
     <script>
 
       function toggleSortDropdown() {

@@ -3,7 +3,7 @@ const Admin = require('../model/schema/adminSchema')
 
 const requireAuth = async (req,res,next)=>{
 
-    const token = req.cookies.jwt;
+    const token = req.cookies.jwtad;
     if(token){
         jwt.verify(token,'mwrmwr',(err,decodedToken)=>{
             if(err){
@@ -22,7 +22,7 @@ const requireAuth = async (req,res,next)=>{
 
 //check if admin
 const checkAdmin = async (req,res,next)=>{
-    const token = await req.cookies.jwt;
+    const token = await req.cookies.jwtad;
 
     if(token){
         jwt.verify(token,'mwrmwr',async (err,decodedToken)=>{

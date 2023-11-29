@@ -1,12 +1,27 @@
 const Cart = require('../model/schema/cartSchema')
 const Product = require('../model/schema/productSchema')
+const Category = require('../model/schema/categorySchema')
 
 module.exports.viewCart = async (req,res)=>{
-    res.render('user/cart')
+    try{
+        const {userId} = req.query;
+        const cart = await Cart.findOne({user:userId}).populate({
+            path:'items.product',
+            populate:{
+                path:'category_name',
+                model:'Category',
+            }
+        })
+        console.log("hell",cart)
+        res.render('user/cart',{cart})    
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error:"Internal server error"})
+    }
+
 }
 
 module.exports.addToCart = async (req,res)=>{
-    console.log("hello")
     try {
         const {userId,productId,quantity}=req.body
         console.log(req.body)

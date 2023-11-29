@@ -95,13 +95,31 @@ module.exports.userRegPost = async (req,res)=>{
     }
 }
 
-module.exports.userLoginView = async (req,res)=>{
-    res.render('user/userLogin', {
-                regLog: "Register",
-                formurl: "register",
-                errors: ""
-            })
-}
+module.exports.userLoginView = async (req, res) => {
+    const jwtCookie = req.cookies.jwtus;
+
+    if (!jwtCookie) {
+        res.render('user/userLogin', {
+            regLog: "Register",
+            formurl: "register",
+            errors: ""
+        });
+        return;
+    }
+
+    try {
+        const decodedToken = jwt.verify(jwtCookie, 'mwrmwr');
+        res.redirect('/brepublic/landing');
+    } catch (error) {
+        console.log(error);
+        res.render('user/userLogin', {
+            regLog: "Register",
+            formurl: "register",
+            errors: ""
+        });
+    }
+};
+
 
 module.exports.userLoginPost =async (req,res)=>{
     const {email,password} = req.body;
@@ -118,7 +136,7 @@ module.exports.userLoginPost =async (req,res)=>{
         }
 
         const token = createToken(user._id)
-        res.cookie('jwt',token,{httpOnly:true, maxAge:maxAge * 1000 })
+        res.cookie('jwtus',token,{httpOnly:true, maxAge:maxAge * 1000 })
         res.status(200).json({user:user._id})
 
     }catch(err){
@@ -136,7 +154,7 @@ module.exports.userHomeView = async (req,res)=>{
 
 module.exports.logout =(req,res)=>{
     console.log("logout")
-    res.cookie('jwt', '',{maxAge:1})
+    res.cookie('jwtus', '',{maxAge:1})
     res.redirect('/brepublic/landing/login')
 }
 

@@ -3,7 +3,7 @@ const User = require('../model/schema/userSchema')
 
 const requireAuth = async (req,res,next)=>{
 
-    const token = req.cookies.jwt;
+    const token = req.cookies.jwtus;
     if(token){
         jwt.verify(token,'mwrmwr',(err,decodedToken)=>{
             if(err){
@@ -22,7 +22,7 @@ const requireAuth = async (req,res,next)=>{
 
 //check current user
 const checkUser = async (req,res,next)=>{
-    const token = await req.cookies.jwt;
+    const token = await req.cookies.jwtus;
 
     if(token){
         jwt.verify(token,'mwrmwr',async (err,decodedToken)=>{

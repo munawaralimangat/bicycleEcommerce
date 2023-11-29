@@ -9,6 +9,7 @@ const validateLogin = require('../services/validation')
 const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
 
+
 dotenv.config({path:'config.env'})
 
 const handleErrors = (err)=>{
@@ -48,8 +49,20 @@ const createToken = (id)=>{
 
 //view admin
 const loginView = async (req, res, next) => {
-  let additionalErrors =  req.flash('error');
-  res.render('admin/login', { errors:additionalErrors });
+  const jwtCookie = req.cookies.jwtad;
+
+  if (!jwtCookie) {
+    let additionalErrors = req.flash('error');
+    return res.render('admin/login', { errors: additionalErrors });
+  }
+
+  try {
+    const decodedToken = jwt.verify(jwtCookie, 'mwrmwr');
+    res.redirect('/admin/dashboard');
+  } catch (error) {
+    let additionalErrors = req.flash('error');
+    res.render('admin/login', { errors: additionalErrors });
+  }
 };
 
 // login admin
@@ -60,7 +73,7 @@ const loginAdmin = async (req, res, next) => {
   try {
     const admin = await Admin.login(email,password)
     const token = createToken(admin._id)
-    res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge * 1000})
+    res.cookie('jwtad',token,{httpOnly:true,maxAge:maxAge * 1000})
     res.status(200).json({admin:admin._id})
   } catch (err) {
     const errors = handleErrors(err)
@@ -79,7 +92,7 @@ const dashboardView = async (req,res)=>{
 
 const logOut = async (req, res) => {
   console.log("logout")
-    res.cookie('jwt', '',{maxAge:1})
+    res.cookie('jwtad', '',{maxAge:1})
     res.redirect('/admin/login')
 }
 
