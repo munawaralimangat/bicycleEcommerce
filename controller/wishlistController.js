@@ -1,6 +1,24 @@
 const Wishlist = require('../model/schema/wishlistSchema');
 const Product = require('../model/schema/productSchema');
 
+module.exports.viewWishlist = async (req,res)=>{
+    try {
+        const {userId} = req.query;
+        const wishlist = await Wishlist.findOne({user:userId}).populate({
+            path:'items.product',
+            populate:{
+                path:'category_name',
+                model:'Category',
+            }
+        })
+        console.log("hello",wishlist)
+        res.render('user/wishlist',{wishlist})
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:"Internal server error"})
+    }
+}
+
 module.exports.addToWishlist = async (req,res)=>{
     try {
         const {userId,productId} = req.body;
@@ -27,4 +45,24 @@ module.exports.addToWishlist = async (req,res)=>{
         console.log(error)
         res.status(500).json({ error: 'Internal server error' });
     }
+}
+
+module.exports.removeFromWishlist = async (req,res)=>{
+    try{
+        const {productId,userId} = req.query
+        console.log(req.query)
+       let wishlist = await Wishlist.findOne({user:userId})
+
+       if(!wishlist){
+        return res.status(404).json({error:'cart not found'})
+       }
+       wishlist.items = wishlist.items.filter(item => !item.product.equals(productId))
+
+       await wishlist.save()
+       res.json({message:"product removed from wishlist"})
+    }catch(error){
+        console.error(error)
+        res.status(500).json({error:"internal server error"})
+    }
+    
 }

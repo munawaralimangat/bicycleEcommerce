@@ -1,6 +1,8 @@
 const express = require('express')
 const userLoginController = require('../controller/userLoginController')
+const userHomeController = require('../controller/userHomeController')
 const userProductController = require('../controller/userProductController')
+const userCategoryController = require('../controller/userCategoryController')
 const userCartController = require('../controller/cartController')
 const userWishlistController = require('../controller/wishlistController')
 
@@ -11,7 +13,7 @@ const router = express.Router()
 router.use('*',checkUser)
 
 //user landing controller
-router.get('/landing',userLoginController.landingView)
+router.get('/landing',userHomeController.userHomeView)
 
 //user login and signup controller
 router.get('/landing/register',userLoginController.userRegView)//signup get
@@ -20,19 +22,25 @@ router.get('/landing/login',userLoginController.userLoginView)//login get
 router.post('/landing/login',userLoginController.userLoginPost)//login post
 
 //user home controller
-router.get('/landing/userhome',requireAuth,userLoginController.userHomeView)
-router.get('/logout',requireAuth,userLoginController.logout)
+router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
+router.get('/logout',requireAuth,userHomeController.logout)
+
+//product controller
+router.get('/product',userProductController.viewProduct)
 
 //category routes
-router.get('/mountainbikes',userProductController.viewMountain)
-router.get('/roadbikes',userProductController.viewRoadBikes)
+router.get('/mountainbikes',userCategoryController.viewMountain)
+router.get('/roadbikes',userCategoryController.viewRoadBikes)
 
 //cart routes
 router.get('/cart',userCartController.viewCart)
 router.post('/addtocart',userCartController.addToCart)
+router.delete('/removefromcart',userCartController.removeFromCart)
 
 //wishlist route
+router.get('/wishlist',userWishlistController.viewWishlist)
 router.post('/addtowishlist',userWishlistController.addToWishlist)
+router.delete('/removefromwishlist',userWishlistController.removeFromWishlist)
 
 
 

@@ -23,6 +23,7 @@ const cartSchema = new mongoose.Schema({
   totalPrice: {
     type: Number,
     default: 0,
+    min:0
   },
   createdAt: {
     type: Date,

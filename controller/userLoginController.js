@@ -148,15 +148,15 @@ module.exports.userLoginPost =async (req,res)=>{
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-module.exports.userHomeView = async (req,res)=>{
-    res.render('user/userHome')
-}
+// module.exports.userHomeView = async (req,res)=>{
+//     res.render('user/userHome')
+// }
 
-module.exports.logout =(req,res)=>{
-    console.log("logout")
-    res.cookie('jwtus', '',{maxAge:1})
-    res.redirect('/brepublic/landing/login')
-}
+// module.exports.logout =(req,res)=>{
+//     console.log("logout")
+//     res.cookie('jwtus', '',{maxAge:1})
+//     res.redirect('/brepublic/landing/login')
+// }
 
 
 

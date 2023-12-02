@@ -12,7 +12,7 @@ module.exports.viewCart = async (req,res)=>{
                 model:'Category',
             }
         })
-        console.log("hell",cart)
+        console.log("cart",cart)
         res.render('user/cart',{cart})    
     }catch(error){
         console.error(error);
@@ -49,3 +49,38 @@ module.exports.addToCart = async (req,res)=>{
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+module.exports.removeFromCart = async (req, res) => {
+    const { productId, userId } = req.query;
+    console.log(req.query);
+    try {
+        let cart = await Cart.findOne({ user: userId });
+
+        if (!cart) {
+            return res.status(404).json({ error: "Cart not found" });
+        }
+        const existingCartItemIndex = cart.items.findIndex(item => item.product.equals(productId));
+
+        if (existingCartItemIndex !== -1) {
+            const item = cart.items[existingCartItemIndex];
+            const itemTotalPrice = item.product.product_price * item.quantity;
+
+            if (!isNaN(cart.totalPrice) && !isNaN(itemTotalPrice)) {
+                cart.totalPrice -= itemTotalPrice;
+            } else {
+                cart.totalPrice = 0;
+            }
+
+            // Remove item from the cart
+            cart.items.splice(existingCartItemIndex, 1);
+
+            await cart.save();
+            res.json({ message: "Product removed from cart" });
+        } else {
+            res.status(404).json({ error: "Product not found in the cart" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
