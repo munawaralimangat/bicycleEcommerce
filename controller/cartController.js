@@ -12,6 +12,9 @@ module.exports.viewCart = async (req,res)=>{
                 model:'Category',
             }
         })
+
+       
+
         console.log("cart",cart)
         res.render('user/cart',{cart})    
     }catch(error){

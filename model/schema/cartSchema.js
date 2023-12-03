@@ -25,10 +25,20 @@ const cartSchema = new mongoose.Schema({
     default: 0,
     min:0
   },
+  totalQuantity: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+});
+
+cartSchema.pre('save', function (next) {
+  this.totalQuantity = this.items.reduce((total, item) => total + item.quantity, 0);
+  next();
 });
 
 const Cart = mongoose.model('Cart', cartSchema);

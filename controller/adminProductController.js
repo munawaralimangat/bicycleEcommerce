@@ -1,6 +1,8 @@
 
 const Product = require('../model/schema/productSchema')
 const Category = require('../model/schema/categorySchema')
+const Cart = require('../model/schema/cartSchema')
+const Wishlist = require('../model/schema/wishlistSchema');
 
 
 module.exports.productsView = async (req,res)=>{
@@ -67,7 +69,7 @@ module.exports.createProduct = async (req,res)=>{
     
         const savedProduct = await newProduct.save();
     
-        res.status(201).json(savedProduct);
+        res.status(201).json({savedProduct});
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -128,18 +130,61 @@ module.exports.updateProduct = async (req,res)=>{
 }
 }
 
-module.exports.deleteProduct = async (req,res)=>{
+module.exports.deleteProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
+
+    // Find and delete the product
     const deletedProduct = await Product.findByIdAndDelete(productId);
 
-    if(!deletedProduct){
-      return res.status(404).json({message:"product not found"})
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.json({message:"product deleted successfully"})
+    // Remove the product from wishlists
+    await Wishlist.updateMany(
+      { 'items.product': productId },
+      { $pull: { items: { product: productId } } }
+    );
+
+    // Update total price in carts
+    const carts = await Cart.find({ 'items.product': productId });
+
+    for (const cart of carts) {
+      const totalPrice = calculateTotalPrice(cart.items);
+      await Cart.findByIdAndUpdate(cart._id, { $set: { totalPrice: totalPrice } });
+
+      // Remove the product from the cart after updating the total price
+      await Cart.updateOne(
+        { _id: cart._id },
+        { $pull: { items: { product: productId } } }
+      );
+
+      console.log("this workssddffdfefefeeere",carts);
+    }
+
+    res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+};
+
+function calculateTotalPrice(items) {
+  return items.reduce((total, item) => {
+    const productPrice = item.product.product_price;
+    const quantity = item.quantity;
+
+    console.log('Product Price:', productPrice);
+    console.log('Quantity:', quantity);
+
+    if (isNaN(productPrice) || isNaN(quantity)) {
+      console.error('Invalid product price or quantity:', item);
+      return total;
+    }
+
+    return total + productPrice * quantity;
+  }, 0);
 }
+
+
