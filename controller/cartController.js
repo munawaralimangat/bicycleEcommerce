@@ -79,8 +79,7 @@ module.exports.removeFromCart = async (req, res) => {
             } else {
                 cart.totalPrice = 0;
             }
-
-            // Remove item from the cart
+            
             cart.items.splice(existingCartItemIndex, 1);
 
             await cart.save();

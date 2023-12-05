@@ -55,7 +55,7 @@
         <!-- Product Card 1 -->
         <% products.forEach(product => { %>
         <div class="relative flex ml-8 w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-          <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
+          <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="/brepublic/product/<%=product._id  %>">
             <img class="object-cover w-full" src="/uploads/<%=product.product_imgurl  %>" alt="product image" />
             <span class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39% OFF</span>
           </a>
@@ -111,7 +111,7 @@
               </a>
       
               <!-- Buy Now -->
-              <a href="#" class="flex items-center justify-center rounded-md  bg-slate-900 w-1/2 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+              <a href="/brepublic/product/<%=product._id%>" class="flex items-center justify-center rounded-md  bg-slate-900 w-1/2 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>  
@@ -129,7 +129,6 @@
     </section>
   
 
-
 <script>
     let slideIndex = 0;
 
@@ -137,8 +136,7 @@
         const slides = document.getElementById('slideshow'); //slideshow on header
         const images = [
             '/images/Caya-Banner_2197-×-1200-px-002-min.jpg',
-            '/images/howard-bouchevereau-BRDO4C-0h_s-unsplash.jpg',
-            
+            '/images/howard-bouchevereau-BRDO4C-0h_s-unsplash.jpg', 
         ];
 
         slideIndex++;

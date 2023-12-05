@@ -26,7 +26,7 @@ router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
 router.get('/logout',requireAuth,userHomeController.logout)
 
 //product controller
-router.get('/product',userProductController.viewProduct)
+router.get('/product/:productId',userProductController.viewProduct)
 
 //category routes
 router.get('/mountainbikes',userCategoryController.viewMountain)

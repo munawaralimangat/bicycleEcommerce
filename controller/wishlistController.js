@@ -33,14 +33,18 @@ module.exports.addToWishlist = async (req,res)=>{
         if(!wishlist){
             wishlist = new Wishlist({user:userId})
         }
-
         const isProductInWishlist = wishlist.items.some(item => item.product.equals(productId))
-        
-        if(!isProductInWishlist){
-            wishlist.items.push({product:productId})
+        if(isProductInWishlist){
+            return res.json({message:"product already exists in wishlist"})
         }
-        await wishlist.save();
-        res.json({message:"product added to wishlist"})
+        else{
+            if(!isProductInWishlist){
+                wishlist.items.push({product:productId})
+            }
+            await wishlist.save();
+            res.json({message:"product added to wishlist"})
+        }
+        
     } catch (error) {
         console.log(error)
         res.status(500).json({ error: 'Internal server error' });

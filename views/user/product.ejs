@@ -9,8 +9,8 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row -mx-4">
             <div class="md:flex-1 px-4">
-                <div class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
-                    <img class="w-full h-full object-cover" src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg" alt="Product Image">
+                <div class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4"id="zoom-container">
+                    <img class="w-full h-full object-cover" src="/uploads/<%=product.product_imgurl %>" alt="Product Image" id="zoom-image">
                 </div>
                 <div class="flex -mx-2 mb-4">
                     <div class="w-1/2 px-2">
@@ -22,7 +22,8 @@
                 </div>
             </div>
             <div class="md:flex-1 px-4">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Product Name</h2>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-1"><%=product.product_name %></h2>
+                <h4 class="text-1xl font-semibold text-gray-400 dark:text-white mb-2"><%=product.category_name.category_name %></h4>
                 <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed
                     ante justo. Integer euismod libero id mauris malesuada tincidunt.
@@ -30,7 +31,7 @@
                 <div class="flex mb-4">
                     <div class="mr-4">
                         <span class="font-bold text-gray-700 dark:text-gray-300">Price:</span>
-                        <span class="text-gray-600 dark:text-gray-300">$29.99</span>
+                        <span class="text-gray-600 dark:text-gray-300">$<%=product.product_price %></span>
                     </div>
                     <div>
                         <span class="font-bold text-gray-700 dark:text-gray-300">Availability:</span>
@@ -52,8 +53,6 @@
                         <button class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">S</button>
                         <button class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">M</button>
                         <button class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">L</button>
-                        <button class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">XL</button>
-                        <button class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">XXL</button>
                     </div>
                 </div>
                 <div>
@@ -74,3 +73,31 @@
 
 <!-- <%-include('../includes/components/userFooter')  %> -->
 <%-include('../includes/userEnd')  %><!--add to cart added-->
+<script>
+
+const zoomContainer = document.getElementById('zoom-container');
+    const zoomImage = document.getElementById('zoom-image');
+
+    // Add a mousemove event listener to the image container
+    zoomContainer.addEventListener('mousemove', handleMouseMove);
+
+    // Function to handle mousemove events
+    function handleMouseMove(event) {
+        // Get the position of the mouse within the image container
+        const x = event.pageX - zoomContainer.offsetLeft;
+        const y = event.pageY - zoomContainer.offsetTop;
+
+        // Calculate the percentage position within the image
+        const percentX = (x / zoomContainer.offsetWidth) * 75;
+        const percentY = (y / zoomContainer.offsetHeight) * 75;
+
+        // Apply the zoom effect using CSS transform
+        zoomImage.style.transformOrigin = `${percentX}% ${percentY}%`;
+        zoomImage.style.transform = 'scale(1.20)'; // You can adjust the scale factor as needed
+    }
+
+    // Add a mouseleave event listener to reset the zoom on mouse out
+    zoomContainer.addEventListener('mouseleave', () => {
+        zoomImage.style.transform = 'scale(1)';
+    });
+</script>
