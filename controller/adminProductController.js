@@ -134,33 +134,12 @@ module.exports.deleteProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
 
+
     // Find and delete the product
     const deletedProduct = await Product.findByIdAndDelete(productId);
 
     if (!deletedProduct) {
       return res.status(404).json({ message: 'Product not found' });
-    }
-
-    // Remove the product from wishlists
-    await Wishlist.updateMany(
-      { 'items.product': productId },
-      { $pull: { items: { product: productId } } }
-    );
-
-    // Update total price in carts
-    const carts = await Cart.find({ 'items.product': productId });
-
-    for (const cart of carts) {
-      const totalPrice = calculateTotalPrice(cart.items);
-      await Cart.findByIdAndUpdate(cart._id, { $set: { totalPrice: totalPrice } });
-
-      // Remove the product from the cart after updating the total price
-      await Cart.updateOne(
-        { _id: cart._id },
-        { $pull: { items: { product: productId } } }
-      );
-
-      console.log("this workssddffdfefefeeere",carts);
     }
 
     res.json({ message: 'Product deleted successfully' });
@@ -170,21 +149,6 @@ module.exports.deleteProduct = async (req, res) => {
   }
 };
 
-function calculateTotalPrice(items) {
-  return items.reduce((total, item) => {
-    const productPrice = item.product.product_price;
-    const quantity = item.quantity;
 
-    console.log('Product Price:', productPrice);
-    console.log('Quantity:', quantity);
-
-    if (isNaN(productPrice) || isNaN(quantity)) {
-      console.error('Invalid product price or quantity:', item);
-      return total;
-    }
-
-    return total + productPrice * quantity;
-  }, 0);
-}
 
 

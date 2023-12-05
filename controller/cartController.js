@@ -56,8 +56,14 @@ module.exports.addToCart = async (req,res)=>{
 module.exports.removeFromCart = async (req, res) => {
     const { productId, userId } = req.query;
     console.log(req.query);
-    try {
-        let cart = await Cart.findOne({ user: userId });
+    try {   
+        let cart = await Cart.findOne({ user: userId }).populate({
+            path:'items.product',
+            populate:{
+                path:'category_name',
+                model:'Category',
+            }
+        })
 
         if (!cart) {
             return res.status(404).json({ error: "Cart not found" });
