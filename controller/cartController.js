@@ -92,3 +92,24 @@ module.exports.removeFromCart = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+module.exports.incrementQuantity = async (req,res)=>{
+    const productId = req.params.itemId;
+    console.log("product id:",productId)
+    try {
+        const cart = await Cart.findOneAndUpdate(
+            {'items._id':productId},
+            {$inc:{'items.$quantity':1} },
+            {new:true}
+        )
+        res.json(cart)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+module.exports.decrementQuantity = async (req,res)=>{
+    const productId = req.params.itemId;
+    console.log("decreemnt productid ",productId)
+}

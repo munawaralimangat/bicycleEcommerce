@@ -33,14 +33,18 @@ router.get('/mountainbikes',userCategoryController.viewMountain)
 router.get('/roadbikes',userCategoryController.viewRoadBikes)
 
 //cart routes
-router.get('/cart',userCartController.viewCart)
-router.post('/addtocart',userCartController.addToCart)
-router.delete('/removefromcart',userCartController.removeFromCart)
+router.get('/cart',userCartController.viewCart);
+router.post('/addtocart',userCartController.addToCart);
+
+router.put('/increment/:itemId',userCartController.incrementQuantity);
+router.put('/decrement/:itemId',userCartController.decrementQuantity);
+
+router.delete('/removefromcart',userCartController.removeFromCart);
 
 //wishlist route
-router.get('/wishlist',userWishlistController.viewWishlist)
-router.post('/addtowishlist',userWishlistController.addToWishlist)
-router.delete('/removefromwishlist',userWishlistController.removeFromWishlist)
+router.get('/wishlist',userWishlistController.viewWishlist);
+router.post('/addtowishlist',userWishlistController.addToWishlist);
+router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 
 
 

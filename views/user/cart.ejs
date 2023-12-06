@@ -33,8 +33,8 @@
             <% cart.items.forEach(item => { %>
           <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
             <div class="flex w-2/5"> <!-- product -->
-              <div class="w-20">
-                <img class="h-24" src="/uploads/<%=item.product.product_imgurl  %>" alt="">
+              <div class="w-32">
+                <img class="h-24 w-full object-cover" src="/uploads/<%=item.product.product_imgurl  %>" alt="">
               </div>
               <div class="flex flex-col justify-between ml-4 flex-grow">
                 <span class="font-bold text-sm"><%=item.product.product_name  %></span>
@@ -45,12 +45,12 @@
               </div>
             </div>
             <div class="flex justify-center w-1/5">
-              <svg class="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
+              <svg onclick="updateQuantity('<%= item._id %>', 'decrement')" class="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
               </svg>
   
-              <input class="mx-2 border text-center w-8" type="text" value="1">
+              <input class="mx-2 border text-center w-8" type="text" value="<%=item.quantity%>">
   
-              <svg class="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512">
+              <svg onclick="updateQuantity('<%= item._id %>', 'increment')" class="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512">
                 <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
               </svg>
             </div>
@@ -107,6 +107,26 @@
   <%-include('../includes/components/userFooter')  %>
     <%-include('../includes/userEnd')  %>
     <script>
+      async function updateQuantity(itemId, action) {
+    try {
+      const response = await fetch(`/brepublic/${action}/${itemId}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const updatedCart = await response.json();
+
+      // Handle the updated cart data as needed
+      console.log(updatedCart);
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+  }
+    </script>
+    <script>
+      //remove from cart
       async function removeProduct(productId, userId) {
         try {
           const res = await fetch(`/brepublic/removefromcart?userId=${userId}&productId=${productId}`, {
