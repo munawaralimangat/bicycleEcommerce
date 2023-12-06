@@ -130,7 +130,7 @@ module.exports.decrementQuantity = async (req,res)=>{
                 $inc: {
                     'items.$.quantity': -1,
                     totalQuantity: -1, 
-                    totalPrice: -productPrice, 
+                    totalPrice: -productPrice
                 }
             },
             { new: true }
