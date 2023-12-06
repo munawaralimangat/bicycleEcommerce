@@ -97,12 +97,21 @@ module.exports.incrementQuantity = async (req,res)=>{
     const productId = req.params.itemId;
     console.log("product id:",productId)
     try {
+        const cartItem = await Cart.findOne({'items._id':productId}).populate('items.product');
+        const productPrice = cartItem.items.find(item => item._id.toString()=== productId.toString()).product.product_price;
         const cart = await Cart.findOneAndUpdate(
             {'items._id':productId},
-            {$inc:{'items.$quantity':1} },
+            {
+                $inc:{
+                    'items.$.quantity': 1,
+                    totalQuantity:1,
+                    totalPrice:productPrice,
+                }
+                
+            },
             {new:true}
-        )
-        res.json(cart)
+        );
+        res.json(cart);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -112,4 +121,23 @@ module.exports.incrementQuantity = async (req,res)=>{
 module.exports.decrementQuantity = async (req,res)=>{
     const productId = req.params.itemId;
     console.log("decreemnt productid ",productId)
+    try {
+        const cartItem = await Cart.findOne({'items._id':productId}).populate('items.product');
+        const productPrice = cartItem.items.find(item => item._id.toString()=== productId.toString()).product.product_price;
+        const cart = await Cart.findOneAndUpdate(
+            { 'items._id': productId },
+            {
+                $inc: {
+                    'items.$.quantity': -1,
+                    totalQuantity: -1, 
+                    totalPrice: -productPrice, 
+                }
+            },
+            { new: true }
+        );
+        res.json(cart);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
 }
