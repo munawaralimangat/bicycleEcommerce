@@ -16,7 +16,11 @@ module.exports.viewCart = async (req,res)=>{
        
 
         console.log("cart",cart)
-        res.render('user/cart',{cart})    
+        if(cart){
+        res.render('user/cart',{cart})
+        }else{
+            res.render('user/emptyCart')
+        }    
     }catch(error){
         console.error(error);
         res.status(500).json({error:"Internal server error"})
@@ -130,7 +134,7 @@ module.exports.decrementQuantity = async (req,res)=>{
                 $inc: {
                     'items.$.quantity': -1,
                     totalQuantity: -1, 
-                    totalPrice: -productPrice
+                    totalPrice: -productPrice,
                 }
             },
             { new: true }
@@ -141,3 +145,4 @@ module.exports.decrementQuantity = async (req,res)=>{
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+

@@ -46,6 +46,11 @@ router.get('/wishlist',userWishlistController.viewWishlist);
 router.post('/addtowishlist',userWishlistController.addToWishlist);
 router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 
+//checkout routes
+router.get('/checkout',(req,res)=>{
+    res.render('user/checkout')
+})
+
 
 
 

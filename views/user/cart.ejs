@@ -48,7 +48,7 @@
               <svg onclick="updateQuantity('<%= item._id %>', 'decrement')" class="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
               </svg>
   
-              <input class="mx-2 border text-center w-8" type="text" value="<%=item.quantity%>">
+              <input id="quantityInput_<%= item._id %>" class="mx-2 border text-center w-8" type="text" value="<%=item.quantity%>">
   
               <svg onclick="updateQuantity('<%= item._id %>', 'increment')" class="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512">
                 <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
@@ -75,8 +75,8 @@
         <!-- Your order summary here -->
         <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
         <div class="flex justify-between mt-10 mb-5">
-          <span class="font-semibold text-sm uppercase">Items 3</span>
-          <span class="font-semibold text-sm">590$</span>
+          <span class="font-semibold text-sm uppercase">Items <%=cart.items.length  %></span>
+          <span class="font-semibold text-sm"><%=cart.totalPrice  %>$</span>
         </div>
         <div>
           <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
@@ -92,7 +92,7 @@
         <div class="border-t mt-8">
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
             <span>Total cost</span>
-            <span>$600</span>
+            <span>$<%=cart.totalPrice+10  %>$</span>
           </div>
           <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
         </div>
@@ -108,6 +108,22 @@
     <%-include('../includes/userEnd')  %>
     <script>
       async function updateQuantity(itemId, action) {
+        const inputId = `quantityInput_${itemId}`;
+        const currentQuantityElement = document.getElementById(inputId);
+
+        if (!currentQuantityElement) {
+          console.error(`Element with id ${inputId} not found.`);
+          return;
+        }
+
+        const currentQuantity = parseInt(currentQuantityElement.value, 10);
+
+        // Add a client-side check to prevent setting quantity to 0
+        if (action === 'decrement' && currentQuantity <= 1) {
+          // Show a message or handle the case where the quantity is already at the minimum
+          console.log('Quantity cannot be less than 1.');
+          return;
+        }
         try {
           const response = await fetch(`/brepublic/${action}/${itemId}`, {
             method: 'put',

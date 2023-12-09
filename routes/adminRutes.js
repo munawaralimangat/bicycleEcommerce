@@ -45,7 +45,7 @@ router.delete('/category/:categoryId',adminCategoryController.deleteCategory);
 //product routes
 router.get('/products',requireAuth,adminProductController.productsView);
 router.get('/product/:productId',adminProductController.getProduct);
-router.post('/product/addproduct',upload.single('productImage'),adminProductController.createProduct);
+router.post('/product/addproduct',upload.single('frontImage'),upload.array('productImages', 4),adminProductController.createProduct);
 router.put('/product/:productId',upload.single('productImage'),adminProductController.updateProduct);
 router.delete('/product/:productId',adminProductController.deleteProduct);
 

@@ -35,6 +35,7 @@ module.exports.getProduct = async (req,res)=>{
 }
 
 module.exports.createProduct = async (req,res)=>{
+  console.log("yoooohooooo")
     try {
         const {
           productName,

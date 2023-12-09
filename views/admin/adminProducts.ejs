@@ -278,7 +278,7 @@
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size</label>
                                                             <select id="productColour"
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                                <option disabled selected="">Select size</option>
+                                                                <option disabled selected="">Select color</option>
                                                                 <option value="Black">Black</option>
                                                                 <option value="White">White</option>
                                                                 <option value="Red">Red</option>
@@ -295,10 +295,18 @@
                                                         <div class="w-full">
                                                             <label
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                                for="file_input">Upload image</label>
-                                                            <input id="file_input"
+                                                                for="frontImage">Upload front image</label>
+                                                            <input
                                                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                                id="file_input" type="file">
+                                                                id="frontImage" type="file">
+                                                        </div>
+                                                        <div class="w-full">
+                                                            <label
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                for="productImages">Upload images</label>
+                                                            <input
+                                                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                                id="productImages" type="file" multiple>
                                                         </div>
                                                         <!-- <div class="sm:col-span-2">
                                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -631,7 +639,7 @@
                 const form = document.querySelector('form')
 
                 form.addEventListener('submit', async (e) => {
-                    // e.preventDefault()
+                    e.preventDefault()
 
                     const productName = form.productName.value;
                     const productPrice = form.productPrice.value;
@@ -641,8 +649,13 @@
                     const productColour = form.productColour.value;
                     const discountPrice = form.discountPrice.value;
 
-                    const fileInput = document.getElementById('file_input');
-                    const file = fileInput.files[0];
+                    const frontImageInput = document.getElementById('frontImage');
+                    const frontImageFile = frontImageInput.files[0];
+                    console.log(frontImageFile)
+
+                    const productImagesInput = document.getElementById('productImages')
+                    const productImagesFiles = productImagesInput.files;
+                    console.log(productImagesFiles)
 
                     const formData = new FormData();
                     formData.append('productName', productName);
@@ -652,7 +665,12 @@
                     formData.append('productSize', productSize);
                     formData.append('productColour', productColour);
                     formData.append('discountPrice', discountPrice);
-                    formData.append('productImage', file);
+                    formData.append('productImage', frontImageFile);
+
+                    for (let i = 0; i < productImagesFiles.length; i++) {
+                    formData.append('productImages', productImagesFiles[i]);
+                    }
+
 
                     try {
                         const res = await fetch('/admin/product/addproduct', {
