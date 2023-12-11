@@ -298,7 +298,7 @@
                                                                 for="frontImage">Upload front image</label>
                                                             <input
                                                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                                id="frontImage" type="file">
+                                                                id="frontImage" name="frontImage" type="file">
                                                         </div>
                                                         <div class="w-full">
                                                             <label
@@ -306,7 +306,7 @@
                                                                 for="productImages">Upload images</label>
                                                             <input
                                                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                                id="productImages" type="file" multiple>
+                                                                id="productImages" name="productImages" type="file" multiple>
                                                         </div>
                                                         <!-- <div class="sm:col-span-2">
                                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -422,10 +422,18 @@
                                                             <div class="w-full">
                                                                 <label
                                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                                    for="updateFile_input">Upload image</label>
+                                                                    for="updateFile_input">Upload front image</label>
                                                                 <input
                                                                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                                    id="updateFile_input" type="file">
+                                                                    id="frontImageInput" type="file">
+                                                            </div>
+                                                            <div class="w-full">
+                                                                <label
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                    for="updateFile_input">Upload images</label>
+                                                                <input
+                                                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                                    id="additionalImagesInput" type="file" multiple>
                                                             </div>
                                                             <!-- <div class="sm:col-span-2">
                                       <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -469,7 +477,7 @@
                                         <%=productData.product_price %>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <img src="/uploads/<%= productData.product_imgurl %>" alt="Product Image" class="w-16 h-16 object-cover rounded"> <!--class="w-32 h-32 object-cover rounded">-->
+                                        <img src="/uploads/<%= productData.front_image.filename %>" alt="Product Image" class="w-16 h-16 object-cover rounded"> <!--class="w-32 h-32 object-cover rounded">-->
                                     </td>
                                     <td class="flex items-center px-6 py-10 space-x-3">
                                         <a href="#"
@@ -577,7 +585,7 @@
             <!--update product-->
             <script>
                     async function editProduct(event) {
-                    // event.preventDefault()
+                    event.preventDefault()
                     const productIdInput = document.getElementById('editProductId');
 
                     if (productIdInput) {
@@ -599,18 +607,24 @@
                         formData.append('productColour', editProductColour);
                         formData.append('discountPrice', editDiscountPrice);
 
-                        const updateFileInput = document.getElementById('updateFile_input');
-                        console.log(updateFileInput);
-                        const file = updateFileInput.files[0];
-                        console.log(file)
+                        const frontImageInput = document.getElementById('frontImageInput');
+                        const frontImageFile = frontImageInput.files[0];
 
-                        if (file) {
-                            formData.append('productImage', file);
+                        if (frontImageFile) {
+                            formData.append('frontImage', frontImageFile);
+                        }
+                        const additionalImagesInput = document.getElementById('additionalImagesInput')
+                        const additionalImagesFiles = additionalImagesInput.files;
+
+                        for (let i = 0; i < additionalImagesFiles.length; i++) {
+                        formData.append('additionalImages', additionalImagesFiles[i]);
                         }
 
-                        console.log(editProductName)
-                        console.log(`productid ${productId}`);
-                        console.log(editProductCategory)
+                        console.log('FormData Fields:');
+                    
+                    for (const entry of formData.entries()) {
+                        console.log(entry[0], ':', entry[1]);
+                    }
 
                         try {
                             const response = await fetch(`/admin/product/${productId}`, {
@@ -622,7 +636,7 @@
                             })
                             let data  = await response.json()
                             console.log(data)
-                            location.reload()
+                            // location.reload()
                             
                         } catch (error) {
                             console.log(error)
@@ -631,7 +645,7 @@
                 }
 
 
-
+ 
                 
             </script>
 
@@ -665,18 +679,21 @@
                     formData.append('productSize', productSize);
                     formData.append('productColour', productColour);
                     formData.append('discountPrice', discountPrice);
-                    formData.append('productImage', frontImageFile);
+                    formData.append('frontImage', frontImageFile);
 
                     for (let i = 0; i < productImagesFiles.length; i++) {
                     formData.append('productImages', productImagesFiles[i]);
                     }
-
+                    console.log('FormData Fields:');
+                    
+                    for (const entry of formData.entries()) {
+                        console.log(entry[0], ':', entry[1]);
+                    }
 
                     try {
                         const res = await fetch('/admin/product/addproduct', {
                             method: 'post',
                             body: formData,
-                            // headers: {'Content-type': 'application/json'}
                         })
                         const data = await res.json()
                         console.log(data)

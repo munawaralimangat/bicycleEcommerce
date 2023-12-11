@@ -45,11 +45,11 @@ module.exports.createProduct = async (req,res)=>{
           productSize,
           productColour,
           discountPrice,
-          //availablity
-          //
         } = req.body;
+        console.log(req.body,"this is reqbody")
 
-        const productImage = req.file.filename;
+        const frontImage = req.files.frontImage[0];
+        const productImagesFiles = req.files.productImages
 
         let existingCategory = await Category.findOne({category_name:productCategory})
         console.log(existingCategory);
@@ -57,6 +57,7 @@ module.exports.createProduct = async (req,res)=>{
           existingCategory = new Category({category_name:productCategory})
           existingCategory = await existingCategory.save()
         }
+        const productImages = productImagesFiles.map(file => ({ filename: file.filename }));
         const newProduct = new Product({
           product_name:productName,
           product_price:productPrice,
@@ -65,7 +66,8 @@ module.exports.createProduct = async (req,res)=>{
           product_size:productSize,
           product_colour:productColour,
           discount_price:discountPrice,
-          product_imgurl:productImage,
+          front_image:frontImage,
+          product_images: productImages,
         });
     
         const savedProduct = await newProduct.save();
@@ -89,10 +91,13 @@ module.exports.updateProduct = async (req,res)=>{
         productColour,
         discountPrice,
     } = req.body;
-    console.log(req.body)
-    console.log(req.file)
+    console.log("req,body",req.body)
+    console.log("erfegreg",req.file)
   
-    const productImage = req.file ? req.file.filename : undefined;
+    const frontImage = req.files.frontImage[0];
+    const additionalImages = req.files.additionalImages;
+    console.log("front image: ",frontImage)
+    console.log("images",additionalImages)
 
     let existingCategory = await Category.findOne({ category_name: productCategory });
 
@@ -105,16 +110,17 @@ module.exports.updateProduct = async (req,res)=>{
     const updatedProduct = await Product.findByIdAndUpdate(
         productId,
         {
-            product_name: productName,
-            product_price: productPrice,
-            category_name: existingCategory._id,
-            product_qty: productQty,
-            product_size: productSize,
-            product_colour: productColour,
-            discount_price: discountPrice,
-            product_imgurl: productImage,
+          product_name:productName,
+          product_price:productPrice,
+          category_name:existingCategory._id,
+          product_qty:productQty,
+          product_size:productSize,
+          product_colour:productColour,
+          discount_price:discountPrice,
+          front_image:frontImage,
+          product_images: additionalImages,
         },
-        { new: true } // to return the updated document
+        { new: true }
     );
 
     if (!updatedProduct) {

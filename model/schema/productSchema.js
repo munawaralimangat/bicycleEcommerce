@@ -10,9 +10,11 @@ const productSchema = new mongoose.Schema({
       ref:'Category',
       required: true,
     },
-    product_imgurl: {
-      type: String,
-      required: true,
+    front_image: {
+      filename: {
+        type: String,
+        required: true,
+      },
     },
     product_colour: {
       type: String,
@@ -34,6 +36,12 @@ const productSchema = new mongoose.Schema({
       type: Number,
       default: 0, 
     },
+    product_images: [{
+      filename: {
+        type: String,
+        required: true,
+      },
+    }],
   });
   
 
