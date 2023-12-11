@@ -1,13 +1,17 @@
 
 const Product = require('../model/schema/productSchema')
 const Category = require('../model/schema/categorySchema')
-const Cart = require('../model/schema/cartSchema')
-const Wishlist = require('../model/schema/wishlistSchema');
+const Color = require('../model/schema/colorSchema')
+const Size = require('../model/schema/sizeSchema')
 
 
 module.exports.productsView = async (req,res)=>{
     try {
-      const product = await Product.find().populate('category_name')
+      const product = await Product.find()
+      .populate('category_name')
+      .populate('product_size')
+      .populate('product_colour')
+
         res.render('admin/adminProducts',{
           product:product
         })
@@ -52,19 +56,29 @@ module.exports.createProduct = async (req,res)=>{
         const productImagesFiles = req.files.productImages
 
         let existingCategory = await Category.findOne({category_name:productCategory})
-        console.log(existingCategory);
+
         if(!existingCategory){
           existingCategory = new Category({category_name:productCategory})
           existingCategory = await existingCategory.save()
         }
+        
+        const existingSize = await Size.findOne({size_name:productSize});
+        const size = existingSize || new Size({size_name:productSize});
+        const savedSize = await size.save()
+
+        const existingColor = await Color.findOne({color_name:productSize});
+        const color = existingColor || new Color({color_name:productSize});
+        const savedColor = await color.save()
+
+        
         const productImages = productImagesFiles.map(file => ({ filename: file.filename }));
         const newProduct = new Product({
           product_name:productName,
           product_price:productPrice,
           category_name:existingCategory._id,
           product_qty:productQty,
-          product_size:productSize,
-          product_colour:productColour,
+          product_size:savedSize._id,
+          product_colour:savedColor._id,
           discount_price:discountPrice,
           front_image:frontImage,
           product_images: productImages,

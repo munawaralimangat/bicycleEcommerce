@@ -17,7 +17,8 @@ const productSchema = new mongoose.Schema({
       },
     },
     product_colour: {
-      type: String,
+      type:  mongoose.Schema.Types.ObjectId,
+      ref: 'Color',
       required: true,
     },
     product_qty: {
@@ -25,7 +26,8 @@ const productSchema = new mongoose.Schema({
       required: true,
     },
     product_size: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Size',
       required: true,
     },
     product_price: {
