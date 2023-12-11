@@ -552,8 +552,8 @@
                                 modalProductPrice.value = productDetails.product_price;
                                 modalProductCategory.value = productDetails.category_name.category_name;
                                 modalProductQty.value = productDetails.product_qty;
-                                modalProductSize.value = productDetails.product_size;
-                                modalProductColour.value = productDetails.product_colour;
+                                modalProductSize.value = productDetails.product_size.size_name;
+                                modalProductColour.value = productDetails.product_colour.color_name;
                                 modalDiscountPrice.value = productDetails.discount_price;
                                 // modalFileInput.innerText = productDetails.product_imgurl; //ask reviewer
                                 modalProductId.value = productDetails._id;
@@ -690,6 +690,7 @@
                             body: formData,
                         })
                         const data = await res.json()
+                        location.reload()
                         console.log(data)
 
                     } catch (err) {
