@@ -48,13 +48,13 @@ router.get('/product/:productId',adminProductController.getProduct);
 //router.post('/product/addproduct',upload.single('frontImage'),upload.array('productImages', 4),adminProductController.createProduct);
 router.post('/product/addproduct',upload.fields([ 
     { name: "frontImage", maxCount: 1 },
-    { name: "productImages", maxCount: 4 },
+    { name: "productImages", maxCount: 3 },
   ]),adminProductController.createProduct);
 
 router.put('/product/:productId',
 upload.fields([ 
   { name: "frontImage", maxCount: 1 },
-  { name: "additionalImages", maxCount: 4 },
+  { name: "additionalImages", maxCount: 3 },
 ]),
 adminProductController.updateProduct);
 router.delete('/product/:productId',adminProductController.deleteProduct);

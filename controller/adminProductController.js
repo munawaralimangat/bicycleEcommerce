@@ -91,8 +91,6 @@ module.exports.updateProduct = async (req,res)=>{
         productColour,
         discountPrice,
     } = req.body;
-    console.log("req,body",req.body)
-    console.log("erfegreg",req.file)
   
     const frontImage = req.files.frontImage[0];
     const additionalImages = req.files.additionalImages;

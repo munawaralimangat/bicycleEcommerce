@@ -10,22 +10,19 @@
         <div class="flex flex-col md:flex-row -mx-4">
             <div class="md:flex-1 px-4">
                 <div class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4"id="zoom-container">
-                    <img class="w-full h-full object-cover" src="/uploads/<%=product.product_imgurl %>" alt="Product Image" id="zoom-image">
+                    <img class="w-full h-full object-cover cursor-pointer" src="/uploads/<%=product.front_image.filename %>" alt="Product Image" id="zoom-image">
                 </div>
                 <ol class="flex -mx-2 mb-4">
-                    <li class="w-1/2 px-2">
-                        <img class="w-full h-full object-cover" src="/uploads/<%=product.product_imgurl %>" alt="Product Image" id="zoom-image">
+                    <li class="w-1/2 h-1/2 px-2">
+                        <img class="w-full h-full object-cover cursor-pointer" src="/uploads/<%=product.front_image.filename %>" alt="Product Image" id="zoom-image">
                     </li>
-                    <li class="w-1/2 px-2">
-                        <img class="w-full h-full object-cover" src="/uploads/<%=product.product_imgurl %>" alt="Product Image" id="zoom-image">
+                    <% product.product_images.forEach(image => { %>
+                    <li class="w-1/2 h-1/2 px-2">
+                        <img class="w-full h-full object-cover" src="/uploads/<%=image.filename %>" alt="Product Image" id="zoom-image">
                     </li>
-                    <li class="w-1/2 px-2">
-                        <img class="w-full h-full object-cover" src="/uploads/<%=product.product_imgurl %>" alt="Product Image" id="zoom-image">
-                    </li>
-                    <li class="w-1/2 px-2">
-                        <img class="w-full h-full object-cover" src="/uploads/<%=product.product_imgurl %>" alt="Product Image" id="zoom-image">
-                    </li>
+                    <% }) %>
                 </ol>
+                
             </div>
             <div class="md:flex-1 px-4">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-1"><%=product.product_name %></h2>
@@ -50,7 +47,6 @@
                         <button class="w-6 h-6 rounded-full bg-gray-800 dark:bg-gray-200 mr-2"></button>
                         <button class="w-6 h-6 rounded-full bg-red-500 dark:bg-red-700 mr-2"></button>
                         <button class="w-6 h-6 rounded-full bg-blue-500 dark:bg-blue-700 mr-2"></button>
-                        <button class="w-6 h-6 rounded-full bg-yellow-500 dark:bg-yellow-700 mr-2"></button>
                     </div>
                 </div>
                 <div class="mb-4">

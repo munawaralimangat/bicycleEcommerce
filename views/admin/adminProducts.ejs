@@ -548,8 +548,6 @@
                             .then((response) => response.json())
                             .then((productDetails) => {
 
-                                console.log(productDetails)
-
                                 modalProductName.value = productDetails.product_name;
                                 modalProductPrice.value = productDetails.product_price;
                                 modalProductCategory.value = productDetails.category_name.category_name;
@@ -585,7 +583,7 @@
             <!--update product-->
             <script>
                     async function editProduct(event) {
-                    event.preventDefault()
+                    // event.preventDefault()
                     const productIdInput = document.getElementById('editProductId');
 
                     if (productIdInput) {
@@ -620,23 +618,19 @@
                         formData.append('additionalImages', additionalImagesFiles[i]);
                         }
 
-                        console.log('FormData Fields:');
+                    //     console.log('FormData Fields:');
                     
-                    for (const entry of formData.entries()) {
-                        console.log(entry[0], ':', entry[1]);
-                    }
+                    // for (const entry of formData.entries()) {
+                    //     console.log(entry[0], ':', entry[1]);
+                    // }
 
                         try {
                             const response = await fetch(`/admin/product/${productId}`, {
                                 method: 'put',
-                                headers: {
-                                    // 'Content-type': 'application/json'
-                                },
                                 body: formData,
                             })
                             let data  = await response.json()
-                            console.log(data)
-                            // location.reload()
+                            location.reload()
                             
                         } catch (error) {
                             console.log(error)
@@ -729,12 +723,10 @@
             });
 
             confirmRemoveBtn.addEventListener('click', function () {
-                // Make a fetch request to remove the item based on the categoryId
                 fetch(`/admin/product/${productId}`, {
-                    method: 'DELETE', // Adjust the method based on your API
+                    method: 'DELETE', 
                     headers: {
                         'Content-Type': 'application/json',
-                        // You may need to include additional headers depending on your API requirements
                     },
                 })
                 .then(response => {
@@ -745,13 +737,11 @@
                 })
                 .then(data => {
                     console.log('Item removed successfully:', data);
-                    // Update the UI or perform any other necessary actions
                 })
                 .catch(error => {
                     console.error('Error removing item:', error);
                 })
                 .finally(() => {
-                    // Close the modal
                     confirmationModal.classList.add('hidden');
                 });
             });
