@@ -14,13 +14,18 @@
                 </div>
                 <ol class="flex -mx-2 mb-4">
                     <li class="w-1/2 h-1/2 px-2">
-                        <img class="w-full h-full object-cover cursor-pointer" src="/uploads/<%=product.front_image.filename %>" alt="Product Image" id="zoom-image">
+                        <img class="w-full h-full object-cover cursor-pointer" src="/uploads/<%=product.front_image.filename %>" alt="Product Image" onclick="changeZoomImage(this)">
                     </li>
-                    <% product.product_images.forEach(image => { %>
                     <li class="w-1/2 h-1/2 px-2">
-                        <img class="w-full h-full object-cover" src="/uploads/<%=image.filename %>" alt="Product Image" id="zoom-image">
+                        <img class="w-full h-full object-cover cursor-pointer" src="/uploads/<%=product.product_images[0].filename %>" alt="Product Image" onclick="changeZoomImage(this)">
                     </li>
-                    <% }) %>
+                    <li class="w-1/2 h-1/2 px-2">
+                        <img class="w-full h-full object-cover cursor-pointer" src="/uploads/<%=product.product_images[1].filename %>" alt="Product Image" onclick="changeZoomImage(this)">
+                    </li>
+                    <li class="w-1/2 h-1/2 px-2">
+                        <img class="w-full h-full object-cover cursor-pointer" src="/uploads/<%=product.product_images[2].filename %>" alt="Product Image" onclick="changeZoomImage(this)">
+                    </li>
+                    
                 </ol>
                 
             </div>
@@ -87,34 +92,48 @@
 <%-include('../includes/userEnd')  %><!--add to cart added-->
 
 <script>
+    function changeZoomImage(clickedImage) {
+        let newImageSrc = clickedImage.src;
 
+        document.getElementById('zoom-image').src = newImageSrc;
+    }
 </script>
 
 <script>
-//image zooming
+// image zooming
 const zoomContainer = document.getElementById('zoom-container');
-    const zoomImage = document.getElementById('zoom-image');
+const zoomImage = document.getElementById('zoom-image');
 
-    // Add a mousemove event listener to the image container
-    zoomContainer.addEventListener('mousemove', handleMouseMove);
+// Add a mousemove event listener to the image container
+zoomContainer.addEventListener('mousemove', handleMouseMove);
 
-    // Function to handle mousemove events
-    function handleMouseMove(event) {
-        // Get the position of the mouse within the image container
-        const x = event.pageX - zoomContainer.offsetLeft;
-        const y = event.pageY - zoomContainer.offsetTop;
+// Function to handle mousemove events
+function handleMouseMove(event) {
+    // Get the position of the mouse within the image container
+    const x = event.pageX - zoomContainer.offsetLeft;
+    const y = event.pageY - zoomContainer.offsetTop;
 
-        // Calculate the percentage position within the image
-        const percentX = (x / zoomContainer.offsetWidth) * 75;
-        const percentY = (y / zoomContainer.offsetHeight) * 75;
+    // Calculate the percentage position within the image
+    let percentX = (x / zoomContainer.offsetWidth) * 75;
+    let percentY = (y / zoomContainer.offsetHeight) * 75;
 
-        // Apply the zoom effect using CSS transform
-        zoomImage.style.transformOrigin = `${percentX}% ${percentY}%`;
-        zoomImage.style.transform = 'scale(1.20)'; // You can adjust the scale factor as needed
-    }
+    // Calculate the maximum percentage position to ensure the zoomed image stays within the container
+    const maxPercentX = Math.max(0, 75 - (zoomImage.width / zoomContainer.offsetWidth) * 75);
+    const maxPercentY = Math.max(0, 75 - (zoomImage.height / zoomContainer.offsetHeight) * 75);
 
-    // Add a mouseleave event listener to reset the zoom on mouse out
-    zoomContainer.addEventListener('mouseleave', () => {
-        zoomImage.style.transform = 'scale(1)';
-    });
+    // Ensure that the percentage position does not exceed the maximum values
+    percentX = Math.min(percentX, maxPercentX);
+    percentY = Math.min(percentY, maxPercentY);
+
+    // Apply the zoom effect using CSS transform
+    zoomImage.style.transformOrigin = `${percentX}% ${percentY}%`;
+    zoomImage.style.transform = 'scale(1.20)'; // You can adjust the scale factor as needed
+}
+
+// Add a mouseleave event listener to reset the zoom on mouse out
+zoomContainer.addEventListener('mouseleave', () => {
+    zoomImage.style.transform = 'scale(1)';
+});
 </script>
+
+    

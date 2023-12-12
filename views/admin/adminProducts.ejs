@@ -548,13 +548,14 @@
                         fetch(`/admin/product/${productId}`)
                             .then((response) => response.json())
                             .then((productDetails) => {
+                                console.log(productDetails)
 
                                 modalProductName.value = productDetails.product_name;
                                 modalProductPrice.value = productDetails.product_price;
                                 modalProductCategory.value = productDetails.category_name.category_name;
-                                modalProductQty.value = productDetails.product_qty;
-                                modalProductSize.value = productDetails.product_size.size_name;
-                                modalProductColour.value = productDetails.product_colour.color_name;
+                                modalProductQty.value = productDetails.variations[0].quantity;
+                                modalProductSize.value = productDetails.variations[0].size.size_name;
+                                modalProductColour.value = productDetails.variations[0].color.color_name;
                                 modalDiscountPrice.value = productDetails.discount_price;
                                 // modalFileInput.innerText = productDetails.product_imgurl; //ask reviewer
                                 modalProductId.value = productDetails._id;

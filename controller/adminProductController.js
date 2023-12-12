@@ -32,8 +32,14 @@ module.exports.getProduct = async (req,res)=>{
     
         const product = await Product.findById(productId)
         .populate('category_name')
-        .populate('product_size')
-        .populate('product_colour')
+        .populate({
+          path: 'variations.color',
+          model: 'Color',
+        })
+        .populate({
+          path: 'variations.size',
+          model: 'Size',
+        });
         console.log(product)
     
         if (!product) {
@@ -144,12 +150,17 @@ module.exports.updateProduct = async (req,res)=>{
           return res.status(404).json({error:"product not found"})
         }
 
+        const productVariations = [{
+          color:savedColor._id,
+          size:savedSize._id,
+          quantity:productQty
+        }]
+
         existingProduct.product_name = productName;
         existingProduct.product_price = productPrice;
         existingProduct.category_name = existingCategory._id;
         existingProduct.product_qty = productQty;
-        existingProduct.product_size = savedSize._id;
-        existingProduct.product_colour = savedColor._id;
+        existingProduct.variations = productVariations,
         existingProduct.discount_price = discountPrice;
 
         if (frontImage) {
@@ -159,28 +170,6 @@ module.exports.updateProduct = async (req,res)=>{
           existingProduct.product_images = additionalImages;
         }
         const updatedProduct = await existingProduct.save();
-
-    // Assuming you have a Product model with the appropriate schema
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // const updatedProduct = await Product.findByIdAndUpdate(
-    //     productId,
-    //     {
-    //       product_name:productName,
-    //       product_price:productPrice,
-    //       category_name:existingCategory._id,
-    //       product_qty:productQty,
-    //       product_size:savedSize._id,
-    //       product_colour:savedColor._id,
-    //       discount_price:discountPrice,
-    //       front_image:frontImage,
-    //       product_images: additionalImages,
-    //     },
-    //     { new: true }
-    // );
-
-    // if (!updatedProduct) {
-    //     return res.status(404).json({ error: 'Product not found' });
-    // }
 
     res.json({
         message: 'Product updated successfully',
