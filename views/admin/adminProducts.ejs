@@ -462,16 +462,16 @@
                                         <%=productData.product_name %>
                                     </th>
                                     <td class="px-6 py-4">
-                                        <%=productData.product_colour.color_name %>
+                                        <%=productData.variations[0].color.color_name %>
                                     </td>
                                     <td class="px-6 py-4">
                                         <%=productData.category_name.category_name %>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <%=productData.product_size.size_name %>
+                                        <%=productData.variations[0].size.size_name %> %>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <%=productData.product_qty %>
+                                        <%=productData.variations[0].quantity %>
                                     </td>
                                     <td class="px-6 py-4">
                                         <%=productData.product_price %>
@@ -519,6 +519,7 @@
 
             </div>
             <script src="/javascripts/createModal.js"></script> <!--working of create modal-->
+            <script defer src="https://cdn.crop.guide/loader/l.js?c=123ABC"></script>
 
             <!--fetch data to the modal of edit-->
             <script>

@@ -9,8 +9,14 @@ module.exports.productsView = async (req,res)=>{
     try {
       const product = await Product.find()
       .populate('category_name')
-      .populate('product_size')
-      .populate('product_colour')
+      .populate({
+        path: 'variations.color',
+        model: 'Color',
+      })
+      .populate({
+        path: 'variations.size',
+        model: 'Size',
+      });
 
         res.render('admin/adminProducts',{
           product:product
@@ -41,60 +47,64 @@ module.exports.getProduct = async (req,res)=>{
       }
 }
 
-module.exports.createProduct = async (req,res)=>{
-  console.log("yoooohooooo")
-    try {
-        const {
-          productName,
-          productPrice,
-          productCategory,
-          productQty,
-          productSize,
-          productColour,
-          discountPrice,
-        } = req.body;
-        console.log(req.body,"this is reqbody")
+  module.exports.createProduct = async (req,res)=>{
+    console.log("yoooohooooo")
+      try {
+          const {
+            productName,
+            productPrice,
+            productCategory,
+            productQty,
+            productSize,
+            productColour,
+            discountPrice,
+          } = req.body;
+          console.log(req.body,"this is reqbody")
 
-        const frontImage = req.files.frontImage[0];
-        const productImagesFiles = req.files.productImages
+          const frontImage = req.files.frontImage[0];
+          const productImagesFiles = req.files.productImages
 
-        let existingCategory = await Category.findOne({category_name:productCategory})
+          let existingCategory = await Category.findOne({category_name:productCategory})
 
-        if(!existingCategory){
-          existingCategory = new Category({category_name:productCategory})
-          existingCategory = await existingCategory.save()
+          if(!existingCategory){
+            existingCategory = new Category({category_name:productCategory})
+            existingCategory = await existingCategory.save()
+          }
+          
+          const existingSize = await Size.findOne({size_name:productSize});
+          const size = existingSize || new Size({size_name:productSize});
+          const savedSize = await size.save()
+
+          const existingColor = await Color.findOne({color_name:productColour});
+          const color = existingColor || new Color({color_name:productColour});
+          const savedColor = await color.save();
+
+          const productVariations = [{
+            color:savedColor._id,
+            size:savedSize._id,
+            quantity:productQty
+          }]
+
+          
+          const productImages = productImagesFiles.map(file => ({ filename: file.filename }));
+          const newProduct = new Product({
+            product_name: productName,
+            category_name: existingCategory._id,
+            variations: productVariations,
+            product_price: productPrice,
+            discount_price: discountPrice,
+            front_image:frontImage,
+            product_images: productImages,
+          });
+      
+          const savedProduct = await newProduct.save();
+      
+          res.status(201).json({message:savedProduct});
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: 'Internal Server Error' });
         }
-        
-        const existingSize = await Size.findOne({size_name:productSize});
-        const size = existingSize || new Size({size_name:productSize});
-        const savedSize = await size.save()
-
-        const existingColor = await Color.findOne({color_name:productColour});
-        const color = existingColor || new Color({color_name:productColour});
-        const savedColor = await color.save()
-
-        
-        const productImages = productImagesFiles.map(file => ({ filename: file.filename }));
-        const newProduct = new Product({
-          product_name:productName,
-          product_price:productPrice,
-          category_name:existingCategory._id,
-          product_qty:productQty,
-          product_size:savedSize._id,
-          product_colour:savedColor._id,
-          discount_price:discountPrice,
-          front_image:frontImage,
-          product_images: productImages,
-        });
-    
-        const savedProduct = await newProduct.save();
-    
-        res.status(201).json({message:savedProduct});
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-      }
-}
+  }
 
 module.exports.updateProduct = async (req,res)=>{
   try {
