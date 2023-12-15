@@ -174,9 +174,9 @@
                                 <th scope="col" class="px-6 py-3">
                                     Product name
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <!-- <th scope="col" class="px-6 py-3">
                                     Color
-                                </th>
+                                </th> -->
                                 <th scope="col" class="px-6 py-3">
                                     Category
                                 </th>
@@ -261,6 +261,7 @@
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                                 placeholder="12" required="">
                                                         </div>
+                                                        
                                                         <div>
                                                             <label for="productSize"
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size</label>
@@ -273,7 +274,7 @@
                                                             </select>
                                                         </div>
 
-                                                        <div>
+                                                        <!-- <div>
                                                             <label for="productColour"
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size</label>
                                                             <select id="productColour"
@@ -283,7 +284,7 @@
                                                                 <option value="White">White</option>
                                                                 <option value="Red">Red</option>
                                                             </select>
-                                                        </div>
+                                                        </div> -->
                                                         <div>
                                                             <label for="discountPrice"
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount
@@ -461,9 +462,7 @@
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <%=productData.product_name %>
                                     </th>
-                                    <td class="px-6 py-4">
-                                        <%=productData.variations[0].color.color_name %>
-                                    </td>
+
                                     <td class="px-6 py-4">
                                         <%=productData.category_name.category_name %>
                                     </td>
@@ -656,7 +655,7 @@
                     const productCategory = form.ProductCategory.value;
                     const productQty = form.productQty.value;
                     const productSize = form.productSize.value;
-                    const productColour = form.productColour.value;
+                    // const productColour = form.productColour.value;
                     const discountPrice = form.discountPrice.value;
 
                     const frontImageInput = document.getElementById('frontImage');
@@ -673,7 +672,7 @@
                     formData.append('productCategory', productCategory);
                     formData.append('productQty', productQty);
                     formData.append('productSize', productSize);
-                    formData.append('productColour', productColour);
+                    // formData.append('productColour', productColour);
                     formData.append('discountPrice', discountPrice);
                     formData.append('frontImage', frontImageFile);
 
@@ -692,7 +691,7 @@
                             body: formData,
                         })
                         const data = await res.json()
-                        location.reload()
+                        // location.reload()
                         console.log(data)
 
                     } catch (err) {

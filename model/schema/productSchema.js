@@ -17,18 +17,28 @@ const productSchema = new mongoose.Schema({
       required: true,
     },
   },
+  // size: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Size',
+  //   required: true,
+  // },
+  // quantity: {
+  //   type: Number,
+  //   required: true,
+  //   default: 0,
+  // },
   variations: [
     {
-      color: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Color',
-        required: true,
-      },
       size: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Size',
         required: true,
       },
+      // color:{
+      //   type:mongoose.Schema.Types.ObjectId,
+      //   ref:'color',
+      //   required:true,
+      // }
       quantity: {
         type: Number,
         required: true,

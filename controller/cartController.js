@@ -10,6 +10,10 @@ module.exports.viewCart = async (req,res)=>{
             populate:{
                 path:'category_name',
                 model:'Category',
+            },
+            populate:{
+                path:'variations.size',
+                model:'Size'
             }
         })
 

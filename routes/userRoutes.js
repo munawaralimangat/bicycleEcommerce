@@ -5,6 +5,7 @@ const userProductController = require('../controller/userProductController')
 const userCategoryController = require('../controller/userCategoryController')
 const userCartController = require('../controller/cartController')
 const userWishlistController = require('../controller/wishlistController')
+const checkoutController = require('../controller/checkoutController')
 
 const {requireAuth,checkUser} = require('../middleware/authMiddleware')
 const router = express.Router()
@@ -28,6 +29,7 @@ router.get('/logout',requireAuth,userHomeController.logout)
 //product controller
 router.get('/product/:productId',userProductController.viewProduct)
 
+
 //category routes
 router.get('/mountainbikes',userCategoryController.viewMountain)
 router.get('/roadbikes',userCategoryController.viewRoadBikes)
@@ -35,7 +37,7 @@ router.get('/roadbikes',userCategoryController.viewRoadBikes)
 //cart routes
 router.get('/cart',userCartController.viewCart);
 router.post('/addtocart',userCartController.addToCart);
-
+  //cart increment and decrement
 router.put('/increment/:itemId',userCartController.incrementQuantity);
 router.put('/decrement/:itemId',userCartController.decrementQuantity);
 
@@ -47,9 +49,7 @@ router.post('/addtowishlist',userWishlistController.addToWishlist);
 router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 
 //checkout routes
-router.get('/checkout',(req,res)=>{
-    res.render('user/checkout')
-})
+router.get('/checkout',checkoutController.checkout)
 
 
 
