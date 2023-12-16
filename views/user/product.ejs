@@ -100,6 +100,20 @@
 <%-include('../includes/userEnd')  %><!--add to cart added-->
 
 <script>
+    async function selectSize (size,productId){
+        console.log(size,productId)
+        try {
+            let res = await fetch(`/brepublic/product/variant/${productId}?size=${size}`)
+            let data = await res.json()
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+</script>
+
+<script>
     function changeZoomImage(clickedImage) {
         let newImageSrc = clickedImage.src;
 
