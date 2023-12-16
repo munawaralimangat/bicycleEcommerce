@@ -28,10 +28,10 @@ module.exports.getProduct = async (req,res)=>{
     
         const product = await Product.findById(productId)
         .populate('category_name')
-        .populate({
-          path: 'variations.color',
-          model: 'Color',
-        })
+        // .populate({
+        //   path: 'variations.color',
+        //   model: 'Color',
+        // })
         .populate({
           path: 'variations.size',
           model: 'Size',

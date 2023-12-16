@@ -7,14 +7,16 @@ module.exports.viewCart = async (req,res)=>{
         const {userId} = req.query;
         const cart = await Cart.findOne({user:userId}).populate({
             path:'items.product',
-            populate:{
-                path:'category_name',
-                model:'Category',
-            },
-            populate:{
-                path:'variations.size',
-                model:'Size'
-            }
+            populate: [
+                {
+                  path: 'category_name',
+                  model: 'Category',
+                },
+                {
+                  path: 'variations.size',
+                  model: 'Size',
+                },
+              ],
         })
 
        

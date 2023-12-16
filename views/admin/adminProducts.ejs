@@ -255,17 +255,9 @@
                                                             </select>
                                                         </div>
                                                         <div>
-                                                            <label for="productQty"
-                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
-                                                            <input type="number" name="productQty" id="productQty"
-                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                                placeholder="12" required="">
-                                                        </div>
-                                                        
-                                                        <div>
                                                             <label for="productSize"
                                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size</label>
-                                                            <select id="productSize"
+                                                            <select id="productSize" 
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                                 <option disabled selected="">Select size</option>
                                                                 <option value="Small">S</option>
@@ -273,6 +265,14 @@
                                                                 <option value="Large">L</option>
                                                             </select>
                                                         </div>
+                                                        <div>
+                                                            <label for="productQty"
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
+                                                            <input type="number" name="productQty" id="productQty"
+                                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                                placeholder="12" required="">
+                                                        </div>
+                                                        
 
                                                         <!-- <div>
                                                             <label for="productColour"
@@ -400,7 +400,7 @@
                                                                     <option value="Large">L</option>
                                                                 </select>
                                                             </div>
-                                                            <div>
+                                                            <!-- <div>
                                                                 <label for="editProductColour"
                                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Colour</label>
                                                                 <select id="editProductColour"
@@ -410,7 +410,7 @@
                                                                     <option value="White">White</option>
                                                                     <option value="Red">Red</option>
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
                                                             <div>
                                                                 <label for="editPiscountPrice"
                                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount
@@ -519,6 +519,7 @@
             </div>
             <script src="/javascripts/createModal.js"></script> <!--working of create modal-->
             <script defer src="https://cdn.crop.guide/loader/l.js?c=123ABC"></script>
+            
 
             <!--fetch data to the modal of edit-->
             <script>
@@ -531,7 +532,7 @@
                 const modalProductCategory = document.getElementById('editProductCategory');
                 const modalProductQty = document.getElementById('editProductQty');
                 const modalProductSize = document.getElementById('editProductSize');
-                const modalProductColour = document.getElementById('editProductColour');
+                // const modalProductColour = document.getElementById('editProductColour');
                 const modalDiscountPrice = document.getElementById('editDiscountPrice');
                 // const modalFileInput = document.getElementById('file_input')
                 const modalProductId = document.getElementById('editProductId')
@@ -554,9 +555,8 @@
                                 modalProductCategory.value = productDetails.category_name.category_name;
                                 modalProductQty.value = productDetails.variations[0].quantity;
                                 modalProductSize.value = productDetails.variations[0].size.size_name;
-                                modalProductColour.value = productDetails.variations[0].color.color_name;
+                                // modalProductColour.value = productDetails.variations[0].color.color_name;
                                 modalDiscountPrice.value = productDetails.discount_price;
-                                // modalFileInput.innerText = productDetails.product_imgurl; //ask reviewer
                                 modalProductId.value = productDetails._id;
                                 console.log(modalProductName.value);
 
@@ -594,7 +594,7 @@
                         const editProductCategory = modalProductCategory.value;
                         const editProductQty = modalProductQty.value;
                         const editProductSize = modalProductSize.value;
-                        const editProductColour = modalProductColour.value;
+                        // const editProductColour = modalProductColour.value;
                         const editDiscountPrice = modalDiscountPrice.value;
 
                         const formData = new FormData();
@@ -603,7 +603,7 @@
                         formData.append('productCategory', editProductCategory);
                         formData.append('productQty', editProductQty);
                         formData.append('productSize', editProductSize);
-                        formData.append('productColour', editProductColour);
+                        // formData.append('productColour', editProductColour);
                         formData.append('discountPrice', editDiscountPrice);
 
                         const frontImageInput = document.getElementById('frontImageInput');
