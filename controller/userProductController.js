@@ -62,7 +62,7 @@ module.exports.viewVariation = async (req, res) => {
 
         if (otherProduct) {
             console.log("Other product found");
-            res.render('user/product',{product:otherProduct})
+            // res.render('user/product',{product:otherProduct})
         } else {
             console.log("Other product not found");
         }
