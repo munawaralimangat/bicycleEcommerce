@@ -36,41 +36,39 @@ module.exports.viewProduct = async (req,res)=>{
     }
 }
 
-module.exports.viewVariation = async (req,res)=>{
+module.exports.viewVariation = async (req, res) => {
     try {
-        const productId =req.params.productId;
-        const size = req.query.size;
+        const productId = req.params.productId;
+        const size = req.query.size
 
-        const product = await Product.findById(productId)
-        const sizeDocument = await Size.findOne({size})
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        const sizeDocument = await Size.findOne({ size_name:size });
         console.log(sizeDocument)
 
-        if(!sizeDocument){
-            return false
+        if (!sizeDocument) {
+            return res.status(404).json({ message: "Size not found" });
         }
-        
-        if(!product){
-            return res.status(404).json({message:"product not found"})
-        }
-        // console.log(product.variations)
-
 
         const otherProduct = await Product.findOne({
-            _id:{$ne:productId},
-            product_name:product.product_name.toString(),
-            'variations.size':sizeDocument._id
-        })
-        if(otherProduct){
-            // res.render('user/product',{product:otherProduct})
-            console.log("other found")
-        }else{
-            // res.render('user/product',{product})
-            // console.log("other not found")
+            _id: { $ne: productId },
+            product_name: product.product_name.toString(),
+            'variations.size': sizeDocument._id
+        });
+
+        if (otherProduct) {
+            console.log("Other product found");
+        } else {
+            res.render('user/product',{product})
         }
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({message:"internal server error"})
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" });
     }
+};
 
-}
