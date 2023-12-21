@@ -15,18 +15,8 @@ const productSchema = new mongoose.Schema({
     filename: {
       type: String,
       required: true,
-    },
+    },  
   },
-  // size: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Size',
-  //   required: true,
-  // },
-  // quantity: {
-  //   type: Number,
-  //   required: true,
-  //   default: 0,
-  // },
   variations: [
     {
       size: {
@@ -34,11 +24,6 @@ const productSchema = new mongoose.Schema({
         ref: 'Size',
         required: true,
       },
-      // color:{
-      //   type:mongoose.Schema.Types.ObjectId,
-      //   ref:'color',
-      //   required:true,
-      // }
       quantity: {
         type: Number,
         required: true,
@@ -65,3 +50,35 @@ const productSchema = new mongoose.Schema({
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
+
+
+  // size: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Size',
+  //   required: true,
+  // },
+  // quantity: {
+  //   type: Number,
+  //   required: true,
+  //   default: 0,
+  // },
+
+  // variations: [
+  //   {
+  //     size: {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: 'Size',
+  //       required: true,
+  //     },
+  //     color:{
+  //       type:mongoose.Schema.Types.ObjectId,
+  //       ref:'color',
+  //       required:true,
+  //     }
+  //     quantity: {
+  //       type: Number,
+  //       required: true,
+  //       default: 0,
+  //     },
+  //   },
+  // ],

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <title>Responsive Navbar with Search</title>
+</head>
+
+<body class="font-sans bg-gray-100">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-500 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+
+      <!-- Logo -->
+      <div class="text-white font-bold text-xl">
+        My Website
+      </div>
+
+      <!-- Search Input (added this part) -->
+      <div class="hidden lg:flex flex-grow mx-4">
+        <input type="text" placeholder="Search..." class="w-1/4 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="block lg:hidden">
+        <button id="mobile-menu-toggle" class="text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden lg:flex space-x-4">
+        <a href="#" class="text-white hover:text-gray-300">Home</a>
+        <a href="#" class="text-white hover:text-gray-300">About</a>
+        <a href="#" class="text-white hover:text-gray-300">Services</a>
+        <a href="#" class="text-white hover:text-gray-300">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu"
+    class="lg:hidden fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 hidden">
+    <div class="flex justify-end p-4">
+      <button id="mobile-menu-close" class="text-white focus:outline-none">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="flex items-center justify-center h-full">
+      <div class="flex flex-col space-y-4">
+        <a href="#" class="text-white">Home</a>
+        <a href="#" class="text-white">About</a>
+        <a href="#" class="text-white">Services</a>
+        <a href="#" class="text-white">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript to toggle mobile menu -->
+  <script>
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileMenuClose.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+  </script>
+
+</body>
+
+</html>

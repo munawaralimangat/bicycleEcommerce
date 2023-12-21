@@ -28,7 +28,10 @@ router.get('/logout',requireAuth,userHomeController.logout)
 
 //product controller
 router.get('/product/:productId',userProductController.viewProduct)
-router.get('/product/variant/:productId',userProductController.viewVariation)
+// router.get('/product/variant/:productId',userProductController.viewVariation)
+
+//search product
+router.get('/products/search',userProductController.searchProduct)
 
 
 //category routes

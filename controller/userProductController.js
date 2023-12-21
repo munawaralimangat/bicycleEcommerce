@@ -2,74 +2,67 @@ const mongoose = require('mongoose');
 const Product = require('../model/schema/productSchema');
 const Size = require('../model/schema/sizeSchema')
 
-module.exports.viewProduct = async (req,res)=>{
+module.exports.viewProduct = async (req, res) => {
     try {
-        const productId = req.params.productId
-        const {color,size} = req.query;
+        const productId = req.params.productId;
+        const { size } = req.query;
 
-        let productQuery = Product.findById(productId).populate('category_name');
+        const product = await Product.findById(productId)
+        .populate('category_name')
+        .populate({
+            path:'variations.size',
+            model:'Size'
+        })
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
-        // if(color){
-        //     productQuery = productQuery.populate({
-        //         path: 'variations.color',
-        //         model: 'Color',
-        //     });
-        // }
+        let otherProduct = null;
+        
 
         if (size) {
-            productQuery = productQuery.populate({
-                path: 'variations.size',
-                model: 'Size',
-            });
+            console.log("size:" ,size)
+            const sizeName = await Size.findOne({size_name:size})
+            // const variations = product.variations.filter(variation => variation.size.size_name === size);
+
+            if (sizeName) {
+                const variationSizeId = sizeName._id;
+                console.log(product.product_name)
+
+                
+                otherProduct = await Product.findOne({
+                    _id: { $ne: productId },
+                    product_name: product.product_name,
+                    'variations.size': variationSizeId.toString()
+                })
+
+                console.log('Other Products:', otherProduct);
+
+                console.log("Query criteria:", {
+                _id: { $ne: productId },
+                product_name: product.product_name,
+                'variations.size': variationSizeId.toString()
+                });
+
+                if (otherProduct) {
+                    console.log('Found another product with the same name and selected size:', otherProduct._id);
+                    res.json({ otherProduct });
+                    return;
+                }
+            }
         }
 
-        const product = await productQuery.exec()
-        console.log(product)
-
-        if(!product){
-            return res.status(404).json({message:'product not found'})
-        }
-        res.render('user/product',{product});
+        console.log('No other products found with the same name and selected size');
+        res.render('user/product', { product:product, otherProducts: [] });
     } catch (error) {
         console.error('Error fetching product details:', error);
         res.status(500).send('Internal Server Error');
     }
+};
+
+
+module.exports. searchProduct = (req,res)=>{
+    console.log("this works")
 }
 
-module.exports.viewVariation = async (req, res) => {
-    try {
-        const productId = req.params.productId;
-        const size = req.query.size
-
-        const product = await Product.findById(productId);
-
-        if (!product) {
-            return res.status(404).json({ message: "Product not found" });
-        }
-
-        const sizeDocument = await Size.findOne({ size_name:size });
-        console.log(sizeDocument)
-
-        if (!sizeDocument) {
-            return res.status(404).json({ message: "Size not found" });
-        }
-
-        const otherProduct = await Product.findOne({
-            _id: { $ne: productId },
-            product_name: product.product_name.toString(),
-            'variations.size': sizeDocument._id
-        });
-
-        if (otherProduct) {
-            console.log("Other product found");
-            // res.render('user/product',{product:otherProduct})
-        } else {
-            console.log("Other product not found");
-        }
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-};
 
