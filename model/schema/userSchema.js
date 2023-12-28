@@ -44,8 +44,8 @@ userSchema.pre('save', async function(next){
 
 //static method for login user
 userSchema.statics.login = async function(user_email, user_password) {
-  const user = await this.findOne({user_email });
-  console.log(user_email)
+  const user = await this.findOne({user_email});
+  console.log("user",user_email)
   if (user) {
     const auth = await bcrypt.compare(user_password, user.user_password); // Compare the provided password with the hashed password in the database
     if (auth) {

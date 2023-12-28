@@ -61,8 +61,28 @@ module.exports.viewProduct = async (req, res) => {
 };
 
 
-module.exports. searchProduct = (req,res)=>{
-    console.log("this works")
+module.exports.searchProduct = async (req,res)=>{
+    console.log(req.query)
+    try{
+        const {q:productName} = req.query;
+        console.log(productName)
+        if(!productName){
+            return res.status(400).json({message:'Product name is required'})
+        }
+        const regex = new RegExp(productName,'i');
+
+        const product = await Product.find({product_name:regex})
+
+        if (product.length === 0) {
+            // No products found
+            return res.render('user/searchPage', { message: 'Product not found', products: [] });
+          }
+
+        res.render('user/searchPage',{products:product})
+    }catch(error){
+        console.error('error searching productrs',error)
+        res.status(500).json({message:'Internal server error'}) //ask reviewr about routing propblem
+    }
 }
 
 

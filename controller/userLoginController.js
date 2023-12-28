@@ -123,7 +123,7 @@ module.exports.userLoginView = async (req, res) => {
 
 module.exports.userLoginPost =async (req,res)=>{
     const {email,password} = req.body;
-    console.log(req.body)
+    console.log("req.body",req.body)
 
     try{
         const user = await User.login(email,password)
