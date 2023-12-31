@@ -81,7 +81,7 @@ module.exports.searchProduct = async (req,res)=>{
         res.render('user/searchPage',{products:product})
     }catch(error){
         console.error('error searching productrs',error)
-        res.status(500).json({message:'Internal server error'}) //ask reviewr about routing propblem
+        res.status(500).json({message:'Internal server error'}) //ask reviewr about routing propblem, that cannot login because of the form attr for search input
     }
 }
 

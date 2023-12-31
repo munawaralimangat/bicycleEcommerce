@@ -61,6 +61,10 @@ router.delete('/product/:productId',adminProductController.deleteProduct);
 
 // router.get("/adminReg",loginController.reg)
 
+router.get('/offers',async (req,res)=>{
+  res.render('admin/adminOffers')
+})
+
 
 
 

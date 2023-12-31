@@ -52,7 +52,8 @@ router.post('/addtowishlist',userWishlistController.addToWishlist);
 router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 
 //checkout routes
-router.get('/checkout',checkoutController.checkout)
+router.get('/checkout',checkoutController.viewCheckout);
+router.post('/checkout')
 
 
 

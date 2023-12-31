@@ -1,5 +1,5 @@
 
 
-module.exports.checkout = async (req,res)=>{
+module.exports.viewCheckout = async (req,res)=>{
     res.render('user/checkout')
 }
