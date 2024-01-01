@@ -7,11 +7,148 @@
                 <%-include('../includes/components/adminNav') %>
                     <!--content-->
                     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-                        
+
+
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                            Product name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Color
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                            Category
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Price
+                                        </th>
+                                    </tr>
+                                    <button id="openModalButton" data-modal-target="default-modal"
+                                        data-modal-toggle="default-modal"
+                                        class="block mb-4 text-white bg-red-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        type="button">
+                                        Add Coupen
+                                    </button>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th scope="row"
+                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                            Apple MacBook Pro 17"
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            Silver
+                                        </td>
+                                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                                            Laptop
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            $2999
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
 
+            </div>
+            <!-- Modal -->
+            <div id="couponModal" class="fixed inset-0 z-10 hidden overflow-y-auto">
+                <div class="flex items-center justify-center min-h-screen">
+                    <div class="fixed inset-0 bg-black opacity-50"></div>
+                    <div class="bg-white w-96 p-4 rounded-lg z-10 relative">
+                        <!-- Close icon -->
+                        <button id="closeModalButton"
+                            class="absolute top-2 right-2 text-gray-700 hover:text-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm"
+                            type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" class="h-5 w-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Modal content goes here -->
+                        <form id="couponForm">
+                            <div class="mb-4 mt-4">
+                                <label for="code" class="block text-sm font-medium text-gray-700">Coupon Code:</label>
+                                <input type="text" id="code" name="code" class="mt-1 p-2 w-3/4 border rounded-md">
+                                <button id="generateCodeButton" class="ml-2 p-1.5 bg-blue-500 rounded-md hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300" onclick="generateCoupon()" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        
+                            <div class="mb-4">
+                                <label for="discount" class="block text-sm font-medium text-gray-700">Discount (%):</label>
+                                <input type="number" id="discount" name="discount" class="mt-1 p-2 w-full border rounded-md">
+                            </div>
+                        
+                            <div class="mb-4">
+                                <label for="validFrom" class="block text-sm font-medium text-gray-700">Valid From:</label>
+                                <input type="date" id="validFrom" name="validFrom" class="mt-1 p-2 w-full border rounded-md">
+                            </div>
+                        
+                            <div class="mb-4">
+                                <label for="validTo" class="block text-sm font-medium text-gray-700">Valid To:</label>
+                                <input type="date" id="validTo" name="validTo" class="mt-1 p-2 w-full border rounded-md">
+                            </div>
+                        
+                        
+                            <button id="addCouponButton" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700" type="submit">
+                                Add Coupon
+                            </button>
+                        </form>
+                        
+                    </div>
+                </div>
             </div>
 
 
     </body>
     <%- include('../includes/adminEnd') %>
+        <script>
+            // JavaScript to handle modal functionality
+            const openModalButton = document.getElementById('openModalButton');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const couponModal = document.getElementById('couponModal');
+
+            openModalButton.addEventListener('click', () => {
+                couponModal.classList.remove('hidden');
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                couponModal.classList.add('hidden');
+            });
+
+            // Close the modal if clicked outside the modal content
+            window.addEventListener('click', (event) => {
+                if (event.target === couponModal) {
+                    couponModal.classList.add('hidden');
+                }
+            });
+        </script>
+        <script>
+            function generateCoupon() {
+                const couponInput = document.getElementById('code');
+                couponInput.value = generateCouponCode(8); // Change 8 to the desired length
+            }
+
+            function generateCouponCode(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const prefix = 'BR';
+            let couponCode = prefix;
+
+            for (let i = 0; i < length - prefix.length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                couponCode += characters.charAt(randomIndex);
+            }
+
+            return couponCode;
+        }
+        </script>
