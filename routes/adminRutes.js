@@ -11,6 +11,7 @@ const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/admin
 const adminUserController = require('../controller/adminUserController');
 const adminProductController = require('../controller/adminProductController');
 const adminCategoryController = require('../controller/adminCategoryController');
+const adminOffersController = require('../controller/adminOffersController')
 const { route } = require('./userroutes');
 //const {loginCheck} = require('../auth/jwt')
 
@@ -61,9 +62,11 @@ router.delete('/product/:productId',adminProductController.deleteProduct);
 
 // router.get("/adminReg",loginController.reg)
 
-router.get('/offers',async (req,res)=>{
-  res.render('admin/adminOffers')
-})
+//offers route
+router.get('/offers',adminOffersController.viewOffers)
+
+  //add coupen
+router.post('/addcoupen',adminOffersController.addCoupen)
 
 
 

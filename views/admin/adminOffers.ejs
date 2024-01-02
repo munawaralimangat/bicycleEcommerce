@@ -14,16 +14,19 @@
                                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                            Product name
+                                            Coupen code
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Color
+                                            Discount(%)
                                         </th>
                                         <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                            Category
+                                            Valid from
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Price
+                                            valid to
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Action
                                         </th>
                                     </tr>
                                     <button id="openModalButton" data-modal-target="default-modal"
@@ -34,21 +37,28 @@
                                     </button>
                                 </thead>
                                 <tbody>
-                                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                                        <th scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                            Apple MacBook Pro 17"
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            Silver
-                                        </td>
-                                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                            Laptop
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            $2999
-                                        </td>
-                                    </tr>
+                                    <% coupons.forEach((coupon) => { %>
+                                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                                <%= coupon.code %>
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <%= coupon.discount %>%
+                                            </td>
+                                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                                                <%= coupon.validFrom.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <%= coupon.validTo.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                            </td>
+                                            <td class="flex items-center px-6 py-10 space-x-3">
+                                                <a href="#"
+                                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline openModalBtn">Edit</a>
+                                                <a href="#"
+                                                    class="font-medium text-red-600 dark:text-red-500 hover:underline removeBtn">Delete</a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
                                 </tbody>
                             </table>
                         </div>
@@ -73,7 +83,7 @@
                         </button>
 
                         <!-- Modal content goes here -->
-                        <form id="couponForm">
+                        <form id="couponForm" method="post">
                             <div class="mb-4 mt-4">
                                 <label for="code" class="block text-sm font-medium text-gray-700">Coupon Code:</label>
                                 <input type="text" id="code" name="code" class="mt-1 p-2 w-3/4 border rounded-md">
@@ -113,7 +123,7 @@
     </body>
     <%- include('../includes/adminEnd') %>
         <script>
-            // JavaScript to handle modal functionality
+            // JavaScript to handle modal functionality //coupen modal
             const openModalButton = document.getElementById('openModalButton');
             const closeModalButton = document.getElementById('closeModalButton');
             const couponModal = document.getElementById('couponModal');
@@ -140,15 +150,57 @@
             }
 
             function generateCouponCode(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            const prefix = 'BR';
-            let couponCode = prefix;
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+                const prefix = 'BR-';
+                let couponCode = prefix;
 
-            for (let i = 0; i < length - prefix.length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                couponCode += characters.charAt(randomIndex);
+                for (let i = 0; i < length - prefix.length; i++) {
+                    const randomIndex = Math.floor(Math.random() * characters.length);
+                    couponCode += characters.charAt(randomIndex);
+                }
+
+                return couponCode;
+            }
+        </script>
+        <script>
+            document.getElementById('couponForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                addCoupon();
+            });
+
+            async function addCoupon() {
+                try {
+                    const code = document.getElementById('code').value;
+                    const discount = document.getElementById('discount').value;
+                    const validFrom = document.getElementById('validFrom').value;
+                    const validTo = document.getElementById('validTo').value;
+
+                    const response = await fetch('/admin/addcoupen', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            code,
+                            discount,
+                            validFrom,
+                            validTo,
+                        }),
+                    });
+
+                    if (response.ok) {
+                        console.log('Coupon added successfully');
+                        location.reload()
+                        // Optionally, you can perform additional actions after successful addition
+                    } else {
+                        const responseData = await response.json();
+                        console.error('Error adding coupon:', responseData.error);
+                        // Optionally, handle the error and provide user feedback
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    // Optionally, handle unexpected errors
+                }
             }
 
-            return couponCode;
-        }
         </script>
