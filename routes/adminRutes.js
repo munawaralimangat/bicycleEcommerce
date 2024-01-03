@@ -67,6 +67,7 @@ router.get('/offers',adminOffersController.viewOffers)
 
   //add coupen
 router.post('/addcoupen',adminOffersController.addCoupen)
+router.delete('/coupon/:id',adminOffersController.deleteCoupon)
 
 
 

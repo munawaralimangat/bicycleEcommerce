@@ -52,10 +52,10 @@
                                                 <%= coupon.validTo.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %>
                                             </td>
                                             <td class="flex items-center px-6 py-10 space-x-3">
+                                                <!-- <a href="#"
+                                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline openModalBtn">Edit</a> -->
                                                 <a href="#"
-                                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline openModalBtn">Edit</a>
-                                                <a href="#"
-                                                    class="font-medium text-red-600 dark:text-red-500 hover:underline removeBtn">Delete</a>
+                                                    class="font-medium text-red-600 dark:text-red-500 hover:underline removeBtn" onclick="deleteCoupon('<%=coupon._id%>')">Delete</a>
                                             </td>
                                         </tr>
                                     <% }); %>
@@ -203,4 +203,24 @@
                 }
             }
 
+        </script>
+        <script>
+            //dleete coupon
+
+            async function deleteCoupon(couponId){
+                try {
+                    const response = await fetch(`/admin/coupon/${couponId}`,{
+                        method:'delete'
+                    })
+                    if(response.ok){
+                        console.log("coupon deleted succesfully")
+                        location.reload()
+                    }else{
+                        const responseData = await response.json()
+                        console.error('Error deleting coupon',responseData.error)
+                    }
+                } catch (error) {
+                    console.error('error',error)
+                }
+            }
         </script>

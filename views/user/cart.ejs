@@ -80,17 +80,26 @@
           <span class="font-semibold text-sm uppercase">Items <%=cart.items.length  %></span>
           <span class="font-semibold text-sm"><%=cart.totalPrice  %>$</span>
         </div>
-        <div>
-          <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
-          <select class="block p-2 text-gray-600 w-full text-sm">
-            <option>Standard shipping - $10.00</option>
+        <!-- <div>
+          <label class="font-medium inline-block mb-3 text-sm uppercase">Promo code</label>
+          <select class="block p-2 text-gray-600 w-full text-sm" name="couponCode">
+            <% coupons.forEach(coupon => { %>
+              <option value="<%= coupon.code %>"><%= coupon.code %> - <%= coupon.discount %> % off</option>
+            <% }); %>
+            <option>No coupon</option>
           </select>
-        </div>
+        </div> -->
         <div class="py-10">
           <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
-          <input type="text" id="promo" placeholder="Enter your code" class="p-2 text-sm w-full">
+          <select class="block p-2 text-gray-600 w-full text-sm" name="couponCode">
+            <option>Select coupon</option>
+            <% coupons.forEach(coupon => { %>
+              <option value="<%= coupon.code %>"><%= coupon.code %> - <%= coupon.discount %>% off</option>
+            <% }); %>
+            
+          </select>
         </div>
-        <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+        <button id="applyCoupon" class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
         <div class="border-t mt-8">
           <div class="flex font-normal justify-between py-6 text-sm uppercase">
           <span>Shipping charge</span>
@@ -192,30 +201,40 @@
       </script>
 
       <script>
-// Get the input element and minus/plus SVG elements using classes
-var quantityInput = document.querySelector(".quantity-input");
-var minusButtons = document.querySelectorAll(".minus");
-var plusButtons = document.querySelectorAll(".plus");
+        var quantityInput = document.querySelector(".quantity-input");
+        var minusButtons = document.querySelectorAll(".minus");
+        var plusButtons = document.querySelectorAll(".plus");
 
-// Add click event listener to all minus SVGs
-minusButtons.forEach(function(minus) {
-  minus.addEventListener("click", function() {
-    // Get the current value and decrement it (if it's greater than 1)
-    var currentValue = parseInt(quantityInput.value, 10);
-    if (currentValue > 1) {
-      quantityInput.value = currentValue - 1;
-    }
-  });
-});
+        minusButtons.forEach(function (minus) {
+          minus.addEventListener("click", function () {
+            // Get the current value and decrement it (if it's greater than 1)
+            let currentValue = parseInt(quantityInput.value, 10);
+            if (currentValue > 1) {
+              quantityInput.value = currentValue - 1;
+            }
+          });
+        });
 
-// Add click event listener to all plus SVGs
-plusButtons.forEach(function(plus) {
-  plus.addEventListener("click", function() {
-    // Get the current value and increment it
-    var currentValue = parseInt(quantityInput.value, 10);
-    quantityInput.value = currentValue + 1;
-  });
-});
+        // Add click event listener to all plus SVGs
+        plusButtons.forEach(function (plus) {
+          plus.addEventListener("click", function () {
+            // Get the current value and increment it
+            let currentValue = parseInt(quantityInput.value, 10);
+            quantityInput.value = currentValue + 1;
+          });
+        });
+      </script>
+
+      <script>
+        document.getElementById('applyCoupon').addEventListener('click',function(){
+          console.log("appl coupon")
+          const selectedCoupon = document.querySelector('[name="couponCode"]').value;
+          console.log(selectedCoupon)
+          const selectedCouponDetails = coupons.find(function(coupon) {
+            return coupon.code === selectedCoupon;
+          });
+          console.log(selectedCouponDetails)
+        })
       </script>
       
       

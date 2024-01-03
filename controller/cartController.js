@@ -1,6 +1,7 @@
 const Cart = require('../model/schema/cartSchema')
 const Product = require('../model/schema/productSchema')
 const Category = require('../model/schema/categorySchema')
+const Coupon = require('../model/schema/coupenSchema')
 
 module.exports.viewCart = async (req,res)=>{
     try{
@@ -18,12 +19,10 @@ module.exports.viewCart = async (req,res)=>{
                 },
               ],
         })
-
-       
-
+        const coupons = await Coupon.find({})
         console.log("cart",cart)
         if(cart){
-        res.render('user/cart',{cart})
+        res.render('user/cart',{cart,coupons})
         }else{
             res.render('user/emptyCart')
         }    
