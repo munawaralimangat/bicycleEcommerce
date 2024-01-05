@@ -89,17 +89,20 @@
             <option>No coupon</option>
           </select>
         </div> -->
-        <div class="py-10">
+        <div class="py-5">
           <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
-          <select class="block p-2 text-gray-600 w-full text-sm" name="couponCode">
+          <select id="couponSelect" class="block p-2 text-gray-600 w-full text-sm" name="couponCode">
             <option>Select coupon</option>
             <% coupons.forEach(coupon => { %>
-              <option value="<%= coupon.code %>"><%= coupon.code %> - <%= coupon.discount %>% off</option>
+              <option value="<%= coupon.discount %>"><%= coupon.code %> - <%= coupon.discount %>% off</option>
+              
             <% }); %>
             
           </select>
         </div>
-        <button id="applyCoupon" class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+        <button id="applyCoupon" class="bg-green-500 hover:bg-green-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+        <button id="clearCoupon" class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Clear</button>
+
         <div class="border-t mt-8">
           <div class="flex font-normal justify-between py-6 text-sm uppercase">
           <span>Shipping charge</span>
@@ -108,7 +111,7 @@
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
             
             <span>Total cost</span>
-            <span>$<%=cart.totalPrice+10  %></span>
+            <span id="cartTotal" data-total="<%= cart.totalPrice %>">$<%=cart.totalPrice+10  %></span>
           </div>
           <a href="/brepublic/Checkout">
             <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
@@ -226,14 +229,35 @@
       </script>
 
       <script>
-        document.getElementById('applyCoupon').addEventListener('click',function(){
-          console.log("appl coupon")
-          const selectedCoupon = document.querySelector('[name="couponCode"]').value;
-          console.log(selectedCoupon)
-          const selectedCouponDetails = coupons.find(function(coupon) {
-            return coupon.code === selectedCoupon;
-          });
-          console.log(selectedCouponDetails)
+        document.addEventListener("DOMContentLoaded", function () {
+          const applyCouponButton = document.getElementById('applyCoupon')
+          const clearCouponButton = document.getElementById('clearCoupon')
+          const couponSelect = document.getElementById('couponSelect');
+          const cartTotalElement = document.getElementById('cartTotal');
+
+          applyCouponButton.addEventListener('click', function () {
+            const selectedCouponIndex = couponSelect.selectedIndex;
+            const selectedCouponDiscount = couponSelect.options[selectedCouponIndex].value
+              if (isNaN(selectedCouponDiscount)) {
+                console.error('Invalid discount value:', couponSelect.options[selectedCouponIndex].value);
+                return;
+            }
+
+            const cartTotal = parseFloat(cartTotalElement.getAttribute('data-total'));
+            const shippingCharge = 10;
+            const discountTotal = cartTotal - (cartTotal * (selectedCouponDiscount / 100)) + shippingCharge
+
+            const totalCostSpan = document.getElementById('cartTotal');
+            totalCostSpan.innerText = '$' + discountTotal.toFixed(2)
+          })
+         
+         clearCouponButton.addEventListener('click',function(){
+          couponSelect.value = "Select coupon"
+          const originalTotal = parseFloat(cartTotalElement.getAttribute("data-total"));
+          cartTotalElement.textContent = "$" + originalTotal;
+         }) 
+
+
         })
       </script>
       

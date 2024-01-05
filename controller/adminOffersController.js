@@ -18,6 +18,10 @@ module.exports.viewOffers = async (req, res) => {
     }
   };
 
+module.exports.getCoupon = async (req,res)=>{
+    
+}
+
 module.exports.addCoupen = async (req,res)=>{
     try {
         const {
