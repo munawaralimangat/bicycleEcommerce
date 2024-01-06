@@ -104,17 +104,21 @@
         <button id="clearCoupon" class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Clear</button>
 
         <div class="border-t mt-8">
-          <div class="flex font-normal justify-between py-6 text-sm uppercase">
+          <div class="flex font-normal justify-between py-4 text-sm uppercase">
           <span>Shipping charge</span>
             <span>$10</span>
           </div>
+          <div class="flex font-normal justify-between py-2 text-sm uppercase">
+            <span>Shipping charge</span>
+              <span>$10</span>
+            </div>
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
             
             <span>Total cost</span>
             <span id="cartTotal" data-total="<%= cart.totalPrice %>">$<%=cart.totalPrice+10  %></span>
           </div>
           <a href="/brepublic/Checkout">
-            <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+            <button id="checkoutButton" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
           </a>
         </div>
       </div>
@@ -257,9 +261,35 @@
           cartTotalElement.textContent = "$" + originalTotal;
          }) 
 
-
         })
       </script>
+
+      <script>
+        const checkoutButton = document.getElementById('checkoutButton')
+        checkoutButton.addEventListener('click',function(e){
+          e.preventDefault()
+          intitalCheckout()
+        })
+
+        async function intitalCheckout(){
+          const urlParams = new URLSearchParams(window.location.search)
+          const userId = urlParams.get('userId');
+          console.log(userId)
+          try {
+            const response = await fetch(`/brepublic/cartItem?userId=${userId}`)
+            const responseData = await response.json();
+            if(responseData.cart){
+              const cart = responseData.cart
+              console.log(cart)
+            }else{
+              console.log("cart is empty")
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      </script>
+
       
       
   

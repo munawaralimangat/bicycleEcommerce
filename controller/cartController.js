@@ -33,6 +33,34 @@ module.exports.viewCart = async (req,res)=>{
 
 }
 
+module.exports.getCart = async (req,res)=>{
+    try {
+        const { userId } = req.query
+        const cart = await Cart.findOne({user:userId}).populate({
+            path:'items.product',
+            populate: [
+                {
+                  path: 'category_name',
+                  model: 'Category',
+                },
+                {
+                  path: 'variations.size',
+                  model: 'Size',
+                },
+              ],
+        })
+        const coupons = await Coupon.find({})
+        console.log("cart",cart)
+        if(cart){
+        res.json({cart,coupons})
+        }else{
+            res.render('user/emptyCart')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports.addToCart = async (req,res)=>{
     try {
         const {userId,productId,quantity}=req.body

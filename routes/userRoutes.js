@@ -40,6 +40,7 @@ router.get('/roadbikes',userCategoryController.viewRoadBikes)
 //cart routes
 router.get('/cart',userCartController.viewCart);
 router.post('/addtocart',userCartController.addToCart);
+router.get('/cartItem',userCartController.getCart)
   //cart increment and decrement
 router.put('/increment/:itemId',userCartController.incrementQuantity);
 router.put('/decrement/:itemId',userCartController.decrementQuantity);
