@@ -179,3 +179,9 @@ module.exports.decrementQuantity = async (req,res)=>{
     }
 }
 
+module.exports.postCheckout = async (req,res)=>{
+    const {cartId} = req.params;
+    console.log("buhahahahhah",req.body)
+    console.log(cartId)
+}
+

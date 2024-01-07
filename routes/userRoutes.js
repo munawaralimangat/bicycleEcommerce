@@ -41,11 +41,10 @@ router.get('/roadbikes',userCategoryController.viewRoadBikes)
 router.get('/cart',userCartController.viewCart);
 router.post('/addtocart',userCartController.addToCart);
 router.get('/cartItem',userCartController.getCart)
-  //cart increment and decrement
 router.put('/increment/:itemId',userCartController.incrementQuantity);
 router.put('/decrement/:itemId',userCartController.decrementQuantity);
-
 router.delete('/removefromcart',userCartController.removeFromCart);
+router.post('/tocheckout',userCartController.postCheckout) //to checkout, data passing to the order db
 
 //wishlist route
 router.get('/wishlist',userWishlistController.viewWishlist);
@@ -54,7 +53,7 @@ router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 
 //checkout routes
 router.get('/checkout',checkoutController.viewCheckout);
-router.post('/checkout')
+
 
 
 

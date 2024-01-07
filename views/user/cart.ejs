@@ -92,7 +92,7 @@
         <div class="py-5">
           <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
           <select id="couponSelect" class="block p-2 text-gray-600 w-full text-sm" name="couponCode">
-            <option>Select coupon</option>
+            <option disabled selected="">Select coupon</option>
             <% coupons.forEach(coupon => { %>
               <option value="<%= coupon.discount %>"><%= coupon.code %> - <%= coupon.discount %>% off</option>
               
@@ -108,12 +108,11 @@
           <span>Shipping charge</span>
             <span>$10</span>
           </div>
-          <div class="flex font-normal justify-between py-2 text-sm uppercase">
-            <span>Shipping charge</span>
+          <div class="flex font-normal text-red-600 justify-between py-1 text-sm">
+            <span>Coupon discount</span>
               <span>$10</span>
             </div>
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
-            
             <span>Total cost</span>
             <span id="cartTotal" data-total="<%= cart.totalPrice %>">$<%=cart.totalPrice+10  %></span>
           </div>
@@ -278,12 +277,42 @@
           try {
             const response = await fetch(`/brepublic/cartItem?userId=${userId}`)
             const responseData = await response.json();
-            if(responseData.cart){
-              const cart = responseData.cart
-              console.log(cart)
-            }else{
-              console.log("cart is empty")
+            const cart = responseData.cart
+
+            const selectedCouponIndex = couponSelect.selectedIndex;
+            let selectedCouponDiscount = couponSelect.options[selectedCouponIndex].value;
+            console.log(selectedCouponDiscount)
+
+            if(selectedCouponDiscount==='Select coupon'){
+              selectedCouponDiscount = 0
             }
+
+            const cartTotalElement = document.getElementById('cartTotal')
+            const cartTotal = parseFloat(cartTotalElement.getAttribute('data-total'));
+            const shippingCharge = 10;
+            const discountTotal = cartTotal - (cartTotal * (selectedCouponDiscount / 100)) + shippingCharge;
+
+            console.log('User ID:', userId);
+            console.log('Cart data:', cart);
+            console.log('Discounted Total:', discountTotal);
+            let cartId = cart._id
+
+            const checkoutResponse = await fetch(`/brepublic/tocheckout?cartId=${cartId}`,{
+              method:'post',
+              headers:{
+                'Content-Type':'application/json'
+              },
+              body:JSON.stringify({ userId, cart, discountTotal })
+            })
+            if(checkoutResponse.ok){
+              const data = checkoutResponse.json()
+              console.log("hh")
+              location.assign('/brepublic/checkout')
+              console.log("hhkkkkk")
+            }else{
+              console.error('Error during checkout:', checkoutResponse.statusText);
+            }
+
           } catch (error) {
             console.log(error)
           }
