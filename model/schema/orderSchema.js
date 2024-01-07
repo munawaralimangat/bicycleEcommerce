@@ -25,6 +25,14 @@ const orderSchema = new mongoose.Schema({
       },
     },
   ],
+  shippingAddress: {
+    building: String,
+    address: String,
+    pinCode: Number,
+    city: String,
+    mobileNumber: Number,
+  },
+  delivered: { type: Boolean, default: false },
   totalPrice: {
     type: Number,
     default: 0,
@@ -41,19 +49,19 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-orderSchema.pre('save', function (next) {
-  if (!this.orderNumber) {
-    this.orderNumber = generateOrderNumber();
-  }
+// orderSchema.pre('save', function (next) {
+//   if (!this.orderNumber) {
+//     this.orderNumber = generateOrderNumber();
+//   }
 
-  next();
-});
+//   next();
+// });
 
-function generateOrderNumber() {
-  const timestamp = Date.now().toString(36);
-  const randomString = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `${timestamp}-${randomString}`;
-}
+// function generateOrderNumber() {
+//   const timestamp = Date.now().toString(36);
+//   const randomString = Math.random().toString(36).substring(2, 8).toUpperCase();
+//   return `${timestamp}-${randomString}`;
+// }
 
 const Order = mongoose.model('Order', orderSchema);
 

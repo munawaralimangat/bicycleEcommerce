@@ -116,7 +116,7 @@
             <span>Total cost</span>
             <span id="cartTotal" data-total="<%= cart.totalPrice %>">$<%=cart.totalPrice+10  %></span>
           </div>
-          <a href="/brepublic/Checkout">
+          <a href="/brepublic/Checkout?userId=<%=user._id  %>">
             <button id="checkoutButton" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
           </a>
         </div>
@@ -307,7 +307,7 @@
             if(checkoutResponse.ok){
               const data = checkoutResponse.json()
               console.log("hh")
-              location.assign('/brepublic/checkout')
+              location.assign(`/brepublic/checkout?userId=${userId}`)
               console.log("hhkkkkk")
             }else{
               console.error('Error during checkout:', checkoutResponse.statusText);

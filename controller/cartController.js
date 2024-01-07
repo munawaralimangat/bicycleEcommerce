@@ -2,6 +2,7 @@ const Cart = require('../model/schema/cartSchema')
 const Product = require('../model/schema/productSchema')
 const Category = require('../model/schema/categorySchema')
 const Coupon = require('../model/schema/coupenSchema')
+const Order = require('../model/schema/orderSchema')
 
 module.exports.viewCart = async (req,res)=>{
     try{
@@ -179,9 +180,28 @@ module.exports.decrementQuantity = async (req,res)=>{
     }
 }
 
+function generateOrderNumber() {
+    const timestamp = Date.now().toString(36);
+    const randomString = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `${timestamp}-${randomString}`;
+  }
+
 module.exports.postCheckout = async (req,res)=>{
-    const {cartId} = req.params;
-    console.log("buhahahahhah",req.body)
-    console.log(cartId)
+    try {
+        const { userId, cart, discountTotal } = req.body;
+
+        const order = new Order({
+            user:userId,
+            items:cart.items,
+            totalPrice:discountTotal,
+            // status:'Pending'
+        })
+        order.orderNumber = generateOrderNumber();
+        const savedOrder = await order.save()
+        res.status(201).json({orderId:savedOrder._id})
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({message:"Internal server error"})
+    }
 }
 
