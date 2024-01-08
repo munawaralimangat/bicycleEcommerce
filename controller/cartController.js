@@ -181,8 +181,8 @@ module.exports.decrementQuantity = async (req,res)=>{
 }
 
 function generateOrderNumber() {
-    const timestamp = Date.now().toString(36);
-    const randomString = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const randomString = Math.random().toString(36).substring(2, 4).toUpperCase();
     return `${timestamp}-${randomString}`;
   }
 

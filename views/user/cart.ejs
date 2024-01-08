@@ -263,7 +263,7 @@
         })
       </script>
 
-      <script>
+      <!-- <script>
         const checkoutButton = document.getElementById('checkoutButton')
         checkoutButton.addEventListener('click',function(e){
           e.preventDefault()
@@ -306,7 +306,8 @@
             })
             if(checkoutResponse.ok){
               const data = checkoutResponse.json()
-              console.log("hh")
+              
+              console.log("hh",data.orderId)
               location.assign(`/brepublic/checkout?userId=${userId}`)
               console.log("hhkkkkk")
             }else{
@@ -317,7 +318,7 @@
             console.log(error)
           }
         }
-      </script>
+      </script> -->
 
       
       

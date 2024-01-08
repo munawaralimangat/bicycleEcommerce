@@ -1,18 +1,33 @@
 const Order = require('../model/schema/orderSchema')
+const Cart = require('../model/schema/cartSchema')
+const Coupon = require('../model/schema/coupenSchema')
 
 module.exports.viewCheckout = async (req,res)=>{
-    try {
-        const userId = req.query.userId;
-        if(!userId){
-            return res.status(400).json({message:"user ID is required"})
-        }
-
-        const orders = await Order.find({user:userId}).populate('items.product')
-        console.log(orders)
-        res.render('user/checkout',{orders})
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({message:"Internal server error"})
+    try{
+        const {userId} = req.query;
+        const cart = await Cart.findOne({user:userId}).populate({
+            path:'items.product',
+            populate: [
+                {
+                  path: 'category_name',
+                  model: 'Category',
+                },
+                {
+                  path: 'variations.size',
+                  model: 'Size',
+                },
+              ],
+        })
+        const coupons = await Coupon.find({})
+        console.log("cart",cart)
+        if(cart){
+        res.render('user/checkout',{cart,coupons})
+        }else{
+            res.render('user/emptyCart')
+        }    
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error:"Internal server error"})
     }
 }
 
