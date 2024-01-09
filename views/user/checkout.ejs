@@ -94,7 +94,7 @@
                     <div class="flex justify-center w-full md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
                         <img src="https://i.ibb.co/5TSg7f6/Rectangle-18.png" alt="avatar" />
                         <div class="flex justify-start items-start flex-col space-y-2">
-                            <p class="text-base dark:text-white font-semibold leading-4 text-left text-gray-800">David Kent</p>
+                            <p class="text-base dark:text-white font-semibold leading-4 text-left text-gray-800"><%=user.user_firstName+" "+user.user_secondName  %></p>
                             <p class="text-sm dark:text-gray-300 leading-5 text-gray-600">10 Previous Orders</p>
                         </div>
                     </div>
@@ -102,20 +102,24 @@
                     <div class="flex justify-center text-gray-800 dark:text-white md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
                         <img class="dark:hidden" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1.svg" alt="email">
                         <img class="hidden dark:block" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1dark.svg" alt="email">
-                        <p class="cursor-pointer text-sm leading-5 ">david89@gmail.com</p>
+                        <p class="cursor-pointer text-sm leading-5 "><%=user.user_email %></p>
                     </div>
                 </div>
                 <div class="flex justify-between xl:h-full items-stretch w-full flex-col mt-6 md:mt-0">
                     <div class="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
                         <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
                             <p class="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
-                            <p class="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">180 North King Street, Northhampton MA 1060</p>
+                            <% if(addresses.length === 0){ %>
+                                <p>no address</p>
+                                <% }else{ %>
+                            <% addresses.forEach(address => {; %> 
+                            <p class="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=address.street  %>, <%=address.city  %>,<%=address.state  %>, <%=address.zip  %></p>
+
+                            <% }) %>
+                            <% } %>
                         </div>
-                        <!-- <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4">
-                            <p class="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Billing Address</p>
-                            <p class="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">180 North King Street, Northhampton MA 1060</p>
-                        </div> -->
                     </div>
+
                     <!-- Modal Structure -->
                     <div id="addressModal" class="fixed inset-0 z-10 hidden flex justify-center items-center">
                         <div class="modal-overlay fixed inset-0 bg-black opacity-50"></div>
@@ -127,21 +131,33 @@
                             </div>
                             <div class="modal-content py-4 text-left px-6">
                                 <!-- Address Form -->
-                                <form class="mt-4">
+                                <form id="addressForm" class="mt-4">
                                     <!-- Name -->
                                     <div class="mb-4">
                                         <label for="name" class="block text-gray-800 text-sm font-medium">Full Name</label>
                                         <input type="text" id="name" name="name" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                        <input type="text" id="userId" class="hidden" placeholder="<%= user._id %>">
                                     </div>
-
-                                    <!-- Street Address -->
+                                
                                     <div class="mb-4">
-                                        <label for="street" class="block text-gray-800 text-sm font-medium">Street Address</label>
-                                        <input type="text" id="street" name="street" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                        <label for="mobile" class="block text-gray-800 text-sm font-medium">Mobile number</label>
+                                        <input type="number" id="mobile" name="mobile" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
                                     </div>
-
-                                    <!-- City and Zip Code -->
+                                
+                                    <!-- Street Address and State -->
                                     <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="street" class="block text-gray-800 text-sm font-medium">Street Address</label>
+                                            <input type="text" id="street" name="street" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                        </div>
+                                        <div>
+                                            <label for="state" class="block text-gray-800 text-sm font-medium">State</label>
+                                            <input type="text" id="state" name="state" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                        </div>
+                                    </div>
+                                
+                                    <!-- City, Zip Code, and Country -->
+                                    <div class="grid grid-cols-2 gap-4 mt-2">
                                         <div>
                                             <label for="city" class="block text-gray-800 text-sm font-medium">City</label>
                                             <input type="text" id="city" name="city" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
@@ -150,19 +166,19 @@
                                             <label for="zip" class="block text-gray-800 text-sm font-medium">Zip Code</label>
                                             <input type="text" id="zip" name="zip" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
                                         </div>
-                                    </div>
 
-                                    <!-- Country -->
-                                    <div class="mb-4">
-                                        <label for="country" class="block text-gray-800 text-sm font-medium">Country</label>
-                                        <select id="country" name="country" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
-                                            <!-- Add your country options here -->
-                                            <option value="us">United States</option>
-                                            <option value="in">India</option>
-                                            <!-- Add more options as needed -->
-                                        </select>
                                     </div>
-
+                                    <div class="mb-4 mt-2">
+                                        <div>
+                                            <label for="country" class="block text-gray-800 text-sm font-medium">Country</label>
+                                            <select id="country" name="country" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                                <!-- Add your country options here -->
+                                                <option value="india">India</option>
+                                                <!-- Add more options as needed -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                
                                     <!-- Submit Button -->
                                     <div class="mt-6">
                                         <button type="submit" class="bg-gray-800 text-white p-3 rounded-md w-full hover:bg-gray-700">Save Address</button>
@@ -171,12 +187,16 @@
                             </div>
                         </div>
                     </div>
-                    <button class="mt-6 md:mt-0 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-4 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800 open-modal-button">
-                        Add address
-                      </button>
-                    <div class="flex w-full justify-center items-center md:justify-start md:items-start">
-                        <button class="mt-4 md:mt-0 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800">Edit Details</button>
+                    <!-- Modal Structure closes -->
+                    <div class="">
+                        <div class="flex w-full justify-center mt-4 items-center md:justify-start md:items-start">
+                            <button
+                                class="mt-6 md:mt-0 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-4 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800 open-modal-button">
+                                Add address
+                            </button>
+                        </div>
                     </div>
+
                     
                 </div>
             </div>
@@ -188,29 +208,62 @@
   <%-include('../includes/components/userFooter')  %>
 <%-include('../includes/userEnd')  %>
 <script>
-    // Get the modal element
-    var modal = document.getElementById('addressModal');
+    const modal = document.getElementById('addressModal');
+    const btn = document.querySelector('.open-modal-button');
+    const span = document.querySelector('.modal-close');
 
-    // Get the button that opens the modal
-    var btn = document.querySelector('.open-modal-button');
+    const userId = document.getElementById('userId').getAttribute('placeholder');
+    
+    const form = document.querySelector('form')
 
-    // Get the <span> element that closes the modal
-    var span = document.querySelector('.modal-close');
-
-    // When the user clicks the button, open the modal
     btn.onclick = function () {
         modal.classList.remove('hidden');
     };
 
-    // When the user clicks on <span> (x), close the modal
     span.onclick = function () {
         modal.classList.add('hidden');
     };
 
-    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         if (event.target === modal) {
             modal.classList.add('hidden');
         }
     };
+
+    //post address in to the database
+    document.addEventListener('submit',async function(event){
+        event.preventDefault()
+
+        const addressForm = document.getElementById('addressForm');
+        const formData = new FormData(addressForm)
+        for (const pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+        }
+        try {
+             const response = await fetch('/brepublic/addAddress',{
+                method:'post',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    name: formData.get('name'),
+                    mobile: formData.get('mobile'),
+                    street: formData.get('street'),
+                    state:formData.get('state'),
+                    city: formData.get('city'),
+                    zip: formData.get('zip'),
+                    country: formData.get('country'),
+                }),
+             })
+             if(response.ok){
+                const savedAddress = await response.json()
+                location.assign(`/brepublic/Checkout?userId=${userId}`)
+             }else{
+                console.error('Error saving address:', response.statusText);
+             }
+        } catch (error) {
+            console.error('Error during form submission:', error);
+        }
+    })
 </script>
