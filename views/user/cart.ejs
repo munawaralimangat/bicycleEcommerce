@@ -13,6 +13,7 @@
 
 
 <body class="bg-gray-100">
+  <p class="hidden" id="userId"><%=user._id  %></p>
   <div class="container mx-auto mt-28 p-4">
     <div class="flex flex-col-reverse md:flex-row shadow-md my-10">
       <div class="md:w-3/4 bg-white px-4 md:px-10 py-10">
@@ -94,7 +95,7 @@
           <select id="couponSelect" class="block p-2 text-gray-600 w-full text-sm" name="couponCode">
             <option disabled selected="">Select coupon</option>
             <% coupons.forEach(coupon => { %>
-              <option value="<%= coupon.discount %>"><%= coupon.code %> - <%= coupon.discount %>% off</option>
+              <option value="<%= coupon._id %>"><%= coupon.code %> - <%= coupon.discount %>% off</option>
               
             <% }); %>
             
@@ -110,7 +111,7 @@
           </div>
           <div class="flex font-normal text-red-600 justify-between py-1 text-sm">
             <span>Coupon discount</span>
-              <span>$10</span>
+              <span id="couponDiscount">$0</span>
             </div>
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
             <span>Total cost</span>
@@ -233,101 +234,96 @@
 
       <script>
         document.addEventListener("DOMContentLoaded", function () {
+          const userId = document.getElementById('userId').textContent
+          console.log(userId)
           const applyCouponButton = document.getElementById('applyCoupon')
           const clearCouponButton = document.getElementById('clearCoupon')
           const couponSelect = document.getElementById('couponSelect');
           const cartTotalElement = document.getElementById('cartTotal');
+          const couponDiscountElement = document.getElementById('couponDiscount');
 
-          applyCouponButton.addEventListener('click', function () {
+          // let selectedCouponId = null;
+
+          applyCouponButton.addEventListener('click', async function () {
             const selectedCouponIndex = couponSelect.selectedIndex;
-            const selectedCouponDiscount = couponSelect.options[selectedCouponIndex].value
-            console.log(selectedCouponDiscount)
-              if (isNaN(selectedCouponDiscount)) {
-                console.error('Invalid discount value:', couponSelect.options[selectedCouponIndex].value);
-                return;
+            const selectedCouponId = couponSelect.options[selectedCouponIndex].value;
+            console.log("hell", selectedCouponId)
+            const originalTotalPriceElement = document.getElementById('cartTotal');
+            const originalTotalPrice = parseFloat(originalTotalPriceElement.getAttribute('data-total'));
+            const originalCouponDiscount = parseFloat(document.getElementById('couponDiscount').textContent);
+
+            if (selectedCouponId !== "Select coupon") {
+              try {
+                const response = await fetch(`/brepublic/getcoupon?value=${selectedCouponId}`);
+                console.log(response);
+
+                if (!response.ok) {
+                  console.log("error");
+                } else {
+                  console.log("yes");
+                  const coupon = await response.json();
+                  console.log(coupon);
+
+                  const discountPercentage = coupon.discount;
+
+                  const shippingCharge = 10;
+                  const discountAmount = (originalTotalPrice * discountPercentage) / 100;
+
+                  couponDiscountElement.textContent = `$${discountAmount.toFixed()}`;
+                  console.log(discountAmount);
+
+                  const updatedTotalPrice = originalTotalPrice - discountAmount + shippingCharge;
+                  originalTotalPriceElement.textContent = `$${updatedTotalPrice.toFixed()}`;
+
+                  await saveCouponToCart(selectedCouponId,userId);
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            } else {
+              // Reset to initial values when "Select coupon" is chosen
+              const shippingCharge = 10
+              const couponDiscountElement = document.getElementById('couponDiscount');
+              couponDiscountElement.textContent = `$${0}`;
+
+              originalTotalPriceElement.textContent = `$${originalTotalPrice + shippingCharge}`
+              console.log("selected coupon is 'Select coupon'");
+              await removeCouponFromCart(userId);
             }
-
-            const cartTotal = parseFloat(cartTotalElement.getAttribute('data-total'));
-            const shippingCharge = 10;
-            const discountTotal = cartTotal - (cartTotal * (selectedCouponDiscount / 100)) + shippingCharge;
-
-            const totalCostSpan = document.getElementById('cartTotal');
-            totalCostSpan.innerText = '$' + discountTotal.toFixed(2)
           })
-         
-         clearCouponButton.addEventListener('click',function(){
-          couponSelect.value = "Select coupon"
-          const originalTotal = parseFloat(cartTotalElement.getAttribute("data-total"));
-          cartTotalElement.textContent = "$" + originalTotal;
-         }) 
+
+          clearCouponButton.addEventListener('click', async function () {
+            const shippingCharge = 10
+            couponSelect.value = "Select coupon"
+            const originalTotal = parseFloat(cartTotalElement.getAttribute("data-total"));
+            cartTotalElement.textContent = `$${originalTotal + shippingCharge}`;
+            couponDiscountElement.textContent = `$${0}`;
+            await removeCouponFromCart(userId);
+          })
+
+          async function saveCouponToCart(couponId,userId) {
+            console.log("save",userId)
+            const response = await fetch(`/brepublic/savecoupon?couponId=${couponId}&userId=${userId}`, { method: 'POST' });
+
+            if (!response.ok) {
+              console.log("Error saving coupon to cart");
+            }
+          }
+
+          async function removeCouponFromCart(userId) {
+            console.log("yo",userId)
+            const response = await fetch(`/brepublic/removecoupon?userId=${userId}`, { method: 'DELETE' });
+
+            if (!response.ok) {
+              console.log("Error removing coupon from cart");
+            }
+          }
 
         })
       </script>
-      <style>
-        #mobile-menu-2 {
-          display: none;
-        }
-        #searchForm {
-          display: none;
-        }
-      </style>
 
-      <!-- <script>
-        const checkoutButton = document.getElementById('checkoutButton')
-        checkoutButton.addEventListener('click',function(e){
-          e.preventDefault()
-          intitalCheckout()
-        })
 
-        async function intitalCheckout(){
-          const urlParams = new URLSearchParams(window.location.search)
-          const userId = urlParams.get('userId');
-          console.log(userId)
-          try {
-            const response = await fetch(`/brepublic/cartItem?userId=${userId}`)
-            const responseData = await response.json();
-            const cart = responseData.cart
 
-            const selectedCouponIndex = couponSelect.selectedIndex;
-            let selectedCouponDiscount = couponSelect.options[selectedCouponIndex].value;
-            console.log(selectedCouponDiscount)
-
-            if(selectedCouponDiscount==='Select coupon'){
-              selectedCouponDiscount = 0
-            }
-
-            const cartTotalElement = document.getElementById('cartTotal')
-            const cartTotal = parseFloat(cartTotalElement.getAttribute('data-total'));
-            const shippingCharge = 10;
-            const discountTotal = cartTotal - (cartTotal * (selectedCouponDiscount / 100)) + shippingCharge;
-
-            console.log('User ID:', userId);
-            console.log('Cart data:', cart);
-            console.log('Discounted Total:', discountTotal);
-            let cartId = cart._id
-
-            const checkoutResponse = await fetch(`/brepublic/tocheckout?cartId=${cartId}`,{
-              method:'post',
-              headers:{
-                'Content-Type':'application/json'
-              },
-              body:JSON.stringify({ userId, cart, discountTotal })
-            })
-            if(checkoutResponse.ok){
-              const data = checkoutResponse.json()
-              
-              console.log("hh",data.orderId)
-              location.assign(`/brepublic/checkout?userId=${userId}`)
-              console.log("hhkkkkk")
-            }else{
-              console.error('Error during checkout:', checkoutResponse.statusText);
-            }
-
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      </script> -->
 
       
       

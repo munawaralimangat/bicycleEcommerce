@@ -46,6 +46,11 @@ router.put('/decrement/:itemId',userCartController.decrementQuantity);
 router.delete('/removefromcart',userCartController.removeFromCart);
 router.post('/tocheckout',userCartController.postCheckout) //to checkout, data passing to the order db
 
+// cart-coupon
+router.get('/getcoupon',userCartController.getCoupon)
+router.post('/savecoupon',userCartController.saveCouponToCart)
+router.delete('/removecoupon',userCartController.removeCouponFromCart)
+
 //wishlist route
 router.get('/wishlist',userWishlistController.viewWishlist);
 router.post('/addtowishlist',userWishlistController.addToWishlist);
@@ -56,6 +61,8 @@ router.get('/checkout',checkoutController.viewCheckout);
 
 //address routes
 router.post('/addAddress',checkoutController.postAddress)
+
+
 
 
 
