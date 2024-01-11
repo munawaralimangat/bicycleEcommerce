@@ -30,6 +30,10 @@ const cartSchema = new mongoose.Schema({
     default: 0,
     min: 0,
   },
+  coupon: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Coupon',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

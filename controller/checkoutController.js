@@ -24,7 +24,7 @@ module.exports.viewCheckout = async (req,res)=>{
         const coupons = await Coupon.find({})
 
         if(cart){
-        res.render('user/checkout',{cart,coupons,addresses})
+        res.render('user/checkout',{cart,coupons,addresses,search:false})
         }
     }catch(error){
         console.error(error);

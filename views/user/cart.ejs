@@ -241,6 +241,7 @@
           applyCouponButton.addEventListener('click', function () {
             const selectedCouponIndex = couponSelect.selectedIndex;
             const selectedCouponDiscount = couponSelect.options[selectedCouponIndex].value
+            console.log(selectedCouponDiscount)
               if (isNaN(selectedCouponDiscount)) {
                 console.error('Invalid discount value:', couponSelect.options[selectedCouponIndex].value);
                 return;
@@ -248,7 +249,7 @@
 
             const cartTotal = parseFloat(cartTotalElement.getAttribute('data-total'));
             const shippingCharge = 10;
-            const discountTotal = cartTotal - (cartTotal * (selectedCouponDiscount / 100)) + shippingCharge
+            const discountTotal = cartTotal - (cartTotal * (selectedCouponDiscount / 100)) + shippingCharge;
 
             const totalCostSpan = document.getElementById('cartTotal');
             totalCostSpan.innerText = '$' + discountTotal.toFixed(2)
@@ -262,6 +263,14 @@
 
         })
       </script>
+      <style>
+        #mobile-menu-2 {
+          display: none;
+        }
+        #searchForm {
+          display: none;
+        }
+      </style>
 
       <!-- <script>
         const checkoutButton = document.getElementById('checkoutButton')

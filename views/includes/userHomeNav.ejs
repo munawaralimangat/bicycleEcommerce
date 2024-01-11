@@ -19,6 +19,7 @@
             <a href="/brepublic/landing/login" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Login </a>
             <a href="/brepublic/landing/register" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Register </a>
             <% } %>
+
             <% if(user){ %>
                 <form method="GET" id="searchForm" action="/brepublic/search">
                   <div class="relative text-gray-600 focus-within:text-gray-400">
@@ -40,7 +41,7 @@
                         <input type="search" id="searchInput" name="q" class="py-2 text-sm text-white bg-gray-900 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." autocomplete="off">
                       </div>
                       <% } %>
-
+                      
             <% if(user){ %>
             <div class="dropdown" id="userDropdown">
                 <a href="#" class="dropbtn text-white dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><%= user.user_firstName+" "+user.user_secondName %></a>

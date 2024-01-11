@@ -62,10 +62,10 @@ module.exports.viewProduct = async (req, res) => {
 
 
 module.exports.searchProduct = async (req,res)=>{
-    console.log(req.query)
+    console.log("1",req.query)
     try{
         const {q:productName} = req.query;
-        console.log(productName)
+        console.log("pname",productName)
         if(!productName){
             return res.status(400).json({message:'Product name is required'})
         }
