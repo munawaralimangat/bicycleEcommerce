@@ -69,7 +69,7 @@
                                             <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
                                                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add a
                                                     new product</h2>
-                                                <form action="#">
+                                                <form action="#" method="post">
                                                     <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                                                         <div class="sm:col-span-2">
                                                             <label for="productName"
@@ -428,7 +428,7 @@
             <!--update product-->
             <script>
                     async function editProduct(event) {
-                    // event.preventDefault()
+                    event.preventDefault()
                     const productIdInput = document.getElementById('editProductId');
 
                     if (productIdInput) {
@@ -535,7 +535,7 @@
                             body: formData,
                         })
                         const data = await res.json()
-                        // location.reload()
+                        location.reload()
                         console.log(data)
 
                     } catch (err) {

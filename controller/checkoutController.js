@@ -19,6 +19,7 @@ module.exports.viewCheckout = async (req,res)=>{
                 },
               ],
         })
+        .populate('coupon')
 
         const addresses = await Address.find({ userId });
         const coupons = await Coupon.find({})
@@ -66,6 +67,31 @@ module.exports.postAddress = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" })
+  }
+}
+
+function generateOrderNumber() {
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const randomString = Math.random().toString(36).substring(2, 4).toUpperCase();
+    return `${timestamp}-${randomString}`;
+  }
+
+module.exports.placeOrder = async (req,res)=>{
+  try {
+      const { userId, cart, discountTotal } = req.body;
+
+      const order = new Order({
+          user:userId,
+          items:cart.items,
+          totalPrice:discountTotal,
+          // status:'Pending'
+      })
+      order.orderNumber = generateOrderNumber();
+      const savedOrder = await order.save()
+      res.status(201).json({orderId:savedOrder._id})
+  } catch (error) {
+      console.error(error)
+      res.status(500).json({message:"Internal server error"})
   }
 }
 

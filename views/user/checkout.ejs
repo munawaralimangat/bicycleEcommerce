@@ -9,13 +9,13 @@
 
 
 
-<div class="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+<div class="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto dark:bg-gray-700">
     <% if (cart.length === 0) { %>
         <p class="mt-72">No orders found for this user.</p>
     <% } else { %>
     <div class="flex justify-start mt-20 item-start space-y-2 flex-col">
-        <h1 class="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #</h1>
-        <p class="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">21st Mart 2021 at 10:34 PM</p>
+        <h1 class="text-3xl dark:text-gray-600 lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800"><%=cart.items.length  %> Items</h1>
+        <p class="text-base dark:text-gray-600 font-medium leading-6 text-gray-600">21st Mart 2021 at 10:34 PM</p>
     </div> 
 
     <div class="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
@@ -47,6 +47,55 @@
                 <% }) %>
             </div>
             <div class="flex justify-center md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
+                <div class="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
+                    <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Shipping</h3>
+                    
+                    <!-- <div class="flex justify-between items-start w-full" >
+                        <div class="flex justify-center items-center space-x-4">
+                            <div class="w-8 h-8">
+                                <img class="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
+                            </div>
+                            <div class="flex flex-col justify-start items-center">
+                                <p class="text-lg leading-6 dark:text-white font-semibold text-gray-800">cash on Delivery<br /><span class="font-normal">Delivery with 24 Hours</span></p>
+                            </div>
+                        </div>
+                        <button class="text-lg font-semibold leading-6 dark:text-white text-gray-800">Select</button>
+                    </div> -->
+ 
+                    <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+                        <input checked id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">                   <div class="flex justify-between items-start w-full">
+                            <div class="flex ml-4 justify-center items-center space-x-4">
+                                <!-- <div class="w-8 h-8">
+                                    <img class="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
+                                </div> -->
+                                <div class="flex flex-col justify-start items-center mr-28">
+                                    <p class="text-lg leading-6 dark:text-white font-semibold text-gray-800" value="COD" >Cash on Delivery<br /><span class="font-normal">Delivery with 24 Hours</span></p>
+                                </div>
+                                <i class="fa-solid fa-sack-dollar fa-2xl"></i>
+                            </div>
+                            <!-- <button class="text-lg font-semibold leading-6 dark:text-white text-gray-800">Select</button> -->
+                        </div></label>
+                    </div>
+                    <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+                        <input checked id="bordered-radio-2" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="bordered-radio-2" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">                   <div class="flex justify-between items-start w-full">
+                            <div class="flex ml-4 justify-center items-center space-x-4">
+                                <!-- <div class="w-8 h-8">
+                                    <img class="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
+                                </div> -->
+                                <div class="flex flex-col justify-start items-center mr-28">
+                                    <p class="text-lg leading-6 dark:text-white font-semibold text-gray-800" value="razorpay">Pay online<br /><span class="font-normal">Delivery with 24 Hours</span></p>
+                                </div>
+                                <i class="fa-solid fa-credit-card fa-2xl"></i>
+                            </div>
+                            <!-- <button class="text-lg font-semibold leading-6 dark:text-white text-gray-800">Select</button> -->
+                        </div></label>
+                    </div>
+                    <!-- <div class="w-full flex justify-center items-center">
+                        <button class="hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">View Carrier Details</button>
+                    </div> -->
+                </div>
                 <div class="flex flex-col px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
                     <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Summary</h3>
                     <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
@@ -55,9 +104,27 @@
                             <p class="text-base dark:text-gray-300 leading-4 text-gray-600">$<%=cart.totalPrice %></p>
                         </div>
                         <div class="flex justify-between items-center w-full">
-                            <p class="text-base dark:text-white leading-4 text-gray-800">Discount <span class="bg-gray-200 p-1 text-xs font-medium dark:bg-white dark:text-gray-800 leading-3 text-gray-800">STUDENT</span></p>
-                            <p class="text-base dark:text-gray-300 leading-4 text-gray-600">-$<%=coupons  %></p>
+                            <p class="text-base dark:text-white leading-4 text-gray-800">
+                                Discount 
+                                <% if (cart.coupon) { %>
+                                    <span class="bg-gray-200 p-1 text-xs font-medium dark:bg-white dark:text-gray-800 leading-3 text-gray-800">
+                                        <%= cart.coupon.discount %>% <!-- Assuming discountPercentage is the property holding the percentage -->
+                                    </span>
+                                <% } else { %>
+                                    <span class="bg-gray-200 p-1 text-xs font-medium dark:bg-white dark:text-gray-800 leading-3 text-gray-800">
+                                        0%
+                                    </span>
+                                <% } %>
+                            </p>
+                            <% if (cart.coupon) { %>
+                                <p class="text-base dark:text-gray-300 leading-4 text-gray-600">
+                                    -$<%= (cart.totalPrice * (cart.coupon.discount / 100)).toFixed() %>
+                                </p>
+                            <% } else { %>
+                                <p class="text-base dark:text-gray-300 leading-4 text-gray-600">-$0</p>
+                            <% } %>
                         </div>
+                        
                         <div class="flex justify-between items-center w-full">
                             <p class="text-base dark:text-white leading-4 text-gray-800">Shipping</p>
                             <p class="text-base dark:text-gray-300 leading-4 text-gray-600">$10</p>
@@ -65,24 +132,20 @@
                     </div>
                     <div class="flex justify-between items-center w-full">
                         <p class="text-base dark:text-white font-semibold leading-4 text-gray-800">Total</p>
-                        <p class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">$36.00</p>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
-                    <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Shipping</h3>
-                    <div class="flex justify-between items-start w-full">
-                        <div class="flex justify-center items-center space-x-4">
-                            <div class="w-8 h-8">
-                                <img class="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
-                            </div>
-                            <div class="flex flex-col justify-start items-center">
-                                <p class="text-lg leading-6 dark:text-white font-semibold text-gray-800">DPD Delivery<br /><span class="font-normal">Delivery with 24 Hours</span></p>
-                            </div>
-                        </div>
-                        <p class="text-lg font-semibold leading-6 dark:text-white text-gray-800">$8.00</p>
-                    </div>
-                    <div class="w-full flex justify-center items-center">
-                        <button class="hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">View Carrier Details</button>
+                        <% 
+                            // Assuming cart.totalPrice is the total price without discount
+                            // Assuming cart.coupon.discountPercentage is the discount percentage applied
+                            // Adjust the properties based on your actual schema
+                    
+                            const subtotal = cart.totalPrice || 0;
+                            const discountPercentage = cart.coupon ? cart.coupon.discount || 0 : 0;
+                            const discountAmount = (subtotal * discountPercentage) / 100;
+                            const shippingCost = 10; // Assuming a fixed shipping cost of $10, adjust as needed
+                            const total = subtotal - discountAmount + shippingCost;
+                        %>
+                        <p class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">
+                            $<%= total.toFixed() %> <!-- Display the total with two decimal places -->
+                        </p>
                     </div>
                 </div>
             </div>
@@ -146,25 +209,25 @@
                                 <form id="addressForm" class="mt-4">
                                     <!-- Name -->
                                     <div class="mb-4">
-                                        <label for="name" class="block text-gray-800 text-sm font-medium">Full Name</label>
-                                        <input type="text" id="name" name="name" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                        <label for="name" class="block text-gray-800 text-sm font-medium" >Full Name</label>
+                                        <input type="text" id="name" name="name" class="mt-1 p-2 w-full border border-gray-300 rounded-md" required>
                                         <input type="text" id="userId" class="hidden" placeholder="<%= user._id %>">
                                     </div>
                                 
                                     <div class="mb-4">
                                         <label for="mobile" class="block text-gray-800 text-sm font-medium">Mobile number</label>
-                                        <input type="number" id="mobile" name="mobile" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                        <input type="number" id="mobile" name="mobile" class="mt-1 p-2 w-full border border-gray-300 rounded-md" required>
                                     </div>
                                 
                                     <!-- Street Address and State -->
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
                                             <label for="street" class="block text-gray-800 text-sm font-medium">Street Address</label>
-                                            <input type="text" id="street" name="street" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                            <input type="text" id="street" name="street" class="mt-1 p-2 w-full border border-gray-300 rounded-md" required>
                                         </div>
                                         <div>
                                             <label for="state" class="block text-gray-800 text-sm font-medium">State</label>
-                                            <input type="text" id="state" name="state" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                            <input type="text" id="state" name="state" class="mt-1 p-2 w-full border border-gray-300 rounded-md" required>
                                         </div>
                                     </div>
                                 
@@ -172,11 +235,11 @@
                                     <div class="grid grid-cols-2 gap-4 mt-2">
                                         <div>
                                             <label for="city" class="block text-gray-800 text-sm font-medium">City</label>
-                                            <input type="text" id="city" name="city" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                            <input type="text" id="city" name="city" class="mt-1 p-2 w-full border border-gray-300 rounded-md" required>
                                         </div>
                                         <div>
                                             <label for="zip" class="block text-gray-800 text-sm font-medium">Zip Code</label>
-                                            <input type="text" id="zip" name="zip" class="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                            <input type="text" id="zip" name="zip" class="mt-1 p-2 w-full border border-gray-300 rounded-md" required>
                                         </div>
 
                                     </div>
@@ -214,8 +277,14 @@
             </div>
         </div>
     </div>
+    <div class="flex justify-end mt-4">
+        <button type="button" class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2">
+            <i class="mr-4 fa-regular fa-circle-check"></i>
+            Proceed with order
+            </button>
+        </div>
     <% } %>
-  </div>
+</div>
   <style>
     #mobile-menu-2 {
       display: none;

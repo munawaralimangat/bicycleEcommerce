@@ -12,11 +12,11 @@
 <!-- Create By Joker Banny -->
 
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 dark:bg-gray-700">
   <p class="hidden" id="userId"><%=user._id  %></p>
   <div class="container mx-auto mt-28 p-4">
     <div class="flex flex-col-reverse md:flex-row shadow-md my-10">
-      <div class="md:w-3/4 bg-white px-4 md:px-10 py-10">
+      <div class="md:w-3/4 bg-white px-4 md:px-10 py-10 dark:bg-gray-700">
         <div class="flex justify-between border-b pb-8">
           <h1 class="font-semibold text-2xl">Shopping Cart</h1>
           <h2 class="font-semibold text-2xl"><%=cart.items.length  %> Items</h2>
@@ -33,7 +33,7 @@
           <!-- Your cart items here -->
           
             <% cart.items.forEach(item => { %>
-          <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+          <div class="flex mt-2 items-center hover:bg-gray-100 -mx-8 px-6 py-5 dark:bg-gray-700">
             <div class="flex w-2/5"> <!-- product -->
               <div class="w-32">
                 <img class="h-24 w-full object-cover" src="/uploads/<%=item.product.front_image.filename  %>" alt="">
@@ -74,7 +74,7 @@
         </a>
       </div>
 
-      <div id="summary" class="md:w-1/4 px-4 md:px-8 py-10">
+      <div id="summary" class="md:w-1/4 px-4 md:px-8 py-10 dark:bg-gray-800">
         <!-- Your order summary here -->
         <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
         <div class="flex justify-between mt-10 mb-5">
@@ -111,11 +111,22 @@
           </div>
           <div class="flex font-normal text-red-600 justify-between py-1 text-sm">
             <span>Coupon discount</span>
-              <span id="couponDiscount">$0</span>
+            <% if(cart.coupon){ %>
+              <span id="couponDiscount">$<%= (cart.totalPrice * (cart.coupon.discount / 100)).toFixed() %></span>
+              <% }else{ %>
+                <span id="couponDiscount">$0</span>
+              <% } %>
             </div>
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
             <span>Total cost</span>
-            <span id="cartTotal" data-total="<%= cart.totalPrice %>">$<%=cart.totalPrice+10  %></span>
+            <span id="cartTotal" data-total="<%= cart.totalPrice %>">                        <% 
+      
+              const subtotal = cart.totalPrice || 0;
+              const discountPercentage = cart.coupon ? cart.coupon.discount || 0 : 0;
+              const discountAmount = (subtotal * discountPercentage) / 100;
+              const shippingCost = 10;
+              const total = subtotal - discountAmount + shippingCost;
+              %>$<%=total.toFixed() %></span>
           </div>
           <a href="/brepublic/Checkout?userId=<%=user._id  %>">
             <button id="checkoutButton" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
@@ -235,7 +246,6 @@
       <script>
         document.addEventListener("DOMContentLoaded", function () {
           const userId = document.getElementById('userId').textContent
-          console.log(userId)
           const applyCouponButton = document.getElementById('applyCoupon')
           const clearCouponButton = document.getElementById('clearCoupon')
           const couponSelect = document.getElementById('couponSelect');
@@ -260,10 +270,7 @@
                 if (!response.ok) {
                   console.log("error");
                 } else {
-                  console.log("yes");
                   const coupon = await response.json();
-                  console.log(coupon);
-
                   const discountPercentage = coupon.discount;
 
                   const shippingCharge = 10;
@@ -281,7 +288,6 @@
                 console.error(error);
               }
             } else {
-              // Reset to initial values when "Select coupon" is chosen
               const shippingCharge = 10
               const couponDiscountElement = document.getElementById('couponDiscount');
               couponDiscountElement.textContent = `$${0}`;
@@ -302,7 +308,6 @@
           })
 
           async function saveCouponToCart(couponId,userId) {
-            console.log("save",userId)
             const response = await fetch(`/brepublic/savecoupon?couponId=${couponId}&userId=${userId}`, { method: 'POST' });
 
             if (!response.ok) {

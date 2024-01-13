@@ -20,6 +20,7 @@ module.exports.viewCart = async (req,res)=>{
                 },
               ],
         })
+        .populate('coupon')
         const coupons = await Coupon.find({})
         console.log("cart",cart)
         if(cart){
@@ -180,30 +181,6 @@ module.exports.decrementQuantity = async (req,res)=>{
     }
 }
 
-// function generateOrderNumber() {
-//     const timestamp = Date.now().toString(36).toUpperCase();
-//     const randomString = Math.random().toString(36).substring(2, 4).toUpperCase();
-//     return `${timestamp}-${randomString}`;
-//   }
-
-module.exports.postCheckout = async (req,res)=>{
-    // try {
-    //     const { userId, cart, discountTotal } = req.body;
-
-    //     const order = new Order({
-    //         user:userId,
-    //         items:cart.items,
-    //         totalPrice:discountTotal,
-    //         // status:'Pending'
-    //     })
-    //     order.orderNumber = generateOrderNumber();
-    //     const savedOrder = await order.save()
-    //     res.status(201).json({orderId:savedOrder._id})
-    // } catch (error) {
-    //     console.error(error)
-    //     res.status(500).json({message:"Internal server error"})
-    // }
-}
 
 module.exports.getCoupon = async (req,res)=>{
     try {
@@ -247,6 +224,18 @@ module.exports.getCoupon = async (req,res)=>{
   module.exports.removeCouponFromCart = async (req,res)=>{
     try {
         console.log("this is working remove")
+        const {userId}=req.query
+        if(!userId){
+            return res.status(400).json({error:"user id is not found"})
+        }
+        let userCart = await Cart.findOne({user:userId})
+
+        if(!userCart){
+            return res.status(404).json({message:"Cart not found"})
+        }
+        userCart.coupon = undefined
+        await userCart.save()
+        return res.status(200).json({message:'Coupon removed '})
     } catch (error) {
         
     }
