@@ -26,13 +26,14 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   shippingAddress: {
-    building: String,
-    address: String,
-    pinCode: Number,
-    city: String,
-    mobileNumber: Number,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Address',
+    required: true,
   },
-  delivered: { type: Boolean, default: false },
+  delivered: {
+    type: Boolean,
+    default: false 
+  },
   totalPrice: {
     type: Number,
     default: 0,

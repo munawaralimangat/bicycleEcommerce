@@ -44,7 +44,6 @@ router.get('/cartItem',userCartController.getCart)
 router.put('/increment/:itemId',userCartController.incrementQuantity);
 router.put('/decrement/:itemId',userCartController.decrementQuantity);
 router.delete('/removefromcart',userCartController.removeFromCart);
-router.post('/tocheckout',userCartController.postCheckout) //to checkout, data passing to the order db
 
 // cart-coupon
 router.get('/getcoupon',userCartController.getCoupon)

@@ -70,11 +70,11 @@ module.exports.postAddress = async (req, res) => {
   }
 }
 
-function generateOrderNumber() {
-    const timestamp = Date.now().toString(36).toUpperCase();
-    const randomString = Math.random().toString(36).substring(2, 4).toUpperCase();
-    return `${timestamp}-${randomString}`;
-  }
+// function generateOrderNumber() {
+//     const timestamp = Date.now().toString(36).toUpperCase();
+//     const randomString = Math.random().toString(36).substring(2, 4).toUpperCase();
+//     return `${timestamp}-${randomString}`;
+//   }
 
 module.exports.placeOrder = async (req,res)=>{
   try {
