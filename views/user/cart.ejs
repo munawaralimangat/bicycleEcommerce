@@ -13,9 +13,7 @@
 
 
 <body class="bg-gray-100 dark:bg-gray-700">
-  <p class="hidden" id="userId">
-    <%=user._id %>
-  </p>
+  <p class="hidden" id="userId"><%=user._id%></p>
   <div class="container mx-auto mt-28 p-4">
     <div class="flex flex-col-reverse md:flex-row shadow-md my-10">
       <div class="md:w-3/4 bg-white px-4 md:px-10 py-10 dark:bg-gray-700">
@@ -267,7 +265,7 @@
 
       <script>
         document.addEventListener("DOMContentLoaded", function () {
-          const userId = document.getElementById('userId').textContent
+          const userId = document.getElementById('userId').innerText
           const applyCouponButton = document.getElementById('applyCoupon')
           const clearCouponButton = document.getElementById('clearCoupon')
           const couponSelect = document.getElementById('couponSelect');

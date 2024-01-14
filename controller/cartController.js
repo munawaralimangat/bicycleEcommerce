@@ -225,6 +225,7 @@ module.exports.getCoupon = async (req,res)=>{
     try {
         console.log("this is working remove")
         const {userId}=req.query
+        console.log(userId.toString())
         if(!userId){
             return res.status(400).json({error:"user id is not found"})
         }
@@ -233,10 +234,11 @@ module.exports.getCoupon = async (req,res)=>{
         if(!userCart){
             return res.status(404).json({message:"Cart not found"})
         }
-        userCart.coupon = undefined
+        userCart.coupon = undefined;
         await userCart.save()
+        console.log("h")
         return res.status(200).json({message:'Coupon removed '})
     } catch (error) {
-        
+        console.error(error)
     }
   }

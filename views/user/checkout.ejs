@@ -349,7 +349,7 @@
         const selectedPaymentMethod = document.querySelector('input[name="bordered-radio"]:checked').value;
         const couponAmount = document.getElementById('discountAmount').textContent
         const numericPart = couponAmount.replace(/[^\d.-]/g, '');
-        const couponDiscount = Number(numericPart.split())
+        let couponDiscount = Number(numericPart.split())
         console.log(couponDiscount)
         try {
             console.log(userId)
