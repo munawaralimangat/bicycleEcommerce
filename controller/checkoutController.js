@@ -6,6 +6,9 @@ const Address = require('../model/schema/addressSchema')
 module.exports.viewCheckout = async (req,res)=>{
     try{
         const {userId} = req.query;
+        if(!userId){
+          return res.render('user/userLogin')
+        }
         const cart = await Cart.findOne({user:userId}).populate({
             path:'items.product',
             populate: [
@@ -78,17 +81,29 @@ module.exports.postAddress = async (req, res) => {
 
 module.exports.placeOrder = async (req,res)=>{
   try {
-      const { userId, cart, discountTotal } = req.body;
+    console.log("this works")
+      const { userId, selectedAddressId, selectedPaymentMethod, couponDiscount } = req.body;
+      console.log(req.body)
+      const cart = await Cart.findOne({user:userId}).populate({
+        path: 'items.product',
+        populate: [
+          { path: 'category_name', model: 'Category' },
+          { path: 'variations.size', model: 'Size' },
+        ],
+      }).populate('coupon');
+      if(!cart){
+        return res.status(400).json({ success: false, error: 'Cart not found' });
+      }
+      const selectedAddress = await Address.findById(selectedAddressId);
 
-      const order = new Order({
-          user:userId,
-          items:cart.items,
-          totalPrice:discountTotal,
-          // status:'Pending'
-      })
-      order.orderNumber = generateOrderNumber();
-      const savedOrder = await order.save()
-      res.status(201).json({orderId:savedOrder._id})
+      if (!selectedAddress) {
+        return res.status(400).json({ success: false, error: 'Selected address not found' });
+      }
+      let totalPrice = cart.totalPrice +10
+      if(cart.totalPrice){
+        totalPrice -= couponDiscount
+      }
+      console.log(totalPrice,"total price")
   } catch (error) {
       console.error(error)
       res.status(500).json({message:"Internal server error"})

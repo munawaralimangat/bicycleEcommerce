@@ -181,3 +181,151 @@
 </body>
 
 </html>
+
+
+<script>
+   //paymet route
+   
+const PaymentGateway = require('your-payment-gateway-library');
+module.exports.createOrder = async (req, res) => {
+  try {
+    const { userId, selectedAddressId, paymentMethod, paymentDetails } = req.body;
+
+    const cart = await Cart.findOne({ user: userId }).populate({
+      path: 'items.product',
+      populate: [
+        { path: 'category_name', model: 'Category' },
+        { path: 'variations.size', model: 'Size' },
+      ],
+    }).populate('coupon');
+
+    if (!cart) {
+      return res.status(400).json({ success: false, error: 'Cart not found' });
+    }
+
+    const selectedAddress = await Address.findById(selectedAddressId);
+    if (!selectedAddress) {
+      return res.status(400).json({ success: false, error: 'Selected address not found' });
+    }
+
+    let totalPrice = cart.totalPrice;
+    if (cart.coupon) {
+      totalPrice -= cart.coupon.discountAmount;
+    }
+
+    let paymentStatus;
+    let paymentDetailsInfo;
+
+    // Check the payment method and handle accordingly
+    if (paymentMethod === 'cash-on-delivery') {
+      // For Cash on Delivery
+      paymentStatus = 'Pending'; // Or any initial status you prefer
+      paymentDetailsInfo = null; // No specific payment details for COD
+    } else if (paymentMethod === 'online-payment') {
+      // For Online Payment
+      const paymentGateway = new PaymentGateway();
+
+      // Make a request to the payment gateway to initiate the payment
+      const paymentResult = await paymentGateway.processPayment({
+        amount: totalPrice,
+        paymentDetails, // Include additional payment information as required by the gateway
+      });
+
+      if (paymentResult.success) {
+        paymentStatus = 'Paid';
+        paymentDetailsInfo = paymentResult.paymentDetails;
+      } else {
+        // Handle payment failure
+        console.error('Payment failed:', paymentResult.error);
+        return res.status(400).json({ success: false, error: 'Payment failed' });
+      }
+    } else {
+      return res.status(400).json({ success: false, error: 'Invalid payment method' });
+    }
+
+    // Create the order
+    const order = new Order({
+      user: userId,
+      orderNumber: generateOrderNumber(),
+      items: cart.items.map(item => ({
+        product: item.product._id,
+        quantity: item.quantity,
+      })),
+      shippingAddress: selectedAddress._id,
+      totalPrice,
+      status: 'Pending', // You may want to set a different initial status
+      createdAt: new Date(),
+      paymentStatus,
+      paymentDetails: paymentDetailsInfo,
+    });
+
+    // Save the order
+    await order.save();
+
+    // Clear the user's cart
+    await Cart.findOneAndUpdate({ user: userId }, { $set: { items: [] } });
+
+    res.status(201).json({ success: true, message: 'Order created successfully', order });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+};
+
+</script>
+
+<!--addeventlister for payment-->
+
+<!-- Assuming this is part of your HTML file -->
+<!-- Add an id to your button for easier selection -->
+<div class="flex justify-end mt-4">
+   <button id="placeOrder" type="button" class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2">
+     <i class="mr-4 fa-regular fa-circle-check"></i>
+     Proceed with order
+   </button>
+ </div>
+ 
+ <!-- Add this script at the end of your HTML file or within your script tag -->
+ <script>
+   // Place order
+   document.getElementById('placeOrder').addEventListener('click', async () => {
+     try {
+       const userId = document.getElementById('userId').getAttribute('placeholder');
+       const selectedAddressRadioButton = document.querySelector('input[name="selectedAddress"]:checked');
+ 
+       if (!userId || !selectedAddressRadioButton) {
+         console.error('User ID or selected address is missing.');
+         return; // Handle this case appropriately
+       }
+ 
+       const selectedAddressId = selectedAddressRadioButton.value;
+       const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+ 
+       const response = await fetch('/api/createOrder', {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+           userId,
+           selectedAddressId,
+           paymentMethod,
+         }),
+       });
+ 
+       if (response.ok) {
+         const orderData = await response.json();
+         console.log('Order created successfully:', orderData);
+ 
+         // Redirect or perform any other action after successful order creation
+       } else {
+         console.error('Failed to create order:', response.statusText);
+         // Handle the error (e.g., show an error message to the user)
+       }
+     } catch (error) {
+       console.error('An error occurred:', error);
+       // Handle unexpected errors
+     }
+   });
+ </script>
+ 

@@ -101,8 +101,8 @@
                                 <% } %>
                             </p>
                             <% if (cart.coupon) { %>
-                                <p class="text-base dark:text-gray-300 leading-4 text-gray-600">
-                                    -$<%= (cart.totalPrice * (cart.coupon.discount / 100)).toFixed() %>
+                                <p id="discountAmount" class="text-base dark:text-gray-300 leading-4 text-gray-600">
+                                    $<%= (cart.totalPrice * (cart.coupon.discount / 100)).toFixed() %>
                                 </p>
                             <% } else { %>
                                 <p class="text-base dark:text-gray-300 leading-4 text-gray-600">-$0</p>
@@ -345,17 +345,41 @@
     //place order
     document.getElementById('placeOrder').addEventListener('click',async ()=>{
         const userId = document.getElementById('userId').getAttribute('placeholder');
-        const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked').value;
+        const selectedAddressId = document.querySelector('input[name="selectedAddress"]:checked').value;
         const selectedPaymentMethod = document.querySelector('input[name="bordered-radio"]:checked').value;
+        const couponAmount = document.getElementById('discountAmount').textContent
+        const numericPart = couponAmount.replace(/[^\d.-]/g, '');
+        const couponDiscount = Number(numericPart.split())
+        console.log(couponDiscount)
         try {
             console.log(userId)
-            console.log(selectedAddress)
+            console.log(selectedAddressId)
             console.log("pay",selectedPaymentMethod)
-            if(!userId || !selectedAddress || selectedPaymentMethod){
+            if(!userId || !selectedAddressId || !selectedPaymentMethod){
                 alert("user id or selected address or pament method is missingy")
             }
+            console.log("dwsdjk")
+
+            const response = await fetch('/brepublic/placeorder',{
+                method:'post',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    userId,
+                    selectedAddressId,
+                    selectedPaymentMethod,
+                    couponDiscount,
+                })
+            })
+            if(response.ok){
+                const orderData = await response.json();
+                console.log('order created successfully')
+            }else{
+                console.error('Failed to create order',response.statusText)
+            }
         } catch (error) {
-            
+            console.error(error)
         }
     })
 </script>
