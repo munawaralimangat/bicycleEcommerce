@@ -105,7 +105,7 @@
                                     $<%= (cart.totalPrice * (cart.coupon.discount / 100)).toFixed() %>
                                 </p>
                             <% } else { %>
-                                <p class="text-base dark:text-gray-300 leading-4 text-gray-600">-$0</p>
+                                <p id="discountAmount" class="text-base dark:text-gray-300 leading-4 text-gray-600">-$0</p>
                             <% } %>
                         </div>
                         
@@ -350,7 +350,7 @@
         const couponAmount = document.getElementById('discountAmount').textContent
         const numericPart = couponAmount.replace(/[^\d.-]/g, '');
         let couponDiscount = Number(numericPart.split())
-        console.log(couponDiscount)
+        console.log(numericPart)
         try {
             console.log(userId)
             console.log(selectedAddressId)

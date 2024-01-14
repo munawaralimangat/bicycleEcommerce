@@ -73,11 +73,11 @@ module.exports.postAddress = async (req, res) => {
   }
 }
 
-// function generateOrderNumber() {
-//     const timestamp = Date.now().toString(36).toUpperCase();
-//     const randomString = Math.random().toString(36).substring(2, 4).toUpperCase();
-//     return `${timestamp}-${randomString}`;
-//   }
+function generateOrderNumber() {
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const randomString = Math.random().toString(36).substring(2, 4).toUpperCase();
+    return `${timestamp}-${randomString}`;
+  }
 
 module.exports.placeOrder = async (req,res)=>{
   try {
@@ -99,14 +99,50 @@ module.exports.placeOrder = async (req,res)=>{
       if (!selectedAddress) {
         return res.status(400).json({ success: false, error: 'Selected address not found' });
       }
-      let totalPrice = cart.totalPrice +10
+      let totalPrice = cart.totalPrice +10;
+
       if(cart.totalPrice){
         totalPrice -= couponDiscount
       }
       console.log(totalPrice,"total price")
+
+      let paymentStatus;
+      let paymentDetails;
+
+      if(selectedPaymentMethod==="COD"){
+        console.log("cod")
+        paymentStatus = "Pending";
+        paymentDetails = null;
+
+      }else if(selectedPaymentMethod==="Online"){
+        console.log("online")
+        return res.json({message:"online payment is not ready yet"})
+
+      }else{
+        return res.status(400).json({ success: false, error: 'Invalid payment method' });
+      }
+
+      const order = new Order({
+        user:userId,
+        orderNumber:generateOrderNumber(),
+        items: cart.items.map(item => ({
+          product: item.product._id,
+          quantity: item.quantity,
+        })),
+        shippingAddress: selectedAddress._id,
+        totalPrice,
+        status: 'Pending',
+        createdAt: new Date(),
+        paymentStatus,
+        paymentDetails: paymentDetails,
+      })
+
+      await order.save();
+      // await Cart.findByIdAndUpdate({userId},{$set:{items:[]}})
+      res.status(201).json({ success: true, message: 'Order created successfully', order })
   } catch (error) {
       console.error(error)
-      res.status(500).json({message:"Internal server error"})
+      res.status(500).json({ success: false, error: 'Internal server error' });
   }
 }
 
