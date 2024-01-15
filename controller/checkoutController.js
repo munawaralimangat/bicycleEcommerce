@@ -2,6 +2,7 @@ const Order = require('../model/schema/orderSchema')
 const Cart = require('../model/schema/cartSchema')
 const Coupon = require('../model/schema/coupenSchema')
 const Address = require('../model/schema/addressSchema')
+const Product = require('../model/schema/productSchema')
 
 module.exports.viewCheckout = async (req,res)=>{
     try{
@@ -23,7 +24,10 @@ module.exports.viewCheckout = async (req,res)=>{
               ],
         })
         .populate('coupon')
-
+        if (!cart || cart.items.length === 0) {
+          console.log("Cart not found or empty");
+          return res.redirect(`/brepublic/cart?userId=${userId}`);
+        }
         const addresses = await Address.find({ userId });
         const coupons = await Coupon.find({})
 
@@ -136,9 +140,28 @@ module.exports.placeOrder = async (req,res)=>{
         paymentStatus,
         paymentDetails: paymentDetails,
       })
-
+      console.log(order);
       await order.save();
-      // await Cart.findByIdAndUpdate({userId},{$set:{items:[]}})
+      let productId
+      let productQuantity
+      let size
+      for(const item of cart.items){
+       productId = item.product._id
+       productQuantity = item.quantity
+       size = item.product.variations[0]._id
+        console.log(productId,"qty",productQuantity)
+        console.log("size",size)
+      }
+      console.log("qty",productQuantity)
+      let productUpdated = await Product.findOneAndUpdate(
+        {_id:productId,'variations._id': size},
+        { $inc: { 'variations.$.quantity': -productQuantity }}
+      )
+      console.log("productupdt",productUpdated)
+      await Cart.findOneAndUpdate(
+        {user:userId},
+        { $set: { items: [], totalPrice: 0 }, $unset: { coupon: 1 }, totalQuantity: 0 }
+        );
       res.status(201).json({ success: true, message: 'Order created successfully', order })
   } catch (error) {
       console.error(error)

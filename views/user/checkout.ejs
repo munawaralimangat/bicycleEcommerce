@@ -267,6 +267,49 @@
             Proceed with order
             </button>
         </div>
+                <!-- HTML modal structure with Tailwind CSS classes -->
+        <div id="paymentSuccessModal" class="fixed inset-0 overflow-hidden z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 overflow-hidden">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Background overlay -->
+                <div class="fixed inset-0 transition-opacity">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+        
+                <!-- Modal panel with Tailwind CSS styling -->
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <!-- Modal content -->
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <!-- Tick mark icon -->
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    </div>
+        
+                    <!-- Success message -->
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Order Placed Successfully
+                    </h3>
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                        Your order has been placed successfully. Thank you for shopping with us!
+                        </p>
+                    </div>
+                    </div>
+                </div>
+        
+                <!-- Close button -->
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button onclick="closeModal()" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    Close
+                    </button>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
     <% } %>
 </div>
   <style>
@@ -375,6 +418,8 @@
             if(response.ok){
                 const orderData = await response.json();
                 console.log('order created successfully')
+                openSuccessModal()
+                
             }else{
                 console.error('Failed to create order',response.statusText)
             }
@@ -382,4 +427,23 @@
             console.error(error)
         }
     })
+    function openSuccessModal() {
+        const modal = document.getElementById("paymentSuccessModal");
+        modal.style.display = "block";
+    }
 </script>
+
+<script>
+    // Function to open the modal
+    function openModal() {
+      var modal = document.getElementById("paymentSuccessModal");
+      modal.style.display = "block";
+    }
+    
+    // Function to close the modal
+    function closeModal() {
+      var modal = document.getElementById("paymentSuccessModal");
+      modal.style.display = "none";
+      location.reload()
+    }
+    </script>
