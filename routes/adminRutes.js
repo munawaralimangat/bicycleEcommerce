@@ -12,6 +12,7 @@ const adminUserController = require('../controller/adminUserController');
 const adminProductController = require('../controller/adminProductController');
 const adminCategoryController = require('../controller/adminCategoryController');
 const adminOffersController = require('../controller/adminOffersController');
+const adminOrdersController = require('../controller/adminOrdersController')
 const { route } = require('./userroutes');
 // const {loginCheck} = require('../auth/jwt')
 
@@ -69,7 +70,8 @@ router.get('/offers',adminOffersController.viewOffers);
 router.post('/addcoupen',adminOffersController.addCoupen);
 router.delete('/coupon/:id',adminOffersController.deleteCoupon);
 
-
+//orders route
+router.get('/orders',adminOrdersController.viewOrders)
 
 
 
