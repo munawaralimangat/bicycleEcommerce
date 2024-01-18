@@ -24,6 +24,7 @@ router.post('/landing/login',userLoginController.userLoginPost)//login post
 
 //user home controller
 router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
+router.get('/viewall',userHomeController.homeAllProducts)
 router.get('/logout',requireAuth,userHomeController.logout)
 
 //product controller

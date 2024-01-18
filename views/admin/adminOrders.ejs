@@ -60,7 +60,7 @@
                                             <td class="px-6 py-4 relative">
                                                 <div class="relative inline-block text-left">
                                                     <button onclick="toggleDropdown('<%=order._id%>')" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                                        Edit
+                                                        status
                                                     </button>
                                                     <div id="dropdown<%=order._id%>" class="hidden absolute z-10 top-0 right-0 mt-6 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-md">
                                                         <a href="#" onclick="handleOption('<%= order._id %>','Delivered')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Delivered</a>
@@ -106,7 +106,14 @@
 
                 if(response.ok){
                     console.log("order status updated successfully")
-                    location.reload()
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Order cancelled!',
+                    text: response.message,
+                    });
+
+                    // location.reload()
+                    
                 }else{
                     console.log('failed to update order')
                 }
@@ -130,6 +137,7 @@
         }
     });
     </script>
+
     
     
     
