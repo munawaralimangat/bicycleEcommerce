@@ -63,8 +63,8 @@
                                                         Edit
                                                     </button>
                                                     <div id="dropdown<%=order._id%>" class="hidden absolute z-10 top-0 right-0 mt-6 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-md">
-                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Delivered</a>
-                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Canceled</a>
+                                                        <a href="#" onclick="handleOption('<%= order._id %>','Delivered')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Delivered</a>
+                                                        <a href="#" onclick="handleOption('<%= order._id %>','Cancelled')" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Canceled</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -90,6 +90,31 @@
         function toggleDropdown(orderId) {
             const dropdown = document.getElementById('dropdown'+orderId);
             dropdown.classList.toggle('hidden');
+        }
+
+        async function handleOption(orderId,option){
+            console.log(orderId)
+            console.log(option)
+            try {
+                const response = await fetch(`/admin/delivery-status/${orderId}`,{
+                    method:'put',
+                    headers:{
+                        'Content-type':'application/json'
+                    },
+                    body:JSON.stringify({status:option})
+                })
+
+                if(response.ok){
+                    console.log("order status updated successfully")
+                    location.reload()
+                }else{
+                    console.log('failed to update order')
+                }
+            } catch (error) {
+                console.error('Error',error)
+            }finally{
+                toggleDropdown(orderId);
+            }
         }
     
         document.addEventListener('click', function (event) {

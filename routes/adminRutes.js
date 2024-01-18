@@ -72,6 +72,7 @@ router.delete('/coupon/:id',adminOffersController.deleteCoupon);
 
 //orders route
 router.get('/orders',adminOrdersController.viewOrders)
+router.put('/delivery-status/:orderId',adminOrdersController.changeStatus)
 
 
 

@@ -78,7 +78,11 @@
               <% }); %>
                 <!--cart item ends here-->
                 <% } else { %>
-                  <p class="text-gray-600">Your cart is empty.</p>
+                  <div class="flex justify-center">
+
+                    <img src="/images/empty_cart.gif" class="h-full w-96" alt="">
+                  </div>
+
                   <% } %>
         </div>
         <a href="#" class="flex font-semibold text-indigo-600 text-sm mt-10">
@@ -228,6 +232,7 @@
               icon: 'error',
               title: 'Error',
               text: data.error || 'Something went wrong!',
+              postion:top-end
             });
           }
       

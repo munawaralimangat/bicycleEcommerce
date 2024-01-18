@@ -26,6 +26,7 @@ async function addToCart(productId, userId) {
           icon: 'success',
           title: 'Product Added to Cart!',
           text: data.message,
+          
         });
   
         console.log('product added to cart', data); // UI set- msg

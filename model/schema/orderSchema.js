@@ -46,7 +46,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Pending', 'Processing', 'Shipped', 'Delivered'],
+    enum: ['Pending', 'Processing', 'Shipped', 'Delivered','Cancelled'],
     default: 'Pending',
   },
   paymentDetails: {
@@ -64,6 +64,11 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
+const Order = mongoose.model('Order', orderSchema);
+
+module.exports = Order;
+
+
 // orderSchema.pre('save', function (next) {
 //   if (!this.orderNumber) {
 //     this.orderNumber = generateOrderNumber();
@@ -77,7 +82,3 @@ const orderSchema = new mongoose.Schema({
 //   const randomString = Math.random().toString(36).substring(2, 8).toUpperCase();
 //   return `${timestamp}-${randomString}`;
 // }
-
-const Order = mongoose.model('Order', orderSchema);
-
-module.exports = Order;
