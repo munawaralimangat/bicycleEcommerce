@@ -45,6 +45,7 @@ module.exports.homeAllProducts = async (req, res) => {
             products = await Product.find().populate('category_name');
         }
 
+        console.log("hello")
         res.render('user/allproducts', { products: products });
     } catch (error) {
         console.error(error);
