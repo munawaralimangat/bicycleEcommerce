@@ -32,6 +32,7 @@ router.get('/product/:productId',userProductController.viewProduct)
 
 //search product
 router.get('/search',userProductController.searchProduct)
+router.get('/search-with-sort',userProductController.searchWithSort)
 
 
 //category routes

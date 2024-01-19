@@ -81,8 +81,32 @@ module.exports.searchProduct = async (req,res)=>{
         res.render('user/searchPage',{products:product})
     }catch(error){
         console.error('error searching productrs',error)
-        res.status(500).json({message:'Internal server error'}) //ask reviewr about routing propblem, that cannot login because of the form attr for search input
+        res.status(500).json({message:'Internal server error'})
     }
 }
+
+module.exports.searchWithSort = async (req, res) => {
+    try {
+        const  sortBy  = req.query.sort;
+        console.log(req.query.sort)
+
+        const productQuery = Product.find().sort({product_price:1});
+
+        if (sortBy === 'HighToLow') {
+            productQuery.sort({ product_price: -1 });
+        }
+        console.log("hello")
+        const products = await productQuery.exec();
+
+        if (products.length === 0) {
+            return res.render('user/searchPage', { message: 'No products found', products: [] });
+        }
+
+        res.render('user/searchPage', { products });
+    } catch (error) {
+        console.error('Error searching products with sorting', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 
