@@ -22,17 +22,18 @@ router.post('/landing/register',userLoginController.userRegPost)//signup post
 router.get('/landing/login',userLoginController.userLoginView)//login get
 router.post('/landing/login',userLoginController.userLoginPost)//login post
 
-//user home controller
-router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
-router.get('/viewall',userHomeController.homeAllProducts)
-router.get('/logout',requireAuth,userHomeController.logout)
+    //user home controller
+        router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
+        router.get('/viewall',userHomeController.homeAllProducts)
+        router.get('/logout',requireAuth,userHomeController.logout)
 
-//product controller
-router.get('/product/:productId',userProductController.viewProduct)
+    //product controller
+        router.get('/products',userProductController.getAllProducts)
+        router.get('/product/:productId',userProductController.viewProduct)
 
-//search product
-router.get('/search',userProductController.searchProduct)
-router.get('/search-with-sort',userProductController.searchWithSort)
+    //search product
+        router.get('/search',userProductController.searchProduct)
+        router.get('/search-with-sort',userProductController.searchWithSort)
 
 
 //category routes

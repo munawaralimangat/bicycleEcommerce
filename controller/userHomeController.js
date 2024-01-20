@@ -1,5 +1,6 @@
 const Product = require('../model/schema/productSchema')
 const Category = require('../model/schema/categorySchema')
+const Size = require('../model/schema/sizeSchema')
 
 // module.exports.landingView = async (req,res)=>{
 //     try{
@@ -39,9 +40,12 @@ module.exports.homeAllProducts = async (req, res) => {
         // } else {
         //     products = await Product.find().populate('category_name');
         }
-
-        console.log("hello")
-        res.render('user/allproducts', { products: products });
+        const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
+        const sizeIdMap = {};
+        sizes.forEach(size => {
+          sizeIdMap[size.size_name.toLowerCase()] = size._id;
+        });
+        res.render('user/allproducts', { products: products ,sizes:sizeIdMap});
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

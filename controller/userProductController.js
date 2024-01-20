@@ -60,6 +60,22 @@ module.exports.viewProduct = async (req, res) => {
     }
 };
 
+module.exports.getAllProducts = async (req,res)=>{
+    console.log("this works")
+    try {
+        // console.log(req.query)
+        const selectedSizes = req.query.sizes;
+        const filteredProducts = await Product.find({
+            'variations.size': { $in: selectedSizes },
+          })
+          .populate('category_name') // Populate the 'category_name' field
+          .populate('variations.size');
+        res.json(filteredProducts)
+    } catch (error) {
+        console.error('Error fetching products', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 module.exports.searchProduct = async (req,res)=>{
     console.log("1",req.query)
