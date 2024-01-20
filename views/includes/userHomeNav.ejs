@@ -21,7 +21,7 @@
             <% } %>
 
             <% if(user){ %>
-                <form method="GET" id="searchForm" action="/brepublic/search">
+                <form class="hidden sm:block" method="GET" id="searchForm" action="/brepublic/search">
                   <div class="relative text-gray-600 focus-within:text-gray-400">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-2">
                       <button id="searchButton" type="submit" class="p-1 focus:outline-none focus:shadow-outline">
@@ -32,7 +32,7 @@
                   </div>
                 </form>
                 <% }else{ %>
-                    <div id="searchForm" class="relative text-gray-600 focus-within:text-gray-400">
+                    <div id="searchForm" class="relative hidden sm:block text-gray-600 focus-within:text-gray-400">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-2">
                           <button id="searchButton" type="submit" class="p-1 focus:outline-none focus:shadow-outline">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -43,7 +43,7 @@
                       <% } %>
                       
             <% if(user){ %>
-            <div class="dropdown" id="userDropdown">
+            <div class="dropdown hidden sm:block" id="userDropdown">
                 <a href="#" class="dropbtn text-white dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><%= user.user_firstName+" "+user.user_secondName %></a>
                 <div class="dropdown-content bg-slate-400">
                     <a href="#"><%= user.user_firstName + " "+user.user_secondName %></a>
@@ -68,7 +68,7 @@
           </button>
         </div>
         
-        <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 " id="mobile-menu-2">
+        <div class="hidden bg justify-between items-center w-full lg:flex lg:w-auto lg:order-1 " id="mobile-menu-2">
             <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                 <li>
                     <a href="/brepublic/landing" class="block py-2 pr-4 pl-3 text-yellow-400 font-bold rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-yellow-400" aria-current="page">Home</a>
@@ -106,5 +106,18 @@
 
 	<img src="{{ home.image }}" class="w-full h-full absolute inset-0 object-cover opacity-70" />
 </div> -->
+
+<!-- <script>
+    // Get references to the button and menu
+    const toggleButton = document.querySelector('[data-collapse-toggle="mobile-menu-2"]');
+    const mobileMenu = document.getElementById('mobile-menu-2');
+
+    // Toggle the menu visibility when the button is clicked
+    toggleButton.addEventListener('click', function () {
+        const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+        toggleButton.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('hidden');
+    });
+</script> -->
 
 
