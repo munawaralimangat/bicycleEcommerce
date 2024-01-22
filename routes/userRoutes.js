@@ -1,6 +1,7 @@
 const express = require('express')
 const userLoginController = require('../controller/userLoginController')
 const userHomeController = require('../controller/userHomeController')
+const userProfileController = require('../controller/userProfileController')
 const userProductController = require('../controller/userProductController')
 const userCategoryController = require('../controller/userCategoryController')
 const userCartController = require('../controller/cartController')
@@ -23,7 +24,9 @@ router.get('/landing/login',userLoginController.userLoginView)//login get
 router.post('/landing/login',userLoginController.userLoginPost)//login post
 
 //user profile
-router.get('/profile',userHomeController.viewProfile)
+router.get('/profile',userProfileController.viewProfile)
+router.get('/users/:userId',userProfileController.getUserData)
+router.put('/update-user/:userId',userProfileController.updateUser)
 
     //user home controller
         router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)

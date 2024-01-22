@@ -23,7 +23,8 @@ module.exports.viewOrders = async (req, res) => {
         return res.status(404).json({error:"Order not found"})
       }
 
-      if (order.delivered && order.status === 'cancelled') {
+      if (order.delivered || order.status === 'Cancelled') {
+        console.log("yyyyyyyyyyyyyyyyyyyyy")
         return res.json({ error: 'Status cannot be changed.' });
       }
 
@@ -43,6 +44,7 @@ module.exports.viewOrders = async (req, res) => {
         {$set:{status,delivered:status==="Delivered"}},
         {new:true}
       );
+
       if(!updatedOrder){
         return res.status(404).json({error:"Order not found"})
       }

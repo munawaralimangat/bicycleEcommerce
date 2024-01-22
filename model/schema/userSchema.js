@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default:true
   },
+  user_mobile: {
+    type: Number,
+    unique:true,
+  },
   user_password: {
     type: String,
     required: [true,"Please enter a password"],
