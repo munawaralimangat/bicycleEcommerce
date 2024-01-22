@@ -1,5 +1,6 @@
 const Product = require('../model/schema/productSchema')
 const Category = require('../model/schema/categorySchema')
+const Size = require('../model/schema/sizeSchema')
 
 module.exports.viewMountain = async (req, res) => {
     try {
@@ -22,9 +23,14 @@ module.exports.viewMountain = async (req, res) => {
             // Default sorting or no sorting
             mountainBikesProducts = await Product.find({ category_name: { $in: categoryIds } });
         }
+        const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
+        const sizeIdMap = {};
+        sizes.forEach(size => {
+          sizeIdMap[size.size_name.toLowerCase()] = size._id;
+        });
 
         console.log("Mountain Bikes Products:", mountainBikesProducts);
-        res.render('user/mountainBikes', { mountainBikesProducts });
+        res.render('user/mountainBikes', { mountainBikesProducts,sizes:sizeIdMap });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -52,8 +58,14 @@ module.exports.viewRoadBikes = async (req, res) => {
             roadBikesProducts = await Product.find({ category_name: { $in: categoryIds } });
         }
 
+        const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
+        const sizeIdMap = {};
+        sizes.forEach(size => {
+          sizeIdMap[size.size_name.toLowerCase()] = size._id;
+        });
+
         console.log("road bikes ", roadBikesProducts);
-        res.render('user/roadBikes', { roadBikesProducts });
+        res.render('user/roadBikes', { roadBikesProducts,sizes:sizeIdMap });
 
     } catch (error) {
         console.log(error);

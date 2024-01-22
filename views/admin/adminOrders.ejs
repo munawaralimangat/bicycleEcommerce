@@ -112,7 +112,6 @@
                     text: response.message,
                     });
 
-                    // location.reload()
                     
                 }else{
                     console.log('failed to update order')
@@ -121,6 +120,7 @@
                 console.error('Error',error)
             }finally{
                 toggleDropdown(orderId);
+                location.reload()
             }
         }
     

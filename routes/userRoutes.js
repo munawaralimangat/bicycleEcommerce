@@ -22,6 +22,9 @@ router.post('/landing/register',userLoginController.userRegPost)//signup post
 router.get('/landing/login',userLoginController.userLoginView)//login get
 router.post('/landing/login',userLoginController.userLoginPost)//login post
 
+//user profile
+router.get('/profile',userHomeController.viewProfile)
+
     //user home controller
         router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
         router.get('/viewall',userHomeController.homeAllProducts)

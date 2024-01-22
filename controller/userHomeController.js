@@ -52,6 +52,11 @@ module.exports.homeAllProducts = async (req, res) => {
     }
 };
 
+module.exports.viewProfile = async (req,res)=>{
+    console.log("this works")
+    res.send("user profile")
+}
+
 module.exports.logout = async (req,res)=>{
     console.log("logout")
     res.cookie('jwtus', '',{maxAge:1})

@@ -46,7 +46,7 @@
             <div class="dropdown hidden sm:block" id="userDropdown">
                 <a href="#" class="dropbtn text-white dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><%= user.user_firstName+" "+user.user_secondName %></a>
                 <div class="dropdown-content bg-slate-400">
-                    <a href="#"><%= user.user_firstName + " "+user.user_secondName %></a>
+                    <a href="/brepublic/profile"><%= user.user_firstName + " "+user.user_secondName %></a>
                     <a href="/brepublic/wishlist?userId=<%= user._id %>">Wishlist</a>
                     <a href="/brepublic/cart?userId=<%= user._id %>">Cart</a>
                     <a href="/brepublic/logout">Log out</a>
