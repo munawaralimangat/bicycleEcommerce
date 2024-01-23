@@ -27,6 +27,11 @@ router.post('/landing/login',userLoginController.userLoginPost)//login post
 router.get('/profile',userProfileController.viewProfile)
 router.get('/users/:userId',userProfileController.getUserData)
 router.put('/update-user/:userId',userProfileController.updateUser)
+    //edit and delete address
+        router.put('/edit-address/:addressId',userProfileController.editAddress)
+        router.delete('/delete-address/:addressId',userProfileController.deleteAdrress)
+    //orders status
+    router.put('/cancel-order/:orderId',userProfileController.cancellOrder)
 
     //user home controller
         router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
@@ -66,10 +71,12 @@ router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 
 //checkout routes
 router.get('/checkout',checkoutController.viewCheckout);
-router.post('/placeorder',checkoutController.placeOrder)
+router.post('/placeorder',checkoutController.placeOrder);
 
 //address routes
-router.post('/addAddress',checkoutController.postAddress)
+router.get('/get-address/:addressId',userProfileController.getOneAddress);
+router.post('/addAddress',checkoutController.postAddress);
+
 
 
 

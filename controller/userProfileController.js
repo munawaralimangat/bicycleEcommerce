@@ -1,14 +1,23 @@
 const User = require('../model/schema/userSchema')
+const Address = require('../model/schema/addressSchema')
+const Orders = require('../model/schema/orderSchema')
+const Product = require('../model/schema/productSchema')
 
 module.exports.viewProfile = async (req,res)=>{
-    console.log("this works")
     try {
         const userId = req.query.userId;
         if(!userId){
             return res.redirect('/brepublic/landing/login')
         }
+        const addresses = await Address.find({userId:userId})
 
-        res.render('user/userProfile',{})
+        if(!addresses){
+            return res.status(404).json({error:"Address not found"})
+        }
+        const orders = await Orders.find({ user: userId })
+        .populate('user')
+        .populate('shippingAddress');
+        res.render('user/userProfile',{addresses:addresses,orders:orders})
     } catch (error) {
         console.error(error)
     }
@@ -49,5 +58,94 @@ module.exports.updateUser = async (req,res)=>{
     } catch (error) {
         console.error('Error updating user data:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+module.exports.getOneAddress = async (req,res)=>{
+    try {
+        const addressId = req.params.addressId
+        const addressDetails = await Address.findById(addressId)
+        if(!addressDetails){
+            return res.status(404).json({error:"address not found"})
+        }
+        console.log("address",addressDetails)
+        res.json(addressDetails)
+    } catch (error) {
+        console.error("Error fetching address details",error);
+        res.status(500).json({error:'Internal server error'})
+    }
+}
+
+module.exports.editAddress = async (req,res)=>{
+    try {
+        const addressId = req.params.addressId
+        console.log(addressId)
+        const address = await Address.findById(addressId)
+
+        if(!address){
+            return res.status(404).json({error:"Address not found"})
+        }
+
+        address.name = req.body.name;
+        address.mobile = req.body.mobile;
+        address.street = req.body.street;
+        address.state = req.body.state;
+        address.city = req.body.city;
+        address.zip = req.body.zip;
+        address.country = req.body.country;
+
+        await address.save()
+
+        res.status(200).json({message:"Address updated successfully"})
+    } catch (error) {
+        console.error("Error updating address",error);
+        res.status(500).json({error:"INternal server error"})
+    }
+}
+
+module.exports.deleteAdrress = async (req,res)=>{
+    try {
+        const addressId = req.params.addressId;
+        await Address.findByIdAndDelete(addressId)
+
+        res.status(200).json({message:"Address deleted succesfully"})
+    } catch (error) {
+        console.error("Error deleting address");
+        res.status(500).json({error:"Internal server error"})
+    }
+}
+
+//orders
+module.exports.cancellOrder = async (req,res)=>{
+    try {
+        const orderId = req.params.orderId;
+        const order = await Orders.findById(orderId).populate('items.product');
+
+        if(!order){
+            return res.status(404).json({error:"Order not found"})
+        }
+
+        if(order.status ==="Pending"){
+            for(const item of order.items){
+                console.log("kuku",item.product)
+                const product = await Product.findById(item.product);
+                console.log(product.variations[0].quantity)
+
+                if(product){
+                    product.variations[0].quantity += item.quantity
+                    await product.save()
+                }
+            }
+            order.status = "Cancelled";
+            order.delivered = false;
+
+            await order.save()
+            return res.status(200).json({message:"Order cancelled successfully"})
+        }else{
+            return res.status(400).json({error:"Order cannot be cancelled"})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error:"Internal Server error"})
     }
 }

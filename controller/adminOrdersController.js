@@ -56,6 +56,7 @@ module.exports.viewOrders = async (req, res) => {
   }
 
   async function handleCancelledStatus(order){
+    
     for(const item of order.items){
       const productId = item.product._id;
       const sizeId = item.product.variations[0].size;
