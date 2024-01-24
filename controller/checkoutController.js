@@ -3,6 +3,13 @@ const Cart = require('../model/schema/cartSchema')
 const Coupon = require('../model/schema/coupenSchema')
 const Address = require('../model/schema/addressSchema')
 const Product = require('../model/schema/productSchema')
+const Razorpay = require('razorpay')
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
 
 module.exports.viewCheckout = async (req, res) => {
   try {
@@ -117,10 +124,33 @@ module.exports.placeOrder = async (req, res) => {
       console.log("cod")
       paymentStatus = "Pending";
       paymentDetails = null;
-
+      res.json("cod")
     } else if (selectedPaymentMethod === "Online") {
       console.log("online")
-      return res.json({ message: "online payment is not ready yet" })
+      const timestamp = Date.now()
+      const uniqueReceiptId = `BR${timestamp}`
+
+      try {
+        const options = {
+          amount:totalPrice*100,
+          currency:'INR',
+          receipt:uniqueReceiptId,
+          payment_capture:1
+        };
+
+        const razorpayOrder = await razorpay.orders.create(options);
+
+        paymentStatus = "Pending"
+
+        paymentDetails = {
+          razorpayOrderId:razorpayOrder.id,
+          razorpaySignature:razorpayOrder.signature,
+        }
+         res.json({ razorpayOrder: razorpayOrder }); 
+
+      } catch (error) {
+        console.error(error)
+      }
 
     } else {
       return res.status(400).json({ success: false, error: 'Invalid payment method' });
@@ -166,7 +196,7 @@ module.exports.placeOrder = async (req, res) => {
       { user: userId },
       { $set: { items: [], totalPrice: 0 }, $unset: { coupon: 1 }, totalQuantity: 0 }
     );
-    res.status(201).json({ success: true, message: 'Order created successfully', order })
+    // res.status(201).json({ success: true, message: 'Order created successfully', order })
   } catch (error) {
     console.error(error)
     res.status(500).json({ success: false, error: 'Internal server error' });

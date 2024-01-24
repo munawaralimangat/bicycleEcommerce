@@ -399,10 +399,9 @@
             console.log(selectedAddressId)
             console.log("pay",selectedPaymentMethod)
             if(!userId || !selectedAddressId || !selectedPaymentMethod){
-                alert("user id or selected address or pament method is missingy")
+                alert("user id or selected address or pament method is missing")
             }
-            console.log("dwsdjk")
-
+            
             const response = await fetch('/brepublic/placeorder',{
                 method:'post',
                 headers:{
@@ -417,8 +416,18 @@
             })
             if(response.ok){
                 const orderData = await response.json();
+                console.log(orderData);
+                if(orderData == 'cod'){
+                    console.log('cod success');
+                    openSuccessModal()
+                }else{
+                    console.log('razorpay success')
+                    razorpay(orderData)
+                    // openSuccessModal()
+                }
+                
                 console.log('order created successfully')
-                openSuccessModal()
+                
                 
             }else{
                 console.error('Failed to create order',response.statusText)
@@ -446,4 +455,39 @@
       modal.style.display = "none";
       location.reload()
     }
+    </script>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function razorpay(response){
+        console.log('ftgdftc',response.razorpayOrder.amount_due);
+        var options = {
+        "key": "rzp_test_aMClPt2TIB5qVt", // Enter the Key ID generated from the Dashboard
+        "amount": response.razorpayOrder.amount_due, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "BicycleRepublic",
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+        "handler": function (response){
+        location.reload()
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "gaurav.kumar@example.com",
+            "contact": "9000090000"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+   
     </script>
