@@ -323,6 +323,7 @@
 
   <%-include('../includes/components/userFooter')  %>
 <%-include('../includes/userEnd')  %>
+
 <script>
     const modal = document.getElementById('addressModal');
     const btn = document.querySelector('.open-modal-button');
@@ -390,7 +391,7 @@
         const userId = document.getElementById('userId').getAttribute('placeholder');
         const selectedAddressId = document.querySelector('input[name="selectedAddress"]:checked').value;
         const selectedPaymentMethod = document.querySelector('input[name="bordered-radio"]:checked').value;
-        const couponAmount = document.getElementById('discountAmount').textContent
+        const couponAmount = document.getElementById('discountAmount').textContent;
         const numericPart = couponAmount.replace(/[^\d.-]/g, '');
         let couponDiscount = Number(numericPart.split())
         console.log(numericPart)
