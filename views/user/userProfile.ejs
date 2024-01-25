@@ -449,67 +449,6 @@
 <!-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script> -->
 
-<!--put request for update the address details-->
-<script>
-    const modal = document.getElementById('editPersonalInfoModal');
-    const btn = document.querySelector('.open-personalInfomodal-button');
-    const span = document.querySelector('.modal-closePersonalInfo');
-    const userId = document.getElementById('userId').value;
-    const form = document.getElementById('userUpdateForm')
-
-    btn.onclick = async function () {
-        const userData = await fetchUserData(userId);
-        form.querySelector('#firstName').value = userData.user_firstName || "";
-        form.querySelector('#secondName').value = userData.user_secondName || "";
-        form.querySelector('#mobile').value = userData.user_mobile || "";
-        form.querySelector('#email').value = userData.user_email || "";
-        modal.classList.remove('hidden');
-    };
-
-    span.onclick = async function () {
-        modal.classList.add('hidden');
-    };
-
-    window.onclick = async function (event) {
-        if (event.target === modal) {
-            modal.classList.add('hidden');
-        }
-    };
-
-    async function fetchUserData(userId){
-        try {
-            const response = await fetch(`/brepublic/users/${userId}`)
-            const data = await response.json();
-            return data
-        } catch (error) {
-            console.error('Error fetching user data,',error)
-        }
-    }
-
-    //update the details in to the db
-    form.addEventListener('submit',async (event)=>{
-        event.preventDefault()
-
-        const firstName = document.getElementById('firstName').value;
-        const secondName = document.getElementById('secondName').value;
-        const mobile = document.getElementById('mobile').value;
-        const email = document.getElementById('email').value;
-
-        const response = await fetch(`/brepublic/update-user/${userId}`,{
-            method:'put',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({firstName,secondName,mobile,email})
-        })
-        if(response.ok){
-            console.log("User data updated successfully")
-        }else{
-            console.error('Error updating user data:', response.statusText);
-        }
-        console.log(firstName)
-    })
-</script>
 <!-- Updated JavaScript to handle opening and closing the modal -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -598,7 +537,68 @@
     });
 </script>
 
+<!--put request for update the address details-->
+<script>
+    const modal = document.getElementById('editPersonalInfoModal');
+    const btn = document.querySelector('.open-personalInfomodal-button');
+    const span = document.querySelector('.modal-closePersonalInfo');
+    const userId = document.getElementById('userId').value;
+    const form = document.getElementById('userUpdateForm')
 
+    btn.onclick = async function () {
+        const userData = await fetchUserData(userId);
+        form.querySelector('#firstName').value = userData.user_firstName || "";
+        form.querySelector('#secondName').value = userData.user_secondName || "";
+        form.querySelector('#mobile').value = userData.user_mobile || "";
+        form.querySelector('#email').value = userData.user_email || "";
+        modal.classList.remove('hidden');
+    };
+
+    span.onclick = async function () {
+        modal.classList.add('hidden');
+    };
+
+    window.onclick = async function (event) {
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+        }
+    };
+
+    async function fetchUserData(userId){
+        try {
+            const response = await fetch(`/brepublic/users/${userId}`)
+            const data = await response.json();
+            return data
+        } catch (error) {
+            console.error('Error fetching user data,',error)
+        }
+    }
+
+    //update the details in to the db
+    form.addEventListener('submit',async (event)=>{
+        event.preventDefault()
+
+        const firstName = document.getElementById('firstName').value;
+        const secondName = document.getElementById('secondName').value;
+        const mobile = document.getElementById('mobile').value;
+        const email = document.getElementById('email').value;
+
+        const response = await fetch(`/brepublic/update-user/${userId}`,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({firstName,secondName,mobile,email})
+        })
+        if(response.ok){
+            console.log("User data updated successfully")
+            location.reload()
+        }else{
+            console.error('Error updating user data:', response.statusText);
+        }
+        console.log(firstName)
+    })
+</script>
 
 <script>
     // Open and Close Delete Modal

@@ -47,12 +47,28 @@ module.exports.updateUser = async (req,res)=>{
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        user.user_firstName = firstName || user.user_firstName;
-        user.user_secondName = secondName || user.user_secondName;
-        user.user_mobile = mobile || user.user_mobile;
-        user.user_email = email || user.user_email;
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+                $set:{
+                    user_firstName:firstName,
+                    user_secondName:secondName,
+                    user_mobile:mobile,
+                    user_email:email,
+                }
+            },
+            {new:true}
+        )
+        // user.user_firstName = firstName || user.user_firstName;
+        // user.user_secondName = secondName || user.user_secondName;
+        // user.user_mobile = mobile || user.user_mobile;
+        // user.user_email = email || user.user_email;
 
-        const updatedUser = await user.save();
+        if(!updatedUser){
+            return res.status(404).json({error:"user not found"})
+        }
+
+        // const updatedUser = await user.save();
 
         res.json(updatedUser);
     } catch (error) {
