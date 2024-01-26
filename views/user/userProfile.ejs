@@ -698,10 +698,10 @@
     const addAddressModal = document.getElementById('addAddressModal')
     const openAddressModalBtn = document.querySelector('.open-addAddressModal-button')
     const closeAddressSpan = document.querySelector('.Addressmodal-close')
+    const formeee = document.getElementById('addAddressForm')
     console.log(openAddressModalBtn)
 
     const addressUserId = document.getElementById('userId').getAttribute('placeholder')
-    const addressForm = document.querySelector('.addAddressForm');
 
     openAddressModalBtn.onclick = async function (){
         addAddressModal.classList.remove('hidden')
@@ -716,7 +716,7 @@
         }
     }
 
-    document.addEventListener('submit', async function (event) {
+    formeee.addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const formData = new FormData(document.getElementById('addAddressForm'));
