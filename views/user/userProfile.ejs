@@ -698,7 +698,7 @@
     const addAddressModal = document.getElementById('addAddressModal')
     const openAddressModalBtn = document.querySelector('.open-addAddressModal-button')
     const closeAddressSpan = document.querySelector('.Addressmodal-close')
-    const formeee = document.getElementById('addAddressForm')
+    const formAdd = document.getElementById('addAddressForm')
     console.log(openAddressModalBtn)
 
     const addressUserId = document.getElementById('userId').getAttribute('placeholder')
@@ -716,7 +716,7 @@
         }
     }
 
-    formeee.addEventListener('submit', async function (event) {
+    formAdd.addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const formData = new FormData(document.getElementById('addAddressForm'));
