@@ -3,6 +3,7 @@ const User = require('../model/schema/userSchema')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
+const OTP = require('../model/schema/otpSchema')
 
 
 const handleErrors = (err)=>{
@@ -74,7 +75,7 @@ module.exports.userRegPost = async (req,res)=>{
         firstName,
         secondName,
         email,
-        number,
+        otp,
         password} = req.body
         console.log('reqbody', req.body)
     try {
@@ -84,10 +85,15 @@ module.exports.userRegPost = async (req,res)=>{
             user_email:email,
             // user_number:number,
             user_password:password,
-        })
+        });
+        const otpResponse = await OTP.findOne({email}).sort({createdAt:-1}).limit(1)
+        if(!otpResponse|| otp !==otpResponse.otp){
+             res.status(400).json({error:{otp:"Invalid OTP"}})
+             return
+        }
         const token = createToken(user._id)
         res.cookie('jwt',token,{httpOnly:true, maxAge:maxAge * 1000 })
-            res.status(201).send({user:user._id})
+        res.status(201).send({user:user._id})
         
     } catch (err) {
          const errors = handleErrors(err)
