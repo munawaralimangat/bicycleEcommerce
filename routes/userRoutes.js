@@ -1,4 +1,5 @@
 const express = require('express')
+const otpController = require('../controller/otpController')
 const userLoginController = require('../controller/userLoginController')
 const userHomeController = require('../controller/userHomeController')
 const userProfileController = require('../controller/userProfileController')
@@ -22,6 +23,9 @@ router.get('/landing/register',userLoginController.userRegView)//signup get
 router.post('/landing/register',userLoginController.userRegPost)//signup post
 router.get('/landing/login',userLoginController.userLoginView)//login get
 router.post('/landing/login',userLoginController.userLoginPost)//login post
+
+//otp routes
+router.post('/send-otp',otpController.sendOTP)
 
 //user profile
 router.get('/profile',userProfileController.viewProfile)
