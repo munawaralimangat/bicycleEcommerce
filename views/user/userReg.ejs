@@ -64,6 +64,16 @@
         </div>
       </div>
     </section>
+            <!--OTP input field-->
+            <div id="otpModal" class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidde">
+              <div class="absolute w-full h-full bg-gray-900 opacity-50"></div>
+              <div class="z-10 bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4">Enter OTP</h2>
+                <input id="otpInput" type="text" class="w-full px-4 py-2 border rounded-md mb-4" placeholder="Enter OTP">
+                <button id="submitOTP" class="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
+              </div>
+            </div>
+            <!--OTP input field-->
   <body>
     <style>
       #mobile-menu-2 {
@@ -74,8 +84,8 @@
       }
     </style>
   <script>
-    const form = document.querySelector('form');
 
+    const form = document.querySelector('form');
     const emailError = document.querySelector('.email.error')
     const passwordError = document.querySelector('.password.error')
     const numberError = document.querySelector('.number.error')
@@ -88,32 +98,26 @@
 }
 
 function isPasswordStrong(password) {
-  // Check if the password is long enough
   if (password.length < 8) {
     return false;
   }
 
-  // Check if the password contains at least one uppercase letter
   if (!/[A-Z]/.test(password)) {
     return false;
   }
 
-  // Check if the password contains at least one lowercase letter
   if (!/[a-z]/.test(password)) {
     return false;
   }
 
-  // Check if the password contains at least one number
   if (!/[0-9]/.test(password)) {
     return false;
   }
 
-  // Check if the password contains at least one special character
   if (!/[^a-zA-Z0-9]/.test(password)) {
     return false;
   }
 
-  // The password is strong
   return true;
 }
 
@@ -127,7 +131,6 @@ function isPasswordStrong(password) {
       passwordError.textContent = "";
       firstNameError.textContent = "";
 
-      //get the value
       const firstName = form.user_firstName.value;
       const secondName = form.user_secondName.value;
       const email = form.user_email.value;
@@ -135,7 +138,6 @@ function isPasswordStrong(password) {
       const password = form.user_password.value;
       const confirm_password = form.confirm_password.value;
 
-      // Validate the form
   if (!firstName || !secondName || !email || !password || !confirm_password) {
     console.log('enter all fields')
     firstNameError.textContent = "Enter all fields"
