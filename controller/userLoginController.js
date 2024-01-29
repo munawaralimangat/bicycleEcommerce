@@ -92,7 +92,7 @@ module.exports.userRegPost = async (req,res)=>{
              return
         }
         const token = createToken(user._id)
-        res.cookie('jwt',token,{httpOnly:true, maxAge:maxAge * 1000 })
+        res.cookie('jwtus',token,{httpOnly:true, maxAge:maxAge * 1000 })
         res.status(201).send({user:user._id})
         
     } catch (err) {

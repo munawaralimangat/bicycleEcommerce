@@ -4,7 +4,9 @@ const User = require('../model/schema/userSchema');
 
 exports.sendOTP = async (req,res)=>{
     try {
+        console.log(req.body)
         const {email} = req.body;
+        console.log(email)
         const checkUserPresent = await User.findOne({email})
         if(checkUserPresent){
             return res.status(401).json({success:false,message:"User already registered"});
