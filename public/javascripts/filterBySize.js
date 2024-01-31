@@ -6,7 +6,7 @@
     })
 
     function fetchAndDisplayProducts(){
-      const selectedSizes = $('.size-checkbox:checked').map(function(){
+      const selectedSizes = $('.size-checkbox:checked').map( function(){
         console.log(this.value)
         return this.value
       }).get()

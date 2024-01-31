@@ -22,12 +22,7 @@ module.exports.viewCart = async (req,res)=>{
         })
         .populate('coupon')
         const coupons = await Coupon.find({})
-        console.log("cart",cart)
-        if(cart){
-        res.render('user/cart',{cart,coupons})
-        }else{
-            res.render('user/emptyCart')
-        }    
+        res.render('user/cart',{cart,coupons})   
     }catch(error){
         console.error(error);
         res.status(500).json({error:"Internal server error"})
@@ -56,7 +51,7 @@ module.exports.getCart = async (req,res)=>{
         if(cart){
         res.json({cart,coupons})
         }else{
-            res.render('user/emptyCart')
+            res.render('user/emptyCart',{cart:null})
         }
     } catch (error) {
         console.log(error)

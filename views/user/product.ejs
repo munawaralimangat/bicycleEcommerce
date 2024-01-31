@@ -1,4 +1,21 @@
 <%-include('../includes/userStart') %>
+<style>
+    figure.zoom {
+  background-position: 50% 50%;
+  position: relative;
+  width: 500px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+figure.zoom img:hover {
+  opacity: 0;
+}
+figure.zoom img {
+  transition: opacity 0.5s;
+  display: block;
+  width: 100%;
+}
+</style>
 
     <body class="dark:bg-gray-800 bg-gray-100">
         <header>
@@ -9,31 +26,31 @@
             <section class="mt-24 ">
                 <div class="bg-gray-100 dark:bg-gray-800 py-8">
                     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex flex-col md:flex-row -mx-4">
-                            <div class="md:flex-1 px-4">
-                                <div class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4" id="zoom-container">
+                        <div class="flex flex-col md:flex-row -mx-6">
+                            <div class="md:flex-1 px-12">
+                                <figure class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4 zoom" id="zoom-container" onmousemove="zoom(event)" style="background-image: url('/uploads/<%=product.front_image.filename %>')">
                                     <img class="w-full h-full object-cover cursor-pointer"
                                         src="/uploads/<%=product.front_image.filename %>" alt="Product Image"
                                         id="zoom-image">
-                                </div>
+                                </figure>
                                 <ol class="flex -mx-2 mb-4">
                                     <li class="w-1/2 h-1/2 px-2">
-                                        <img class="w-full h-full object-cover cursor-pointer"
+                                        <img class="w-full h-full object-cover cursor-pointer rounded-lg"
                                             src="/uploads/<%=product.front_image.filename %>" alt="Product Image"
                                             onclick="changeZoomImage(this)">
                                     </li>
                                     <li class="w-1/2 h-1/2 px-2">
-                                        <img class="w-full h-full object-cover cursor-pointer"
+                                        <img class="w-full h-full object-cover cursor-pointer rounded-lg"
                                             src="/uploads/<%=product.product_images[0].filename %>" alt="Product Image"
                                             onclick="changeZoomImage(this)">
                                     </li>
                                     <li class="w-1/2 h-1/2 px-2">
-                                        <img class="w-full h-full object-cover cursor-pointer"
+                                        <img class="w-full h-full object-cover cursor-pointer rounded-lg" 
                                             src="/uploads/<%=product.product_images[1].filename %>" alt="Product Image"
                                             onclick="changeZoomImage(this)">
                                     </li>
                                     <li class="w-1/2 h-1/2 px-2">
-                                        <img class="w-full h-full object-cover cursor-pointer"
+                                        <img class="w-full h-full object-cover cursor-pointer rounded-lg"
                                             src="/uploads/<%=product.product_images[2].filename %>" alt="Product Image"
                                             onclick="changeZoomImage(this)">
                                     </li>
@@ -162,48 +179,23 @@
                         }
                     </script>
 
-
+                    <!--Select image-->
                     <script>
                         function changeZoomImage(clickedImage) {
                             let newImageSrc = clickedImage.src;
 
                             document.getElementById('zoom-image').src = newImageSrc;
+                            document.getElementById('zoom-container').style.backgroundImage = 'url(' + newImageSrc + ')';
                         }
                     </script>
-
-                    <!-- <script>
-                        // image zooming
-                        const zoomContainer = document.getElementById('zoom-container');
-                        const zoomImage = document.getElementById('zoom-image');
-
-                        // Add a mousemove event listener to the image container
-                        zoomContainer.addEventListener('mousemove', handleMouseMove);
-
-                        // Function to handle mousemove events
-                        function handleMouseMove(event) {
-                            // Get the position of the mouse within the image container
-                            const x = event.pageX - zoomContainer.offsetLeft;
-                            const y = event.pageY - zoomContainer.offsetTop;
-
-                            // Calculate the percentage position within the image
-                            let percentX = (x / zoomContainer.offsetWidth) * 75;
-                            let percentY = (y / zoomContainer.offsetHeight) * 75;
-
-                            // Calculate the maximum percentage position to ensure the zoomed image stays within the container
-                            const maxPercentX = Math.max(0, 75 - (zoomImage.width / zoomContainer.offsetWidth) * 75);
-                            const maxPercentY = Math.max(0, 75 - (zoomImage.height / zoomContainer.offsetHeight) * 75);
-
-                            // Ensure that the percentage position does not exceed the maximum values
-                            percentX = Math.min(percentX, maxPercentX);
-                            percentY = Math.min(percentY, maxPercentY);
-
-                            // Apply the zoom effect using CSS transform
-                            zoomImage.style.transformOrigin = `${percentX}% ${percentY}%`;
-                            zoomImage.style.transform = 'scale(1.20)'; // You can adjust the scale factor as needed
-                        }
-
-                        // Add a mouseleave event listener to reset the zoom on mouse out
-                        zoomContainer.addEventListener('mouseleave', () => {
-                            zoomImage.style.transform = 'scale(1)';
-                        });
-                    </script> -->
+                    <!--Zoom image-->
+                    <script>
+                        function zoom(e){
+                      var zoomer = e.currentTarget;
+                      e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+                      e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+                      x = offsetX/zoomer.offsetWidth*100
+                      y = offsetY/zoomer.offsetHeight*100
+                      zoomer.style.backgroundPosition = x + '% ' + y + '%';
+                    }
+                    </script>
