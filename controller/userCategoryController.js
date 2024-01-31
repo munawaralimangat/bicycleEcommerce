@@ -23,14 +23,22 @@ module.exports.viewMountain = async (req, res) => {
             // Default sorting or no sorting
             mountainBikesProducts = await Product.find({ category_name: { $in: categoryIds } });
         }
+
+        const categories = await Category.find({category_name:{$in:["Mountain Bikes","Road Bikes"]}})
+        const catMap = {};
+        categories.forEach(cat => {
+            
+            catMap[cat.category_name.toLowerCase().replace(/\s/g, '')] = cat._id;
+        });
+        
         const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
         const sizeIdMap = {};
         sizes.forEach(size => {
+
           sizeIdMap[size.size_name.toLowerCase()] = size._id;
         });
 
-        console.log("Mountain Bikes Products:", mountainBikesProducts);
-        res.render('user/mountainBikes', { mountainBikesProducts,sizes:sizeIdMap });
+        res.render('user/mountainBikes', { mountainBikesProducts,sizes:sizeIdMap, categories:catMap });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -58,14 +66,19 @@ module.exports.viewRoadBikes = async (req, res) => {
             roadBikesProducts = await Product.find({ category_name: { $in: categoryIds } });
         }
 
+        const categories = await Category.find({category_name:{$in:["Mountain Bikes","Road Bikes"]}})
+        const catMap = {};
+        categories.forEach(cat => {
+            
+            catMap[cat.category_name.toLowerCase().replace(/\s/g, '')] = cat._id;
+        });
+
         const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
         const sizeIdMap = {};
         sizes.forEach(size => {
           sizeIdMap[size.size_name.toLowerCase()] = size._id;
         });
-
-        console.log("road bikes ", roadBikesProducts);
-        res.render('user/roadBikes', { roadBikesProducts,sizes:sizeIdMap });
+        res.render('user/roadBikes', { roadBikesProducts,sizes:sizeIdMap,categories:catMap });
 
     } catch (error) {
         console.log(error);

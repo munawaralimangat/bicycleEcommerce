@@ -1,20 +1,24 @@
 
   const user = document.getElementById('userId').textContent
   $(document).ready(function (){
-    $('.size-checkbox').on('change',function(){
+    $('.size-checkbox, .category-checkbox ').on('change',function(){
       fetchAndDisplayProducts()
     })
 
     function fetchAndDisplayProducts(){
       const selectedSizes = $('.size-checkbox:checked').map( function(){
-        console.log(this.value)
         return this.value
+      }).get()
+
+      const selectedCategories = $('.category-checkbox:checked').map(function (){
+        return this.value
+
       }).get()
 
       $.ajax({
         url:'/brepublic/products',
         method:'get',
-        data:{sizes:selectedSizes},
+        data:{sizes:selectedSizes,categories: selectedCategories},
         success:function(response){
           displayProducts(response)
         },

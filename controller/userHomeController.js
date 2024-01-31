@@ -40,12 +40,21 @@ module.exports.homeAllProducts = async (req, res) => {
         // } else {
         //     products = await Product.find().populate('category_name');
         }
+
+        const categories = await Category.find({category_name:{$in:["Mountain Bikes","Road Bikes"]}})
+        const catMap = {};
+        categories.forEach(cat => {
+            
+            catMap[cat.category_name.toLowerCase().replace(/\s/g, '')] = cat._id;
+        });
+
+        
         const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
         const sizeIdMap = {};
         sizes.forEach(size => {
           sizeIdMap[size.size_name.toLowerCase()] = size._id;
         });
-        res.render('user/allproducts', { products: products ,sizes:sizeIdMap});
+        res.render('user/allproducts', { products: products ,sizes:sizeIdMap,categories:catMap });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

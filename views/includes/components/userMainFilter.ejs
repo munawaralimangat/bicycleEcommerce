@@ -33,11 +33,11 @@
       <div class="pt-6" id="filter-section-1">
         <div class="space-y-4">
           <div class="flex items-center">
-            <input id="filter-category-0" name="category[]" value="new-arrivals" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+            <input id="filter-category-0" name="category[]" value="<%=categories.mountainbikes %>" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 category-checkbox">
             <label for="filter-category-0" class="ml-3 text-sm text-gray-600">Mountain Bikes</label>
           </div>
           <div class="flex items-center">
-            <input id="filter-category-1" name="category[]" value="sale" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+            <input id="filter-category-1" name="category[]" value="<%=categories.roadbikes %>" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 category-checkbox">
             <label for="filter-category-1" class="ml-3 text-sm text-gray-600">Road Bikes</label>
           </div>
         </div>
@@ -84,3 +84,4 @@
       </div>
     </div>
   </form>
+  

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Product = require('../model/schema/productSchema');
 const Size = require('../model/schema/sizeSchema')
+const Category = require('../model/schema/categorySchema')
 
 module.exports.viewProduct = async (req, res) => {
     try {
@@ -61,68 +62,112 @@ module.exports.viewProduct = async (req, res) => {
 };
 
 module.exports.getAllProducts = async (req,res)=>{
-    console.log("this works")
     try {
-        // console.log(req.query)
         const selectedSizes = req.query.sizes;
-        const filteredProducts = await Product.find({
-            'variations.size': { $in: selectedSizes },
-          })
-          .populate('category_name') // Populate the 'category_name' field
-          .populate('variations.size');
-        res.json(filteredProducts)
+        const selectedCategories = req.query.categories; // Add this line to get selected categories
+
+        const filters = {};
+
+        if (selectedSizes && selectedSizes.length > 0) {
+            filters['variations.size'] = { $in: selectedSizes };
+        }
+
+        if (selectedCategories && selectedCategories.length > 0) {
+            filters['category_name'] = { $in: selectedCategories };
+        }
+
+        const filteredProducts = await Product.find(filters)
+            .populate('category_name')
+            .populate('variations.size');
+
+        res.json(filteredProducts);
     } catch (error) {
         console.error('Error fetching products', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
-module.exports.searchProduct = async (req,res)=>{
-    console.log("1",req.query)
-    try{
-        const {q:productName} = req.query;
-        console.log("pname",productName)
-        if(!productName){
-            return res.status(400).json({message:'Product name is required'})
-        }
-        const regex = new RegExp(productName,'i');
+module.exports.searchProduct = async (req, res) => {
+    try {
+        const { q: productName } = req.query;
 
-        const product = await Product.find({product_name:regex})
+        if (!productName) {
+            return res.status(400).json({ message: 'Product name is required' });
+        }
+
+        const regex = new RegExp(productName, 'i');
+
+        const product = await Product.find({ product_name: regex });
+
+        const categories = await Category.find({ category_name: { $in: ["Mountain Bikes", "Road Bikes"] } });
+        const catMap = {};
+        categories.forEach(cat => {
+            catMap[cat.category_name.toLowerCase().replace(/\s/g, '')] = cat._id;
+        });
+
+        const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
+        const sizeIdMap = {};
+        sizes.forEach(size => {
+            sizeIdMap[size.size_name.toLowerCase()] = size._id;
+        });
 
         if (product.length === 0) {
-            // No products found
-            return res.render('user/searchPage', { message: 'Product not found', products: [] });
-          }
+            return res.render('user/searchPage', {
+                message: 'Product not found',
+                products: [],
+                categories: catMap,
+                sizes: sizeIdMap
+            });
+        }
 
-        res.render('user/searchPage',{products:product})
-    }catch(error){
-        console.error('error searching productrs',error)
-        res.status(500).json({message:'Internal server error'})
+        res.render('user/searchPage', { products: product, categories: catMap, sizes: sizeIdMap });
+    } catch (error) {
+        console.error('Error searching products', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-}
+};
+
 
 module.exports.searchWithSort = async (req, res) => {
     try {
-        const  sortBy  = req.query.sort;
-        console.log(req.query.sort)
+        const sortBy = req.query.sort;
+        console.log(req.query.sort);
 
-        const productQuery = Product.find().sort({product_price:1});
+        const productQuery = Product.find().sort({ product_price: 1 });
 
         if (sortBy === 'HighToLow') {
             productQuery.sort({ product_price: -1 });
         }
-        console.log("hello")
+
         const products = await productQuery.exec();
 
+        const categories = await Category.find({ category_name: { $in: ["Mountain Bikes", "Road Bikes"] } });
+        const catMap = {};
+        categories.forEach(cat => {
+            catMap[cat.category_name.toLowerCase().replace(/\s/g, '')] = cat._id;
+        });
+
+        const sizes = await Size.find({ size_name: { $in: ["Small", "Medium", "Large"] } });
+        const sizeIdMap = {};
+        sizes.forEach(size => {
+            sizeIdMap[size.size_name.toLowerCase()] = size._id;
+        });
+
         if (products.length === 0) {
-            return res.render('user/searchPage', { message: 'No products found', products: [] });
+            return res.render('user/searchPage', {
+                message: 'No products found',
+                products: [],
+                categories: catMap,
+                sizes: sizeIdMap
+            });
         }
 
-        res.render('user/searchPage', { products });
+        res.render('user/searchPage', { products, categories: catMap, sizes: sizeIdMap });
     } catch (error) {
         console.error('Error searching products with sorting', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 
 
