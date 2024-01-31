@@ -79,7 +79,6 @@ module.exports.getAllProducts = async (req,res)=>{
         const filteredProducts = await Product.find(filters)
             .populate('category_name')
             .populate('variations.size');
-
         res.json(filteredProducts);
     } catch (error) {
         console.error('Error fetching products', error);
