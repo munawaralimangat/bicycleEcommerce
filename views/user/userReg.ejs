@@ -212,6 +212,7 @@ function isPasswordStrong(password) {
           firstNameError.textContent = data.errors.user_firstName;
           secondNameError.textContent = data.errors.user_secondName;
           // numberError.textContent = data.errors.user_number
+          hideOtpModal()
         }
         if(data.user){
           location.assign('/brepublic/landing/userHome')

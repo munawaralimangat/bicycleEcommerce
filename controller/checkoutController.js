@@ -33,7 +33,7 @@ module.exports.viewCheckout = async (req, res) => {
       .populate('coupon')
     if (!cart || cart.items.length === 0) {
       console.log("Cart not found or empty");
-      return res.redirect(`/brepublic/cart?userId=${userId}`);
+      return res.redirect(`/brepublic/success?userId=${userId}`);
     }
     const addresses = await Address.find({ userId });
     const coupons = await Coupon.find({})
@@ -189,7 +189,6 @@ module.exports.placeOrder = async (req, res) => {
         { $inc: { 'variations.$.quantity': -productQuantity } }
       )
       console.log("productupdt", productUpdated)
-
     }
 
     await Cart.findOneAndUpdate(
@@ -201,5 +200,18 @@ module.exports.placeOrder = async (req, res) => {
     console.error(error)
     res.status(500).json({ success: false, error: 'Internal server error' });
   }
+}
+
+module.exports.successPayment = async (req,res)=>{
+ try {
+  const userId = req.query.userId;
+  console.log(userId)
+  if(!userId){
+    return res.redirect(`/brepublic/cart?userId=${userId}`)
+  }
+   res.render('user/successPage')
+ } catch (error) {
+  console.error(error)
+ }
 }
 

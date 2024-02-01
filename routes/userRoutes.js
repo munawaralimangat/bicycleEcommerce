@@ -76,6 +76,7 @@ router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 //checkout routes
 router.get('/checkout',checkoutController.viewCheckout);
 router.post('/placeorder',checkoutController.placeOrder);
+router.get('/success',checkoutController.successPayment)
 
 //address routes
 router.get('/get-address/:addressId',userProfileController.getOneAddress);
