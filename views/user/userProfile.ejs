@@ -354,11 +354,13 @@
                                                 <div class="relative inline-block text-left">
                                                     <button <% if (order.delivered || order.status === 'Cancelled') { %>disabled<% } %>  type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                                         <% if(order.status==="Delivered"){ %>
-                                                        <p class="text-gray-600">Delivered</p>
+                                                        <p class="text-gray-600"><%=order.status  %></p>
                                                         <% }else if(order.status==="Cancelled"){ %>
-                                                        <p class="text-red-500">Cancelled</p>
+                                                        <p class="text-red-500"><%=order.status  %></p>
+                                                        <% }else if(order.status==="cancellation pending"){ %>
+                                                        <p class="text-red-500"><%=order.status  %></p>
                                                         <% }else{ %>
-                                                            <p id="openConfirmationButton" class="font-medium text-blue-600 dark:text-blue-500 hover:underline open-cancelOrder-button" data-order-id="<%= order._id %>">Pending</p>
+                                                            <p id="openConfirmationButton" class="font-medium text-blue-600 dark:text-blue-500 hover:underline open-cancelOrder-button" data-order-id="<%= order._id %>"> <%=order.status  %></p>
                                                         <% } %>
                                                     </button>
                                                 </div>
@@ -675,12 +677,12 @@
         console.log(orderId)
         if (orderId) {
             try {
-                const response = await fetch(`/brepublic/cancel-order/${orderId}`, {
+                const response = await fetch(`/brepublic/cancel-request/${orderId}`, {
                     method: 'put',
                 });
 
                 if (response.ok) {
-                    console.log('Order canceled successfully');
+                    console.log('Order request sent');
                     closeCancelOrderModal();
                     location.reload()
                 } else {
@@ -691,6 +693,10 @@
             }
         }
     });
+</script>
+
+<script>
+
 </script>
 
 

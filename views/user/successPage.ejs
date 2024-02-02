@@ -4,13 +4,12 @@
         <%-include('../includes/userHomeNav')  %>
     </header>
 <body>
-
-    <section class="flex items-center py-16 bg-gray-50 font-poppins dark:bg-gray-800 mt-6 ">
+    <% if(lastOrder){ %>
+    <section class="flex items-center py-16 bg-gray-50 font-poppins dark:bg-gray-800 mt-8 ">
         <div
             class="justify-center flex-1 max-w-4xl px-6 py-6 mx-auto  rounded-md shadow-md dark:border-gray-900 dark:bg-gray-900 lg:py-10 lg:px-10">
             <div class="bg-white p-6  md:mx-auto dark:bg-gray-800">
-                <p class="text-lg text-gray-500 dark:text-gray-400">ORDER-NO: : 012736373737</p>
-                
+                <p class="text-lg text-gray-500 dark:text-gray-400">Order No: <%=lastOrder.orderNumber%></p>
                 <svg viewBox="0 0 24 24" class="text-green-600 w-16 h-16 mx-auto my-6">
                     <path fill="currentColor"
                         d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
@@ -18,46 +17,45 @@
                 </svg>
                 
                 <div class="text-center">
-                    <h3 class="md:text-2xl text-base text-gray-900 dark:text-gray-400 font-semibold text-center">Payment Done!</h3>
-                    <p class="text-gray-600 my-2 dark:text-gray-400">Thank you for completing your secure online payment.</p>
+                    <h3 class="md:text-2xl text-base text-gray-900 dark:text-gray-400 font-semibold text-center">Order placed!</h3>
+                    <p class="text-gray-600 my-2 dark:text-gray-400">Thank you for completing your order.</p>
                     <p class="dark:text-gray-500"> Have a great day!  </p>  
                 </div>
                 
               </div>
             <div class="max-w-4xl mx-auto mb-10 mt-10">
                 <h2 class="mb-4 text-xl font-medium dark:text-gray-400 ">What you ordered:</h2>
-                <!--product-->
+                <% lastOrder.items.forEach(items => { %>
+                                    <!--product-->
                 <div
                     class="p-10 mb-8 bg-white rounded-md shadow dark:bg-gray-800 sm:flex sm:items-center xl:py-5 xl:px-12">
                     <a href="#" class="mr-6 md:mr-12">
                         <img class=" w-full lg:w-[80px] h-[200px] lg:h-[80px]  object-cover  mx-auto mb-6 sm:mb-0 "
-                            src="https://i.postimg.cc/YS2pPP8k/white-denim-jacket-front-view-streetwear-fashion.jpg "
+                            src="/uploads/<%=items.product.front_image.filename  %>"
                             alt="dress">
                     </a>
                     <div>
                         <a class="inline-block mb-1 text-lg font-medium hover:underline dark:text-gray-400" href="#">
-                            White jacket for men</a>
+                            <%=items.product.product_name  %></a>
                         <div class="flex flex-wrap">
                             <p class="mr-4 text-sm font-medium">
-                                <span class="font-medium dark:text-gray-400">Color:</span>
-                                <span class="ml-2 text-gray-400 dark:text-gray-400">Silver</span>
-                            </p>
-                            <p class="mr-4 text-sm font-medium">
                                 <span class="font-medium dark:text-gray-400">Size:</span>
-                                <span class="ml-2 text-gray-400 dark:text-gray-400">medium</span>
+                                <span class="ml-2 text-gray-400 dark:text-gray-400"><%=items.product.variations[0].size.size_name  %></span>
                             </p>
                             <p class="mr-4 text-sm font-medium">
-                                <span class="font-medium dark:text-gray-400">Style:</span>
-                                <span class="ml-2 text-gray-400 dark:text-gray-400">Uk minimal design</span>
+                                <span class="font-medium dark:text-gray-400">Category:</span>
+                                <span class="ml-2 text-gray-400 dark:text-gray-400"><%=items.product.category_name.category_name%></span>
                             </p>
                             <p class="text-sm font-medium dark:text-gray-400">
                                 <span>Qty:</span>
-                                <span class="ml-2 text-gray-400">1</span>
+                                <span class="ml-2 text-gray-400"><%=items.quantity%></span>
                             </p>
                         </div>
                     </div>
                 </div>
                 <!--product closes-->
+                <% }); %>
+
 
             </div>
             <div class="max-w-4xl mx-auto ">
@@ -68,7 +66,7 @@
                         <span>Shipping</span>
                         <span class="flex items-center">
                             <span class="ml-3 mr-1 text-sm">Rs.</span>
-                            <span class="text-xl">4,000</span>
+                            <span class="text-xl">10</span>
                         </span>
                     </div>
                     <!-- <div
@@ -86,7 +84,7 @@
                         <span>Total</span>
                         <span class="flex items-center text-blue-500 dark:text-blue-400">
                             <span class="ml-3 mr-1 text-sm">Rs.</span>
-                            <span class="text-xl">7,000</span>
+                            <span class="text-xl"><%=lastOrder.totalPrice %></span>
                         </span>
                     </div>
                 </div>
@@ -94,7 +92,7 @@
                 <div class="flex flex-wrap items-center justify-between gap-4 ">
                     <div class="py-10 text-center m-6">
                         <a href="/brepublic/landing" class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3">
-                            GO BACK 
+                            Back to Shop 
                        </a>
                     </div>
                     <div class="py-10 text-center m-6">
@@ -107,6 +105,9 @@
 
         </div>
     </section>
+    <% }else{ %>
+        <p>no last orddr</p>
+        <% } %>
 </body>
 
 

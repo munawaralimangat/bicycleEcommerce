@@ -2,6 +2,8 @@ const User = require('../model/schema/userSchema')
 const Address = require('../model/schema/addressSchema')
 const Orders = require('../model/schema/orderSchema')
 const Product = require('../model/schema/productSchema')
+const Order = require('../model/schema/orderSchema')
+const OrderCancelModel = require('../model/schema/orderCancelSchema')
 
 module.exports.viewProfile = async (req,res)=>{
     try {
@@ -132,36 +134,56 @@ module.exports.deleteAdrress = async (req,res)=>{
 }
 
 //orders
-module.exports.cancellOrder = async (req,res)=>{
-    try {
-        const orderId = req.params.orderId;
-        const order = await Orders.findById(orderId).populate('items.product');
+// module.exports.cancellOrder = async (req,res)=>{
+//     try {
+//         const orderId = req.params.orderId;
+//         const order = await Orders.findById(orderId).populate('items.product');
 
-        if(!order){
-            return res.status(404).json({error:"Order not found"})
+//         if(!order){
+//             return res.status(404).json({error:"Order not found"})
+//         }
+
+//         if(order.status !== "Cancelled" || order.status !== "Delivered"){
+            
+//             for(const item of order.items){
+//                 console.log(item.product)
+//                 const product = await Product.findById(item.product);
+//                 console.log(product.variations[0].quantity)
+
+//                 if(product){
+//                     product.variations[0].quantity += item.quantity
+//                     await product.save()
+//                 }
+//             }
+//             order.status = "Cancelled";
+//             order.delivered = false;
+
+//             await order.save()
+//             return res.status(200).json({message:"Order cancelled successfully"})
+//         }else{
+//             return res.status(400).json({error:"Order cannot be cancelled"})
+//         }
+//     } catch (error) {
+//         console.error(error)
+//         res.status(500).json({error:"Internal Server error"})
+//     }
+// }
+
+module.exports.cancelRequest = async (req,res)=>{
+    const orderId = req.params.orderId
+    console.log(orderId)
+    await Order.findByIdAndUpdate(orderId,{
+        $set:{
+            status:"cancellation pending"
         }
+    })
 
-        if(order.status ==="Pending"){
-            for(const item of order.items){
-                console.log("kuku",item.product)
-                const product = await Product.findById(item.product);
-                console.log(product.variations[0].quantity)
-
-                if(product){
-                    product.variations[0].quantity += item.quantity
-                    await product.save()
-                }
-            }
-            order.status = "Cancelled";
-            order.delivered = false;
-
-            await order.save()
-            return res.status(200).json({message:"Order cancelled successfully"})
-        }else{
-            return res.status(400).json({error:"Order cannot be cancelled"})
-        }
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({error:"Internal Server error"})
+    const orderCancelDetails = {
+        order:orderId
     }
+
+    const orderCancel = new OrderCancelModel(orderCancelDetails)
+
+    await orderCancel.save()
+    res.status(200).json({message:"cancel request sent successfully"})    
 }

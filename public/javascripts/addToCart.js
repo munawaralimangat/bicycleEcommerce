@@ -37,7 +37,7 @@ async function addToCart(productId, userId) {
           title: 'Error',
           text: 'Error adding to cart. Please try again.',
         });
-  
+
         console.log('error adding to cart', error.message); // Show error
     }
   }

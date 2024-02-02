@@ -1,5 +1,6 @@
 const Orders = require('../model/schema/orderSchema')
 const Product = require('../model/schema/productSchema')
+const OrderCancelModel = require('../model/schema/orderCancelSchema')
 
 module.exports.viewOrders = async (req, res) => {
     try {
@@ -24,17 +25,18 @@ module.exports.viewOrders = async (req, res) => {
       }
 
       if (order.delivered || order.status === 'Cancelled') {
-        console.log("yyyyyyyyyyyyyyyyyyyyy")
         return res.json({ error: 'Status cannot be changed.' });
       }
 
       if(status === "Cancelled"){
-        console.log("cancelled")
         await handleCancelledStatus(order);
 
       }else if(status==="Delivered"){
         console.log("delivered")
         // await handleDeliveredStatus(order);
+      }else if(status === 'Processing'|| status === 'Shipped'){
+        await Orders.findByIdAndUpdate(orderId, { $set: { status, delivered: false } }, { new: true });
+        return res.status(200).json({ message: 'Order status updated successfully' });
       }else{
         return res.status(400).json({error:"Invalid status update"})
       }
@@ -55,6 +57,7 @@ module.exports.viewOrders = async (req, res) => {
     }
   }
 
+
   async function handleCancelledStatus(order){
     
     for(const item of order.items){
@@ -68,6 +71,55 @@ module.exports.viewOrders = async (req, res) => {
       )
     }
   }
+
+  module.exports.viewOrderRequestPage = async (req,res)=>{
+    try {
+      const orderRequests = await OrderCancelModel.find()
+      res.render('admin/adminOrderRequests',{orderRequests})
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching orders" })
+    }
+  }
+
+  module.exports.AcceptcancellOrder = async (req,res)=>{
+    try {
+        const orderId = req.params.orderId;
+        const reqId = req.body.id;
+
+        console.log(reqId)
+        console.log(orderId)
+
+        const order = await Orders.findById(orderId).populate('items.product');
+
+        if(!order){
+            return res.status(404).json({error:"Order not found"})
+        }
+
+        if(order.status !== "Cancelled" || order.status !== "Delivered"){
+            
+            for(const item of order.items){
+                console.log(item.product)
+                const product = await Product.findById(item.product);
+                console.log(product.variations[0].quantity)
+
+                if(product){
+                    product.variations[0].quantity += item.quantity
+                    await product.save()
+                }
+            }
+            order.status = "Cancelled";
+            order.delivered = false;
+
+            await order.save()
+            return res.status(200).json({message:"Order cancelled successfully"})
+        }else{
+            return res.status(400).json({error:"Order cannot be cancelled"})
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error:"Internal Server error"})
+    }
+}
 
 
   // module.exports.changeStatus = async (req,res)=>{

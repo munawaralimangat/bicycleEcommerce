@@ -1,4 +1,5 @@
 const Order = require('../model/schema/orderSchema')
+const User = require('../model/schema/userSchema')
 const Cart = require('../model/schema/cartSchema')
 const Coupon = require('../model/schema/coupenSchema')
 const Address = require('../model/schema/addressSchema')
@@ -209,7 +210,35 @@ module.exports.successPayment = async (req,res)=>{
   if(!userId){
     return res.redirect(`/brepublic/cart?userId=${userId}`)
   }
-   res.render('user/successPage')
+  const user = await User.findById(userId)
+  if(!user){
+    return res.redirect(`/brepublic/cart?userId=${userId}`)
+  }
+  const lastOrder = await Order.findOne({user:userId}).sort({ createdAt: -1 })
+  .populate({
+    path: 'items.product',
+    model: 'Product',
+    populate: [
+      {
+        path: 'category_name',
+        model: 'Category',
+      },
+      {
+        path: 'variations.size',
+        model: 'Size',
+      },
+    ],
+  })
+  .populate({
+    path: 'shippingAddress',
+    model: 'Address',
+  })
+  .populate({
+    path: 'user',
+    model: 'User',
+  });
+  console.log(lastOrder)
+   res.render('user/successPage',{userId,lastOrder})
  } catch (error) {
   console.error(error)
  }

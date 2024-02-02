@@ -74,6 +74,10 @@ router.delete('/coupon/:id',adminOffersController.deleteCoupon);
 router.get('/orders',adminOrdersController.viewOrders)
 router.put('/delivery-status/:orderId',adminOrdersController.changeStatus)
 
+//order request
+router.get('/order-requests',adminOrdersController.viewOrderRequestPage)
+router.put('/accept-req/:orderId',adminOrdersController.AcceptcancellOrder)
+
 
 
 module.exports = router;

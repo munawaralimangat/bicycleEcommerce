@@ -35,7 +35,8 @@ router.put('/update-user/:userId',userProfileController.updateUser)
         router.put('/edit-address/:addressId',userProfileController.editAddress)
         router.delete('/delete-address/:addressId',userProfileController.deleteAdrress)
     //orders status
-    router.put('/cancel-order/:orderId',userProfileController.cancellOrder)
+    router.put('/cancel-request/:orderId',userProfileController.cancelRequest)
+    // router.put('/cancel-order/:orderId',userProfileController.cancellOrder)
 
     //user home controller
         router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)

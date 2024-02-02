@@ -418,7 +418,8 @@
                 console.log(orderData);
                 if(orderData == 'cod'){
                     console.log('cod success');
-                    openSuccessModal()
+                    // openSuccessModal()
+                    location.reload()
                 }else{
                     console.log('razorpay success')
                     razorpay(orderData)
