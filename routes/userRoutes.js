@@ -34,6 +34,7 @@ router.put('/update-user/:userId',userProfileController.updateUser)
     //edit and delete address
         router.put('/edit-address/:addressId',userProfileController.editAddress)
         router.delete('/delete-address/:addressId',userProfileController.deleteAdrress)
+        
     //orders status
     router.put('/cancel-request/:orderId',userProfileController.cancelRequest)
     // router.put('/cancel-order/:orderId',userProfileController.cancellOrder)

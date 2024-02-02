@@ -77,7 +77,7 @@ module.exports.viewOrders = async (req, res) => {
       const orderRequests = await OrderCancelModel.find()
       res.render('admin/adminOrderRequests',{orderRequests})
     } catch (error) {
-      res.status(500).json({ error: "Error fetching orders" })
+      res.status(500).json({ error: "Error fetching order request" })
     }
   }
 
@@ -111,6 +111,13 @@ module.exports.viewOrders = async (req, res) => {
             order.delivered = false;
 
             await order.save()
+
+            await OrderCancelModel.findOneAndUpdate(
+              { order: orderId },
+              { $set: { accept: true } },
+              { new: true, upsert: true }
+          );
+
             return res.status(200).json({message:"Order cancelled successfully"})
         }else{
             return res.status(400).json({error:"Order cannot be cancelled"})

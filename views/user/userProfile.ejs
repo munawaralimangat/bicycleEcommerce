@@ -357,7 +357,7 @@
                                                         <p class="text-gray-600"><%=order.status  %></p>
                                                         <% }else if(order.status==="Cancelled"){ %>
                                                         <p class="text-red-500"><%=order.status  %></p>
-                                                        <% }else if(order.status==="cancellation pending"){ %>
+                                                        <% }else if(order.status==="Cancelling"){ %>
                                                         <p class="text-red-500"><%=order.status  %></p>
                                                         <% }else{ %>
                                                             <p id="openConfirmationButton" class="font-medium text-blue-600 dark:text-blue-500 hover:underline open-cancelOrder-button" data-order-id="<%= order._id %>"> <%=order.status  %></p>

@@ -8,6 +8,7 @@
                     <!--content-->
                     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
                         <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+
                             <h4 class="text-xl text-gray-900 font-bold">Statistics</h4>
                             
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
@@ -71,14 +72,27 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+
                             </div>
-        
-                            <div class="mt-4">
-                                <canvas id="verticalBarChart" style="display: block; box-sizing: border-box; height: 414px; width: 828px;" width="1656" height="828"></canvas>
+
+                            <div class="mt-10">
+                                <!-- Bar Chart -->
+                                <div style="width: 50%; float: left;" class="mt-16">
+                            
+                                    <canvas id="barChart" width="400" height="200"></canvas>
+                                </div>
+                            
+                                <!-- Pie Chart -->
+                                <div style="width: 50%; float: left;" class="mt-16">
+                            
+                                    <canvas id="pieChart" width="400" height="200"></canvas>
+                                </div>
                             </div>
+
                         </div>
 
-                        <canvas id="myChart"></canvas>
+                        
                     </div>
 
             </div>
@@ -86,6 +100,68 @@
 
     </body>
     <%- include('../includes/adminEnd') %>
+    <script>
+        // Bar Chart Data
+        const barChartData = {
+            labels: ['Label 1', 'Label 2', 'Label 3'],
+            datasets: [{
+                label: 'My Dataset',
+                data: [10, 20, 30],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                ],
+                borderWidth: 1,
+            }],
+        };
+    
+        // Pie Chart Data
+        const pieChartData = {
+            labels: ['Label A', 'Label B', 'Label C'],
+            datasets: [{
+                data: [40, 30, 30],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                ],
+                borderWidth: 1,
+            }],
+        };
+    
+        // Get canvas elements
+        const barChartCtx = document.getElementById('barChart').getContext('2d');
+        const pieChartCtx = document.getElementById('pieChart').getContext('2d');
+    
+        // Create Bar Chart
+        const barChart = new Chart(barChartCtx, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                // Additional options for the bar chart
+            },
+        });
+    
+        // Create Pie Chart
+        const pieChart = new Chart(pieChartCtx, {
+            type: 'pie',
+            data: pieChartData,
+            options: {
+                // Additional options for the pie chart
+            },
+        });
+    </script>
 
 
 <!--dropdown menu-->

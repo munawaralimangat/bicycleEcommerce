@@ -174,7 +174,7 @@ module.exports.cancelRequest = async (req,res)=>{
     console.log(orderId)
     await Order.findByIdAndUpdate(orderId,{
         $set:{
-            status:"cancellation pending"
+            status:"Cancelling"
         }
     })
 

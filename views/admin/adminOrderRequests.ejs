@@ -28,7 +28,11 @@
                                             <%=requests.order  %>
                                         </th>
                                         <td class="px-6 py-4">
+                                            <% if(requests.accept==false){ %>
                                             <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" onclick="acceptCancelRequest('<%=requests._id%>','<%=requests.order%>')">Accept</button>
+                                            <% }else{ %>
+                                                <p class="text-red-500">Cancelled</p>
+                                                <% } %>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -48,13 +52,19 @@
         async function acceptCancelRequest(id,orderId){
             console.log(id,orderId)
             try {
-                const response = fetch(`/admin/accept-req/${orderId}`,{
+                const response = await fetch(`/admin/accept-req/${orderId}`,{
                     method:'put',
                     headers:{
                         'Content-Type':'application/json'
                     },
                     body:JSON.stringify({id})
                 })
+                if(response.ok){
+                    console.log("hh")
+                    location.reload()
+                }else{
+                    console.log("not")
+                }
             } catch (error) {
                 console.error(error)
             }
