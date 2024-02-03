@@ -72,9 +72,13 @@ module.exports.viewOrders = async (req, res) => {
     }
   }
 
+  //order request page
+
   module.exports.viewOrderRequestPage = async (req,res)=>{
     try {
       const orderRequests = await OrderCancelModel.find()
+      console.log(orderRequests)
+      
       res.render('admin/adminOrderRequests',{orderRequests})
     } catch (error) {
       res.status(500).json({ error: "Error fetching order request" })

@@ -96,13 +96,6 @@ const logOut = async (req, res) => {
     res.redirect('/admin/login')
 }
 
-// const logOut = (req, res, next) => {
-// 	res.clearCookie('connect.sid');  // clear the cookie
-// 	req.logout(function(err) {
-// 		console.log(err)
-// 		res.redirect('/admin/login'); // send to the client
-// 	})
-// }
 
 module.exports = {
     loginView,
@@ -111,52 +104,3 @@ module.exports = {
     logOut,
     // reg
 };
-
-// const reg = async (req,res,next) =>{
-//     const admin = process.env.ADMIN_USERNAME
-//     const password = process.env.ADMIN_PASSWORD
-//     const hashPass = await bcrypt.hash(password,10)
-//     const user = new schema({
-//         email:admin,
-//         password:hashPass
-//     })
-//     const saved = await user.save()
-//     console.log(saved)
-// }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-// // login admin passport
-// const loginAdmin = async (req, res, next) => {
-//   try {
-//     const { email, password } = req.body;
-//     console.log(req.method);
-//     const additionalErrors = [];
-
-//     if (!email || !password) {
-//       additionalErrors.push("Please fill in all fields");
-//     } else if (email.length <= 8) {
-//       additionalErrors.push("Email must have at least eight characters"); // Change express validator later
-//     }else if(password.length <=5){
-//       additionalErrors.push("password must have at least five characters"); // Change express validator later
-//     }
-
-//     if (additionalErrors.length > 0) {
-//       return res.render("admin/login", {
-//         email,
-//         password,
-//         errors: additionalErrors
-//       });
-//     }
-
-//     // Use passport.authenticate as middleware
-//     passport.authenticate('local', {
-//       successRedirect: '/admin/dashboard',
-//       failureRedirect: '/admin/login',
-//       failureFlash: true
-//     })(req, res);
-//   } catch (error) {
-//     // Handle any errors that occur during the execution of this function
-//     next(error); // Pass the error to the next middleware
-//   }
-// };
