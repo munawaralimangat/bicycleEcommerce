@@ -8,6 +8,7 @@ const multerConfig = require('../multer/config.multer');
 const upload = multer(multerConfig)
 
 const {loginView,loginAdmin,dashboardView,logOut} = require('../controller/adminloginController');
+const adminDashboardController = require('../controller/adminDashboardController')
 const adminUserController = require('../controller/adminUserController');
 const adminProductController = require('../controller/adminProductController');
 const adminCategoryController = require('../controller/adminCategoryController');
