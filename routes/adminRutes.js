@@ -73,6 +73,7 @@ router.delete('/coupon/:id',adminOffersController.deleteCoupon);
 
 //orders route
 router.get('/orders',adminOrdersController.viewOrders)
+router.get('/all-orders-data',adminOrdersController.getAllOrdersData)
 router.put('/delivery-status/:orderId',adminOrdersController.changeStatus)
 
 //order request-cancel

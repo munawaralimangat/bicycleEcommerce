@@ -7,9 +7,9 @@
                 <%-include('../includes/components/adminNav') %>
                     <!--content-->
                     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-                        <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                        <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8 dark:bg-gray-800 ">
 
-                            <h4 class="text-xl text-gray-900 font-bold">Statistics</h4>
+                            <h4 class="text-xl text-gray-500 font-bold">Statistics</h4>
                             
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
                                 <div class="px-6 py-6 bg-gray-100 border border-gray-300 rounded-lg shadow-xl">
@@ -74,22 +74,25 @@
                                 </div>
 
                                 
-
-                            </div>
-
-                            <div class="mt-10">
-                                <!-- Bar Chart -->
-                                <div style="width: 50%; float: left;" class="mt-16">
-                                    <canvas id="barChart" width="400" height="200"></canvas>
                                 </div>
-                            
-                                <!-- Pie Chart -->
-                                <div style="width: 50%; float: left;" class="mt-16">
-                                    <canvas id="pieChart" width="400" height="200"></canvas>
-                                </div>
-                            </div>
 
-                        </div>
+                                <h4 class="mt-10 text-xl text-gray-500 font-bold">Order status</h4>
+
+                                <div class="mt-10 flex justify-center items-center flex-col sm:flex-row">
+                                    <!-- Pie Chart -->
+                                    <div class="w-full sm:w-1/2 mt-4">
+                                        <canvas id="pieChart" width="400" height="200"></canvas>
+                                    </div>
+                                </div>
+                                <div class="mt-10 flex justify-center items-center flex-col sm:flex-row">
+                                    <div class="w-full sm:w-1/2 mt-4">
+                                        <canvas id="barChart" width="500" height="300"></canvas>
+                                    </div>
+                                </div>
+
+
+
+                                </div>
 
                         
                     </div>
@@ -99,67 +102,123 @@
 
     </body>
     <%- include('../includes/adminEnd') %>
+
     <script>
-        // Bar Chart Data
-        const barChartData = {
-            labels: ['Label 1', 'Label 2', 'Label 3'],
-            datasets: [{
-                label: 'Weekly',
-                data: [10, 20, 30],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                ],
-                borderWidth: 1,
-            }],
-        };
-    
-        // Pie Chart Data
-        const pieChartData = {
-            labels: ['Purchase', 'Sales', 'Orders'],
-            datasets: [{
-                data: [10, 40, 50],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                ],
-                borderWidth: 1,
-            }],
-        };
-    
-        // Get canvas elements
-        const barChartCtx = document.getElementById('barChart').getContext('2d');
-        const pieChartCtx = document.getElementById('pieChart').getContext('2d');
-    
-        // Create Bar Chart
-        const barChart = new Chart(barChartCtx, {
-            type: 'bar',
-            data: barChartData,
-            options: {
-                // Additional options for the bar chart
-            },
-        });
-    
-        // Create Pie Chart
-        const pieChart = new Chart(pieChartCtx, {
-            type: 'pie',
-            data: pieChartData,
-            options: {
-                // Additional options for the pie chart
-            },
-        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const pieChartCtx = document.getElementById('pieChart').getContext('2d')
+            const barChartCtx = document.getElementById('barChart').getContext('2d')
+
+
+            const pieChart = new Chart(pieChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Not Delivered', 'Delivered', 'Cancelled'],
+                    datasets: [{
+                        data: [0, 0, 0], // Initial data, will be updated dynamically
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                        ],
+                        borderWidth: 3,
+                    }],
+                },
+                options: {
+                    // Additional options for the pie chart
+                },
+            });
+
+            const barChart = new Chart(barChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [], // Initial data, will be updated dynamically
+                        backgroundColor: 'rgba(255, 99, 132,0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                    }, {
+                        label: 'Average Amount per Bill',
+                        data: [], // Initial data, will be updated dynamically
+                        backgroundColor: 'rgba(54, 162, 230,0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                    }],
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true, // Enable stacking on the x-axis
+                        },
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+
+            async function updatePieChart() {
+                try {
+                    const response = await fetch('/admin/all-orders-data')
+                    const data = await response.json()
+
+                    pieChart.data.datasets[0].data = [data.notDeliveredCount, data.deliveredCount, data.cancelledCount];
+                    console.log(data.months)
+                    barChart.data.labels = data.months;
+                    barChart.data.datasets[0].data = data.monthlyData.map(month => month.revenue);
+                    barChart.data.datasets[1].data = data.monthlyData.map(month => month.averageAmountPerBill);
+
+
+                    pieChart.update();
+                    barChart.update()
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+
+            updatePieChart();
+        })
+
+    </script>
+
+    <script>
+        
+        // const barChartCtx = document.getElementById('barChart').getContext('2d');
+                        // Bar Chart Data
+        //                 const barChartData = {
+        //     labels: ['Orders', 'Product sold'],
+        //     datasets: [{
+        //         label: '',
+        //         data: [10, 20,],
+        //         backgroundColor: [
+        //             'rgba(255, 99, 132, 0.2)',
+        //             'rgba(54, 162, 235, 0.2)',
+                    
+        //         ],
+        //         borderColor: [
+        //             'rgba(255, 99, 132, 1)',
+        //             'rgba(54, 162, 235, 1)',
+                    
+        //         ],
+        //         borderWidth: 1,
+        //     }],
+        // };
+
+                        // Create Bar Chart
+        //                 const barChart = new Chart(barChartCtx, {
+        //     type: 'bar',
+        //     data: barChartData,
+        //     options: {
+        //         // Additional options for the bar chart
+        //     },
+        // });
     </script>
 
 

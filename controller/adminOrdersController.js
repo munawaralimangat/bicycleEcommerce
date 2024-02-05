@@ -14,6 +14,67 @@ module.exports.viewOrders = async (req, res) => {
     }
   }
 
+module.exports.getAllOrdersData = async (req,res)=>{
+  try {
+    const orders = await Orders.find()
+
+    if(!orders){
+      return res.status(404).json({error:"Orders not found"})
+    }
+
+    const deliveredCount = orders.filter(order=> order.status==="Delivered").length;
+    const notDeliveredCount = orders.filter(order=> order.status !== "Delivered" && order.status !== "Cancelled").length;
+    const cancelledCount = orders.filter(order => order.status ==="Cancelled").length;
+
+    //group orders
+    const groupedOrders = orders.reduce((acc,order)=>{
+      const month = order.createdAt.getMonth()+1;
+      const key = `${order.createdAt.getFullYear()}-${month}`;
+
+      if(!acc[key]){
+        acc[key]=[]
+      }
+
+      acc[key].push(order)
+      return acc
+    },{})
+    
+    const months = Object.keys(groupedOrders).sort()
+    console.log(months)
+
+    const monthlyData = months.map(month => {
+      const monthlyOrders = groupedOrders[month];
+      const revenue = monthlyOrders.reduce((total, order) => {
+          if (order.status !== 'Cancelled') {
+              total += order.totalPrice;
+          }
+          return total;
+      }, 0);
+  
+      const averageAmountPerBill = monthlyOrders.length > 0 ? 
+          monthlyOrders.reduce((total, order) => total + order.totalPrice, 0) / monthlyOrders.length : 0;
+  
+      return {
+          month,
+          revenue,
+          averageAmountPerBill
+      };
+  });
+  
+
+    res.json({
+      deliveredCount,
+      notDeliveredCount,
+      cancelledCount,
+      months,
+      monthlyData
+    })
+    
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({error:"Internal server error"})
+  }
+}
 
   module.exports.changeStatus = async (req,res)=>{
     const { orderId } = req.params;
