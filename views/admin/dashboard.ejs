@@ -15,7 +15,7 @@
                                 <div class="px-6 py-6 bg-gray-100 border border-gray-300 rounded-lg shadow-xl">
                                     <div class="flex items-center justify-between">
                                         <span class="font-bold text-sm text-indigo-600">Total Revenue</span>
-                                        <span class="text-xs bg-gray-200 hover:bg-gray-500 text-gray-500 hover:text-gray-200 px-2 py-1 rounded-lg transition duration-200 cursor-default">7 days</span>
+                                        <span class="text-xs bg-gray-200 hover:bg-gray-500 text-gray-500 hover:text-gray-200 px-2 py-1 rounded-lg transition duration-200 cursor-default">30 days</span>
                                     </div>
                                     <div class="flex items-center justify-between mt-6">
                                         <div>
@@ -23,7 +23,7 @@
                                         </div>
                                         <div class="flex flex-col">
                                             <div class="flex items-end">
-                                                <span class="text-2xl 2xl:text-3xl font-bold">$8,141</span>
+                                                <span id="totalRevenue" class="text-2xl 2xl:text-3xl font-bold"></span>
                                                 <div class="flex items-center ml-2 mb-1">
                                                     <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                                                     <span class="font-bold text-sm text-gray-500 ml-0.5">3%</span>
@@ -43,7 +43,7 @@
                                         </div>
                                         <div class="flex flex-col">
                                             <div class="flex items-end">
-                                                <span class="text-2xl 2xl:text-3xl font-bold">217</span>
+                                                <span id="totalOrders" class="text-2xl 2xl:text-3xl font-bold"></span>
                                                 <div class="flex items-center ml-2 mb-1">
                                                     <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                                                     <span class="font-bold text-sm text-gray-500 ml-0.5">5%</span>
@@ -63,7 +63,7 @@
                                         </div>
                                         <div class="flex flex-col">
                                             <div class="flex items-end">
-                                                <span class="text-2xl 2xl:text-3xl font-bold">54</span>
+                                                <span id="totalUsers" class="text-2xl 2xl:text-3xl font-bold"></span>
                                                 <div class="flex items-center ml-2 mb-1">
                                                     <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                                                     <span class="font-bold text-sm text-gray-500 ml-0.5">7%</span>
@@ -89,6 +89,11 @@
                                         <canvas id="barChart" width="500" height="300"></canvas>
                                     </div>
                                 </div>
+                                <div class="mt-10 flex justify-center items-center flex-col sm:flex-row">
+                                    <div class="w-full sm:w-1/2 mt-4">
+                                        <canvas id="multiBarChart" width="500" height="300"></canvas>
+                                    </div>
+                                </div>
 
 
 
@@ -108,6 +113,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const pieChartCtx = document.getElementById('pieChart').getContext('2d')
             const barChartCtx = document.getElementById('barChart').getContext('2d')
+            const multiBarChartCtx = document.getElementById('multiBarChart').getContext('2d');
 
 
             const pieChart = new Chart(pieChartCtx, {
@@ -164,20 +170,67 @@
                 },
             });
 
+            const multiBarChart = new Chart(multiBarChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Total Sales',
+                    data: [],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                }, {
+                    label: 'Total Orders',
+                    data: [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                scales: {
+                    x: {
+                        stacked: false,
+                    },
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+
             async function updatePieChart() {
                 try {
                     const response = await fetch('/admin/all-orders-data')
                     const data = await response.json()
 
-                    pieChart.data.datasets[0].data = [data.notDeliveredCount, data.deliveredCount, data.cancelledCount];
-                    console.log(data.months)
-                    barChart.data.labels = data.months;
-                    barChart.data.datasets[0].data = data.monthlyData.map(month => month.revenue);
-                    barChart.data.datasets[1].data = data.monthlyData.map(month => month.averageAmountPerBill);
+                    totalRevenue = document.getElementById('totalRevenue')
+                    totalRevenue.textContent = "$"+data.monthlyData.map(m=>m.revenue)
 
+                    totalOrders = document.getElementById('totalOrders')
+                    totalOrders.textContent = data.chartData.map(m=>m.totalOrders)
+
+                    totalUsers = document.getElementById('totalUsers')
+                    console.log(data.Users)
+                    totalUsers.textContent = data.Users
+
+                    pieChart.data.datasets[0].data = [data.notDeliveredCount, data.deliveredCount, data.cancelledCount];
+
+                    barChart.data.labels = data.months;
+                    barChart.data.datasets[0].data = data.monthlyData.map(month => month.revenue);1
+                    barChart.data.datasets[1].data = data.monthlyData.map(month => month.averageAmountPerBill);
+                    
+                    const totalSalesData = data.chartData.map(month => month.totalSales)
+                    const totalOrdersData = data.chartData.map(month => month.totalOrders)
+
+                    multiBarChart.data.labels = data.months;
+                    multiBarChart.data.datasets[0].data = totalSalesData;
+                    multiBarChart.data.datasets[1].data = totalOrdersData;
 
                     pieChart.update();
                     barChart.update()
+                    multiBarChart.update()
                 } catch (error) {
                     console.error(error)
                 }

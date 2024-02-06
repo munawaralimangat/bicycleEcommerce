@@ -3,4 +3,36 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebarButton = document.querySelector('[data-drawer-toggle="default-sidebar"]');
+        const sidebar = document.getElementById('default-sidebar');
+        
+        // Check if the screen is smaller than or equal to small (sm) size
+        const isSmallScreen = window.matchMedia('(max-width: 640px)').matches;
+
+        // Apply event listeners only if it's a small screen
+        if (isSmallScreen) {
+            sidebarButton.addEventListener('click', function () {
+                toggleSidebar();
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!sidebar.contains(event.target) && !sidebarButton.contains(event.target)) {
+                    // Clicked outside the sidebar and the button, close the sidebar
+                    closeSidebar();
+                }
+            });
+        }
+
+        function toggleSidebar() {
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0px)';
+        }
+
+        function closeSidebar() {
+            sidebar.style.transform = 'translateX(-100%)';
+        }
+    });
+</script>
+
 </html>

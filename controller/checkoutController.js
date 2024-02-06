@@ -138,7 +138,6 @@ module.exports.placeOrder = async (req, res) => {
           receipt:uniqueReceiptId,
           payment_capture:1
         };
-
         const razorpayOrder = await razorpay.orders.create(options);
 
         paymentStatus = "Pending"

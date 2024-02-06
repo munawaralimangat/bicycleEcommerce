@@ -1,6 +1,7 @@
 const Orders = require('../model/schema/orderSchema')
 const Product = require('../model/schema/productSchema')
-const OrderCancelModel = require('../model/schema/orderCancelSchema')
+const OrderCancelModel = require('../model/schema/orderCancelSchema');
+const User = require('../model/schema/userSchema');
 
 module.exports.viewOrders = async (req, res) => {
     try {
@@ -21,6 +22,9 @@ module.exports.getAllOrdersData = async (req,res)=>{
     if(!orders){
       return res.status(404).json({error:"Orders not found"})
     }
+
+    const Users = await User.countDocuments()
+
 
     const deliveredCount = orders.filter(order=> order.status==="Delivered").length;
     const notDeliveredCount = orders.filter(order=> order.status !== "Delivered" && order.status !== "Cancelled").length;
@@ -45,9 +49,10 @@ module.exports.getAllOrdersData = async (req,res)=>{
     const monthlyData = months.map(month => {
       const monthlyOrders = groupedOrders[month];
       const revenue = monthlyOrders.reduce((total, order) => {
-          if (order.status !== 'Cancelled') {
+          if (order.status !== 'Cancelled' && order.status ==="Delivered") {
               total += order.totalPrice;
           }
+          console.log("tt",total)
           return total;
       }, 0);
   
@@ -60,14 +65,57 @@ module.exports.getAllOrdersData = async (req,res)=>{
           averageAmountPerBill
       };
   });
+
+  const monthlyONS = await Orders.aggregate([
+    {
+      $match: { status: 'Delivered' },
+    },
+    {
+      $group: {
+        _id: {
+          month: { $month: '$createdAt' },
+          year: { $year: '$createdAt' },
+        },
+        totalSales: { $sum: '$totalPrice' },
+        totalOrders: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: '$_id.month',
+        year: '$_id.year',
+        totalSales: '$totalSales',
+        totalOrders: '$totalOrders',
+      },
+    },
+    {
+      $sort: { year: 1, month: 1 },
+    },
+  ])
+
+  console.log(monthlyONS)
+
+  const chartData = monthlyONS.map(data => ({
+    month:'${data.year}-${data.month}',
+    totalSales:data.totalSales,
+    totalOrders:data.totalOrders,
+  }))
+
+
+  console.log(chartData)
+
+
   
 
     res.json({
+      Users,
       deliveredCount,
       notDeliveredCount,
       cancelledCount,
       months,
-      monthlyData
+      monthlyData,
+      chartData
     })
     
   } catch (error) {
