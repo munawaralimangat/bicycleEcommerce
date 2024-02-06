@@ -165,8 +165,11 @@
           <main class="m-10 px-4 sm:px-6 lg:px-6">
             <div class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
               <h1 class="text-4xl font-bold tracking-tight ml-4 text-gray-900 dark:text-white">All products</h1>
+
+              <% if(user){ %>
               <p class="hidden" id="userId"><%=user._id %></p>
-      
+              <% } %>
+              
               <div class="flex items-center">
                 <div class="relative inline-block text-left">
                   <div>

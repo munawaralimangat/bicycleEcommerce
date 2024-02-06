@@ -64,6 +64,7 @@ module.exports.landingView = async (req,res)=>{
 
 module.exports.userRegView = async (req,res)=>{
     res.render('user/userReg', {
+                isLog:true,
                 regLog: "Log In",
                 formurl: "login",
                 errors: ""
@@ -106,6 +107,7 @@ module.exports.userLoginView = async (req, res) => {
 
     if (!jwtCookie) {
         res.render('user/userLogin', {
+            isLog:true,
             regLog: "Register",
             formurl: "register",
             errors: ""
@@ -119,6 +121,7 @@ module.exports.userLoginView = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.render('user/userLogin', {
+            isLog:true,
             regLog: "Register",
             formurl: "register",
             errors: ""
