@@ -5,9 +5,9 @@
     </header>
 <body>
     <% if(lastOrder){ %>
-    <section class="flex items-center py-16 bg-gray-50 font-poppins dark:bg-gray-800 mt-8 ">
+    <section class="flex items-center py-16 bg-gray-50 font-poppins dark:bg-gray-800 ">
         <div
-            class="justify-center flex-1 max-w-4xl px-6 py-6 mx-auto  rounded-md shadow-md dark:border-gray-900 dark:bg-gray-900 lg:py-10 lg:px-10">
+            class="justify-center flex-1 max-w-4xl px-6 py-6 mx-auto mt-8  rounded-md shadow-md dark:border-gray-900 dark:bg-gray-900 lg:py-10 lg:px-10">
             <div class="bg-white p-6  md:mx-auto dark:bg-gray-800">
                 <p class="text-lg text-gray-500 dark:text-gray-400">Order No: <%=lastOrder.orderNumber%></p>
                 <svg viewBox="0 0 24 24" class="text-green-600 w-16 h-16 mx-auto my-6">
@@ -109,6 +109,14 @@
         <p>no last orddr</p>
         <% } %>
 </body>
+<style>
+    #mobile-menu-2 {
+      display: none;
+    }
+    #searchForm {
+      display: none;
+    }
+  </style>
 
 
     <%-include('../includes/userEnd')  %>

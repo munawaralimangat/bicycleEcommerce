@@ -14,5 +14,26 @@
       window.location.href = '/brepublic/viewall';
     }
   </script>
+  <!--user profile dropdown -->
+  <script>
+    // JavaScript to handle dropdown functionality
+    document.addEventListener("DOMContentLoaded", function () {
+        const userDropdown = document.getElementById("userDropdown");
+        const userDropdownContent = document.getElementById("userDropdownContent");
+
+        // Toggle dropdown on button click
+        userDropdown.addEventListener("click", function () {
+            userDropdownContent.classList.toggle("hidden");
+        });
+
+        // Close dropdown when clicking outside of it
+        document.addEventListener("click", function (event) {
+            if (!userDropdown.contains(event.target) && !userDropdownContent.contains(event.target)) {
+                userDropdownContent.classList.add("hidden");
+            }
+        });
+    });
+</script>
+<!--user profile dropdown closes -->
 
 </html>

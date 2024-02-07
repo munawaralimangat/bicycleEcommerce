@@ -1,4 +1,12 @@
 <%-include('../includes/userStart')  %>
+<style>
+  #mobile-menu-2 {
+    display: none;
+  }
+  #searchForm {
+    display: none;
+  }
+</style>
 
 <header class="relative bg-cover bg-center text-white flex flex-col justify-center items-center" id="slideshow">
   <!--Nav bar here-->
@@ -25,7 +33,50 @@
         </div>
         <div class="flex flex-col mt-10 mb-5 dark:text-white">
           <% if (cart && cart.items && cart.items.length> 0) { %>
-            <div class="flex items-center justify-between text-xs uppercase">
+
+            <!--mobile view-->
+            <% cart.items.forEach(item=> { %>
+
+
+                <div class="sm:hidden card flex flex-col justify-center p-10 bg-white">
+                  <div class="prod-img">
+                    <img src="/uploads/<%=item.product.front_image.filename  %>"
+                         class="w-full object-cover object-center" />
+                  </div>
+                  <div class="prod-info grid gap-5">
+                    <div class="prod-title">
+                      <span class="text-2xl uppercase"><%=item.product.product_name %></span>
+                      <p class="uppercase text-sm text-gray-400">
+                        The best shoes in the marketplace
+                      </p>
+                    </div>
+                    <a href="#" onclick="removeProduct('<%=item.product._id  %>','<%=user._id  %>')"
+                      class="font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</a>
+                    <div class="flex justify-start items-start flex-col space-y-2">
+                      <p class="text-sm dark:text-white leading-none text-gray-800"><span class="dark:text-gray-500 text-gray-400">Category: </span><%=item.product.category_name.category_name %></p>
+                      <p class="text-sm dark:text-white leading-none text-gray-800"><span class="dark:text-gray-500 text-gray-400">Size: </span><%=item.product.variations[0].size.size_name %></p>
+                      <!-- <p class="text-sm dark:text-white leading-none text-gray-800"><span class="dark:text-gray-400 text-gray-300">Color: </span> Light Blue</p> --> 
+                  </div>
+                  <span class="text-center w-1/5 font-semibold text-sm">$<%=item.product.product_price %></span>
+                  <div class=" flex justify-between im sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+                    <div class="flex items-center border-gray-100">
+                      <span onclick="updateQuantity('<%= item._id %>', 'decrement')" class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
+                      <input id="quantityInput_<%= item._id %>" class="mx-2 border text-center w-8 text-black" type="text"
+                      value="<%=item.quantity%>">
+                      <span onclick="updateQuantity('<%= item._id %>', 'increment')" class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
+                    </div>
+                    
+                  <span class="text-center w-1/5 font-semibold text-sm">$<%=item.product.product_price*item.quantity %></span>
+                  </div>
+                  
+                  </div>
+                </div>
+
+                      
+            <% }); %>
+            <!--mobile view closes here--> 
+
+            <div class="hidden sm:flex items-center justify-between text-xs uppercase">
               <h3 class="font-semibold text-gray-600 w-2/5">Product Details</h3>
               <h3 class="font-semibold text-center w-1/5">Quantity</h3>
               <h3 class="font-semibold text-center w-1/5">size</h3>
@@ -35,9 +86,10 @@
             <!-- Your cart items here -->
 
             <% cart.items.forEach(item=> { %>
-              <div class="flex mt-2 items-center hover:bg-gray-100 -mx-8 px-6 py-5 dark:bg-slate-600">
+              <div class="hidden sm:flex mt-2 items-center hover:bg-gray-100 -mx-8 px-6 py-5 dark:bg-slate-600">
+
                 <div class="flex w-2/5"> <!-- product -->
-                  <div class="w-32">
+                  <div class="w-32 ">
                     <img class="h-24 w-full object-cover" src="/uploads/<%=item.product.front_image.filename  %>"
                       alt="">
                   </div>
@@ -52,6 +104,7 @@
                       class="font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</a>
                   </div>
                 </div>
+                
                 <div class="flex justify-center w-1/5">
                   <svg onclick="updateQuantity('<%= item._id %>', 'decrement')"
                     class="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512">

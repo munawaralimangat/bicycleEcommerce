@@ -11,11 +11,14 @@
                     method: 'GET',
                     success: function (searchResults) {
                         console.log(searchResults);
+                        
                     },
                     error: function (error) {
                         console.error('AJAX error:', error);
                     }
                 });
+            }else{
+               $('#searchResults').empty();
             }
         });
     });
