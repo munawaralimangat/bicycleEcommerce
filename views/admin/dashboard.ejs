@@ -212,21 +212,22 @@
                     totalOrders.textContent = data.chartData.map(m=>m.totalOrders)
 
                     totalUsers = document.getElementById('totalUsers')
-                    console.log(data.Users)
+                    console.log(data.monthlyData)
                     totalUsers.textContent = data.Users
 
                     pieChart.data.datasets[0].data = [data.notDeliveredCount, data.deliveredCount, data.cancelledCount];
 
-                    barChart.data.labels = data.months;
-                    barChart.data.datasets[0].data = data.monthlyData.map(month => month.revenue);1
+                    // barChart.data.labels = data.months;
+                    barChart.data.datasets[0].data = data.monthlyData.map(month => month.revenue);
                     barChart.data.datasets[1].data = data.monthlyData.map(month => month.averageAmountPerBill);
                     
                     const totalSalesData = data.chartData.map(month => month.totalSales)
                     const totalOrdersData = data.chartData.map(month => month.totalOrders)
 
-                    multiBarChart.data.labels = data.months;
+                    // multiBarChart.data.labels = data.months;
                     multiBarChart.data.datasets[0].data = totalSalesData;
                     multiBarChart.data.datasets[1].data = totalOrdersData;
+                    console.log("total sales data",totalSalesData)
 
                     pieChart.update();
                     barChart.update()

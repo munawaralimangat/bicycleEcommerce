@@ -95,8 +95,8 @@
                             Back to Shop 
                        </a>
                     </div>
-                    <div class="py-10 text-center m-6">
-                        <a href="/brepublic/landing" class="px-12 bg-green-600 hover:bg-green-500 text-white font-semibold py-3">
+                    <div id="downloadInvBtn" class="py-10 text-center m-6">
+                        <a href="#" class="px-12 bg-green-600 hover:bg-green-500 text-white font-semibold py-3">
                             DOWNLOAD INVOICE 
                        </a>
                     </div>
@@ -117,6 +117,32 @@
       display: none;
     }
   </style>
-
-
     <%-include('../includes/userEnd')  %>
+
+    <script>
+
+            document.getElementById('downloadInvBtn').addEventListener('click',async (event)=>{
+                event.preventDefault()
+                try {
+                    const orderId = '<%=lastOrder._id%>'
+                    const response = await fetch(`/brepublic/generate-invoice/${orderId}`)
+                    
+                    if(!response.ok){
+                        throw new Error('Failed to generate invoice')
+                    }
+
+                    const blob = await response.blob()
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `invoice_${orderId}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error(error)
+                }
+                
+            })
+            
+    </script>

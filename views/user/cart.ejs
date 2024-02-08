@@ -36,8 +36,6 @@
 
             <!--mobile view-->
             <% cart.items.forEach(item=> { %>
-
-
                 <div class="sm:hidden card flex flex-col justify-center p-10 bg-white">
                   <div class="prod-img">
                     <img src="/uploads/<%=item.product.front_image.filename  %>"
@@ -66,13 +64,11 @@
                       <span onclick="updateQuantity('<%= item._id %>', 'increment')" class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
                     </div>
                     
-                  <span class="text-center w-1/5 font-semibold text-sm">$<%=item.product.product_price*item.quantity %></span>
+                  <span class="text-center w-1/5 font-bold text-2xl">$<%=item.product.product_price*item.quantity %></span>
                   </div>
                   
                   </div>
-                </div>
-
-                      
+                </div>       
             <% }); %>
             <!--mobile view closes here--> 
 
@@ -138,14 +134,26 @@
 
                   <% } %>
         </div>
-        <a href="#" class="flex font-semibold text-indigo-600 dark:text-white text-sm mt-10">
+        <a href="/brepublic/landing" class="flex font-semibold text-indigo-600 dark:text-white text-sm mt-10">
           <svg class="fill-current mr-2 text-indigo-600 dark:text-white w-4" viewBox="0 0 448 512">
             <path
               d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
           </svg>
           Continue Shopping
         </a>
+        <% if(cart.items.length == 0){ %>
+          <a href="#">
+            <button id="checkoutButton"
+              class=" mt-4 sm:hidden bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+          </a>
+          <% }else{ %>
+            <a href="/brepublic/Checkout?userId=<%=user._id  %>">
+              <button id="checkoutButton"
+                class="mt-4 sm:hidden bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+            </a>
+            <% } %>
       </div>
+      
 
       <div id="summary" class="md:w-1/4 px-4 md:px-8 py-10 dark:bg-slate-700">
         <!-- Your order summary here -->
@@ -211,12 +219,12 @@
           <% if(cart.items.length == 0){ %>
             <a href="#">
               <button id="checkoutButton"
-                class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+                class="hidden sm:block bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
             </a>
             <% }else{ %>
               <a href="/brepublic/Checkout?userId=<%=user._id  %>">
                 <button id="checkoutButton"
-                  class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+                  class="hidden sm:block bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
               </a>
               <% } %>
         </div>

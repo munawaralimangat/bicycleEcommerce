@@ -84,6 +84,9 @@ router.get('/success',checkoutController.successPayment)
 router.get('/get-address/:addressId',userProfileController.getOneAddress);
 router.post('/addAddress',checkoutController.postAddress);
 
+//invoice
+router.get('/generate-invoice/:orderId',checkoutController.invoiceGenerate)
+
 
 
 

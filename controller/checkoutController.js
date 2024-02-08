@@ -5,6 +5,7 @@ const Coupon = require('../model/schema/coupenSchema')
 const Address = require('../model/schema/addressSchema')
 const Product = require('../model/schema/productSchema')
 const Razorpay = require('razorpay')
+const PDFDocument = require('pdfkit')
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -241,5 +242,53 @@ module.exports.successPayment = async (req,res)=>{
  } catch (error) {
   console.error(error)
  }
+}
+
+module.exports.invoiceGenerate = async (req,res)=>{
+  try {
+    const orderId = req.params.orderId
+  const order = await Order.findById(orderId)  .populate({
+    path: 'items.product',
+    model: 'Product',
+    populate: [
+      {
+        path: 'category_name',
+        model: 'Category',
+      },
+      {
+        path: 'variations.size',
+        model: 'Size',
+      },
+    ],
+  })
+  .populate({
+    path: 'shippingAddress',
+    model: 'Address',
+  })
+  .populate({
+    path: 'user',
+    model: 'User',
+  });
+
+  if (!order) {
+    return res.status(404).send('Order not found');
+  }
+
+  const doc = new PDFDocument();
+  const buffers = [];
+  doc.on('data',(chunk)=> buffers.push(chunk));
+  doc.on('end',()=>{
+    const pdfBuffer = Buffer.concat(buffers)
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=invoice_${orderId}.pdf`);
+    res.send(pdfBuffer);
+  })
+
+  doc.text(`Invoice for Order #${orderId}`, { align: 'center' });
+  doc.end();
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    res.status(500).send('Error generating invoice');
+  }
 }
 

@@ -33,6 +33,7 @@ module.exports.getAllOrdersData = async (req,res)=>{
     //group orders
     const groupedOrders = orders.reduce((acc,order)=>{
       const month = order.createdAt.getMonth()+1;
+     
       const key = `${order.createdAt.getFullYear()}-${month}`;
 
       if(!acc[key]){
@@ -94,7 +95,7 @@ module.exports.getAllOrdersData = async (req,res)=>{
     },
   ])
 
-  console.log(monthlyONS)
+  // console.log(monthlyONS)
 
   const chartData = monthlyONS.map(data => ({
     month:'${data.year}-${data.month}',
@@ -103,7 +104,7 @@ module.exports.getAllOrdersData = async (req,res)=>{
   }))
 
 
-  console.log(chartData)
+  // console.log(chartData)
 
 
   
