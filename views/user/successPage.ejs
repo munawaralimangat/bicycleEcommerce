@@ -100,9 +100,10 @@
                             DOWNLOAD INVOICE 
                        </a>
                     </div>
+                    
                 </div>
             </div>
-
+            <div id="pdfPreview"></div>
         </div>
     </section>
     <% }else{ %>
@@ -120,29 +121,47 @@
     <%-include('../includes/userEnd')  %>
 
     <script>
-
-            document.getElementById('downloadInvBtn').addEventListener('click',async (event)=>{
-                event.preventDefault()
-                try {
-                    const orderId = '<%=lastOrder._id%>'
-                    const response = await fetch(`/brepublic/generate-invoice/${orderId}`)
-                    
-                    if(!response.ok){
-                        throw new Error('Failed to generate invoice')
-                    }
-
-                    const blob = await response.blob()
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `invoice_${orderId}.pdf`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                } catch (error) {
-                    console.error(error)
+        document.getElementById('downloadInvBtn').addEventListener('click', async (event) => {
+            event.preventDefault();
+            try {
+                const orderId = '<%=lastOrder._id%>';
+                const response = await fetch(`/brepublic/generate-invoice/${orderId}`);
+    
+                if (!response.ok) {
+                    throw new Error('Failed to generate invoice');
                 }
-                
-            })
-            
+    
+                const previewContainer = document.getElementById('pdfPreview');
+    
+                while (previewContainer.firstChild) {
+                    previewContainer.removeChild(previewContainer.firstChild);
+                }
+    
+                const iframe = document.createElement('iframe');
+                iframe.style.width = '100%';
+                iframe.style.height = '500px';
+                previewContainer.appendChild(iframe);
+    
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                iframe.src = url;
+    
+                // Create a download link
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                // downloadLink.download = `invoice_${orderId}.pdf`;
+    
+                // Append the link to the document
+                document.body.appendChild(downloadLink);
+    
+                // Trigger a click event on the link to initiate the download
+                downloadLink.click();
+    
+                // Remove the link from the document
+                document.body.removeChild(downloadLink);
+            } catch (error) {
+                console.error(error);
+            }
+        });
     </script>
+    

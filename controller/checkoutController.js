@@ -284,7 +284,33 @@ module.exports.invoiceGenerate = async (req,res)=>{
     res.send(pdfBuffer);
   })
 
-  doc.text(`Invoice for Order #${orderId}`, { align: 'center' });
+  
+  doc.text(`BicycleRepublic`, { align: 'center', fontSize: 54 });
+  doc.moveDown(); // Move down a line
+  
+  
+  // Add order details
+  doc.text(`Order Date: ${order.createdAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}`, { fontSize: 12 });
+  doc.text(`Customer: ${order.user.user_firstName}`, { fontSize: 12 });
+  doc.text(`Invoice No: ${order.orderNumber}`, { fontSize: 12 });
+  doc.text(`State: ${order.shippingAddress.state}`, { fontSize: 12 });
+  doc.text(`City: ${order.shippingAddress.city}`, { fontSize: 12 });
+  doc.moveDown();
+  
+  doc.text('Items List:', { fontSize: 14, underline: true });
+  doc.moveDown();
+  order.items.forEach((item) => {
+      doc.text(`${item.product.product_name}: ${item.quantity} x ${item.product.product_price} = ${item.quantity * item.product.product_price}`, { fontSize: 12 });
+  });
+  
+  const totalAmount = order.items.reduce((total, item) => total + item.quantity * item.product.product_price, 0);
+  doc.moveDown();
+  doc.text(`Gross Amount: $${totalAmount}`, { fontSize: 14, bold: true, align: 'right' });
+  doc.text(`Shipping Charge: $${10}`, { fontSize: 14, bold: true, align: 'right' });
+  doc.text(`Coupon discount: $${totalAmount-order.totalPrice+10}`, { fontSize: 14, bold: true, align: 'right' });
+  doc.moveDown();
+  doc.text(`Net Total Amount: $${order.totalPrice}`, { fontSize: 14, bold: true, align: 'right' });
+  
   doc.end();
   } catch (error) {
     console.error('Error generating invoice:', error);
