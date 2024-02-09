@@ -10,6 +10,7 @@
       toggleButton.setAttribute('aria-expanded', !isExpanded);
       mobileMenu.classList.toggle('hidden');
       banner.classList.toggle('hidden');
+      console.log("kk")
   });
 
 

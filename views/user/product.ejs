@@ -24,15 +24,15 @@ figure.zoom img {
         <% if(product){ %>
 
             <section class="mt-24 ">
-                <div class="bg-gray-100 dark:bg-gray-800 py-8">
+                <div class="bg-gray-100 dark:bg-gray-800 py-8 m-4">
                     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex flex-col md:flex-row -mx-6">
                             <div class="md:flex-1 px-12">
-                                <figure class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4 zoom" id="zoom-container" onmousemove="zoom(event)" style="background-image: url('/uploads/<%=product.front_image.filename %>')">
+                                <div class="mb-4 zoom" id="zoom-container" onmousemove="zoom(event)" style="background-image: url('/uploads/<%=product.front_image.filename %>')">
                                     <img class="w-full h-full object-cover cursor-pointer"
                                         src="/uploads/<%=product.front_image.filename %>" alt="Product Image"
                                         id="zoom-image">
-                                </figure>
+                                </div>     
                                 <ol class="flex -mx-2 mb-4">
                                     <li class="w-1/2 h-1/2 px-2">
                                         <img class="w-full h-full object-cover cursor-pointer rounded-lg"
