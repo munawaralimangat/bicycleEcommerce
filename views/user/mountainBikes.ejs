@@ -5,24 +5,7 @@
     </header>
 <div class="bg-white dark:bg-slate-800">
     <div>
-      <div class="hidden relative z-40" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black bg-opacity-25"></div>
-        <div class="fixed inset-0 z-40 flex">
-          <div class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
-            <div class="flex items-center justify-between px-4">
-              <h2 class="text-lg font-medium text-gray-900 dark:text-white">Mountain Bikes</h2>
-              <button type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 "id="closeButton">
-                <span class="sr-only">Close menu</span>
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-  
-            <!-- Filters -->
-          </div>
-        </div>
-      </div>
+      
 
       <% if(user){ %>
       <p class="hidden" id="userId"><%=user._id %></p>

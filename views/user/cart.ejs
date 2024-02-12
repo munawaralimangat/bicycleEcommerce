@@ -22,14 +22,19 @@
 
 <body class="bg-gray-100 dark:bg-slate-700 dark:text-white">
   <p class="hidden" id="userId"><%=user._id%></p>
+  
   <div class="container mx-auto mt-28 p-4">
+    <% if(cart){ %>
     <div class="flex flex-col-reverse md:flex-row shadow-md my-10">
       <div class="md:w-3/4 bg-white px-4 md:px-10 py-10 dark:bg-slate-600">
         <div class="flex justify-between border-b pb-8">
           <h1 class="font-semibold text-2xl dark:text-white">Shopping Cart</h1>
+          
           <h2 class="font-semibold text-2xl dark:text-white">
             <%=cart.items.length %> Items
           </h2>
+          
+          <h2 class="font-semibold text-2xl dark:text-white">0 Items</h2>
         </div>
         <div class="flex flex-col mt-10 mb-5 dark:text-white">
           <% if (cart && cart.items && cart.items.length> 0) { %>
@@ -230,9 +235,16 @@
         </div>
       </div>
     </div>
+    <% }else{ %>
+      <div class="flex justify-center bg-white">
+
+        <img src="/images/empty_cart.gif" class="h-full w-96" alt="">
+      </div>
+      <% } %>
   </div>
   </div>
 </body>
+
 
 
 

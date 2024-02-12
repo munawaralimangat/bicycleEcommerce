@@ -68,6 +68,10 @@
               <div class="z-10 bg-white p-8 rounded-lg shadow-md">
                 <h2 class="text-2xl font-semibold mb-4">Enter OTP</h2>
                 <input id="otpInput" type="text" class="w-full px-4 py-2 border rounded-md mb-4" placeholder="Enter OTP">
+              <div class="flex items-center mb-4">
+                  <span class="mr-2">Time remaining:</span>
+                  <span id="timerDisplay" class="text-blue-500 font-semibold">02:00</span>
+              </div>
                 <button id="submitOTP" class="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
               </div>
             </div>
@@ -83,16 +87,6 @@
     </style>
   <script>
 
-function showOtpModal() {
-    const otpModal = document.getElementById('otpModal');
-    otpModal.classList.remove('hidden');
-  }
-
-  // Function to hide OTP modal
-  function hideOtpModal() {
-    const otpModal = document.getElementById('otpModal');
-    otpModal.classList.add('hidden');
-  }
 
     const form = document.getElementById('regForm');
     const emailError = document.querySelector('.email.error')
@@ -100,6 +94,10 @@ function showOtpModal() {
     const numberError = document.querySelector('.number.error')
     const firstNameError = document.querySelector('.firstName.error')
     const secondNameError = document.querySelector('.secondName.error')
+    const submitOTPBtn = document.getElementById('submitOTP');
+    
+    let otpExpiryTime = 120;
+    let otpExpiryTimer;
 
   function isEmailValid(email) {
   const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -179,6 +177,7 @@ function isPasswordStrong(password) {
         const otpData = await otpRes.json()
         if(otpData.success){
           showOtpModal()
+          startOtpExpiryTimer();
 
         const otpInput = document.getElementById('otpInput');
         const submitOTP = document.getElementById('submitOTP');
@@ -211,11 +210,12 @@ function isPasswordStrong(password) {
           secondNameError.textContent = data.errors.user_secondName;
           // numberError.textContent = data.errors.user_number
           hideOtpModal()
+          startOtpExpiryTimer()
         }
         if(data.user){
           location.assign('/brepublic/landing/userHome')
-        }
-        })
+            }
+          })
         }
       } catch (err) {
         console.log(err)
@@ -223,5 +223,49 @@ function isPasswordStrong(password) {
 
 
     })
+
+    function showOtpModal() {
+    const otpModal = document.getElementById('otpModal');
+    otpModal.classList.remove('hidden');
+  }
+
+  // Function to hide OTP modal
+  function hideOtpModal() {
+    const otpModal = document.getElementById('otpModal');
+    otpModal.classList.add('hidden');
+  }
+
+  function startOtpExpiryTimer() {
+        otpExpiryTimer = setInterval(() => {
+            updateTimerDisplay();
+            otpExpiryTime--;
+
+            if (otpExpiryTime <= 0) {
+                clearInterval(otpExpiryTimer);
+                hideOtpModal();
+            }
+        }, 1000);
+    }
+
+    function stopOtpExpiryTimer() {
+        clearInterval(otpExpiryTimer);
+        resetTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(otpExpiryTime / 60);
+        const seconds = otpExpiryTime % 60;
+
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        const timerDisplay = `${formattedMinutes}:${formattedSeconds}`;
+        document.getElementById('timerDisplay').innerText = timerDisplay;
+    }
+
+    function resetTimerDisplay() {
+        document.getElementById('timerDisplay').innerText = '00:00';
+    }
+
   </script>
     <%-include('../includes/userEnd')  %>
