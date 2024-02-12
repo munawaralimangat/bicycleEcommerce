@@ -28,7 +28,6 @@ module.exports.userHomeView = async (req,res)=>{
 }
 
 module.exports.homeAllProducts = async (req, res) => {
-    console.log(req.query.sort)
     try {
         let products;
         const sortOptions = req.query.sort;

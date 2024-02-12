@@ -24,8 +24,14 @@ router.post('/landing/register',userLoginController.userRegPost)//signup post
 router.get('/landing/login',userLoginController.userLoginView)//login get
 router.post('/landing/login',userLoginController.userLoginPost)//login post
 
+//forgot password controller
+router.get('/forgot-password',userLoginController.forgotPasswordView)
+router.get('/change-password',userLoginController.changePasswordView)
+router.post('/update-password',userLoginController.updatePassword)
+
 //otp routes
 router.post('/send-otp',otpController.sendOTP)
+router.post('/verify-otp',otpController.verifyOtp)
 
 //user profile
 router.get('/profile',userProfileController.viewProfile)

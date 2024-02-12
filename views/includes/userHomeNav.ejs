@@ -12,14 +12,14 @@
         </a>
         <div class="flex items-center lg:order-2">
             
-                <form class="hidden sm:block mr-4" method="GET" id="searchForm" action="/brepublic/search">
+                <form class="hidden sm:block mr-4" method="GET" id="searchForm1" action="/brepublic/search">
                     <div class="relative text-gray-600 focus-within:text-gray-400">
                       <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-                        <button id="searchButton" type="submit" class="p-1 focus:outline-none focus:shadow-outline">
+                        <button id="searchButton1" type="submit" class="p-1 focus:outline-none focus:shadow-outline">
                           <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </button>
                       </span>
-                      <input type="search" id="searchInput" name="q" class="py-2 text-sm text-white bg-gray-900 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." autocomplete="off">
+                      <input type="search" id="searchInput1" name="q" class="py-2 text-sm text-white bg-gray-900 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." autocomplete="off">
                       <button type="button" id="clearButton" class="absolute inset-y-0 right-0 flex items-center pr-2 focus:outline-none focus:shadow-outline" onclick="clearSearch()">
                         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6"><path d="M6 18L18 6M6 6l12 12"></path></svg>
                       </button>
@@ -109,7 +109,7 @@
             <div class="fixed inset-0 z-40 flex">
               <div class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                 <div class="flex items-center justify-between px-4">
-                  <h2 class="text-lg font-medium text-gray-900 dark:text-white">Search</h2>
+                  <h2 class="text-lg font-medium text-gray-900 dark:text-white">BicycleRepublic</h2>
                   <button type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400" id="closeButton">
                     <span class="sr-only">Close menu</span>
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -118,7 +118,18 @@
                   </button>
                 </div>
                 <!-- Filters -->
-
+                <div class="mt-10 ml-2">
+                <form class="block" method="GET" id="searchForm2" action="/brepublic/search">
+                    <div class="relative text-gray-600 focus-within:text-gray-400">
+                      <span class="absolute inset-y-0 left-0 flex items-center pl-2">
+                        <button id="searchButton2" type="submit" class="p-1 focus:outline-none focus:shadow-outline">
+                          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                      </span>
+                      <input type="search" id="searchInput2" name="q" class="py-2 text-sm text-white bg-gray-900 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." autocomplete="off">
+                    </div>
+                  </form>
+                </div> 
               </div>
             </div>
           </div>

@@ -1,0 +1,180 @@
+<%-include('../includes/userStart')  %>
+<header>
+    <%-include('../includes/userHomeNav')  %>
+    <section class="flex items-center justify-center h-screen p-4 bg-gray-500 bg-cover bg-no-repeat w-full" style="background-image: url('/images/david-hellmann-06ItjjY7ajU-unsplash.jpg')">
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div class="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
+                <h1 class="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    Forgot your password?
+                </h1>
+                <p class="font-light text-gray-500 dark:text-gray-400">Don't fret! Just type in your email and we will send you a code to reset your password!</p>
+                <form id="forgotPassword" class="mt-4 space-y-4 lg:mt-5 md:space-y-5" action="#">
+                    <div>
+                        <label id="emailLabel" for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="">
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                          <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="">
+                        </div>
+                        <div class="ml-3 text-sm">
+                          <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a class="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Reset password</button>
+                </form>
+            </div>
+        </div>
+      </section>
+            <!--OTP input field-->
+            <div id="otpModal" class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidden">
+                <div class="absolute w-full h-full bg-gray-900 opacity-50"></div>
+                <div class="z-10 bg-white p-8 rounded-lg shadow-md">
+                  <h2 class="text-2xl font-semibold mb-4">Enter OTP</h2>
+                  <input id="otpInput" type="text" class="w-full px-4 py-2 border rounded-md mb-4" placeholder="Enter OTP">
+                <div class="flex items-center mb-4">
+                    <span class="mr-2">Time remaining:</span>
+                    <span id="timerDisplay" class="text-blue-500 font-semibold">02:00</span>
+                </div>
+                  <button id="submitOTP" class="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
+                </div>
+              </div>
+              <!--OTP input field-->
+
+</header>
+<%-include('../includes/userEnd')  %>
+
+<script>
+
+    const forgotPasswordForm = document.getElementById('forgotPassword')
+    // const otpModal = document.getElementById('otpModal')
+    const otpInput = document.getElementById('otpInput')
+    const submitOTPBtn = document.getElementById('submitOTP');
+    
+    let otpExpiryTime = 120;
+    let otpExpiryTimer;
+
+    forgotPasswordForm.addEventListener('submit',async (event)=>{
+        event.preventDefault()
+
+        function isEmailValid(email) {
+        const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return regex.test(email.trim());
+        }
+        const email = document.getElementById('email').value
+        if (!isEmailValid(email)) {
+            document.getElementById('emailLabel').innerText = 'Email is not valid.';
+            document.getElementById('emailLabel').style.color = 'red'
+            return;
+        }
+        try {
+            const response = await fetch('/brepublic/send-otp',{
+                method:'post',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({email})
+            })
+            const data = response.json()
+            if(response.ok){
+                Toastify({
+                    text: 'Email sent!',
+                    duration: 3000, // 3 seconds
+                    gravity: 'bottom', // Adjust as needed
+                    position: 'center', // Adjust as needed
+                    backgroundColor: 'green', // Adjust as needed
+                }).showToast();
+                openOtpModal()
+                startOtpExpiryTimer();
+
+            }else{
+                Toastify({
+                    text: data.message,
+                    duration: 3000, // 3 seconds
+                    gravity: 'bottom', // Adjust as needed
+                    position: 'center', // Adjust as needed
+                    backgroundColor: 'red', // Adjust as needed
+                }).showToast();
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    })
+
+    submitOTPBtn.addEventListener('click',async (event)=>{
+        const otp = otpInput.value;
+        try {
+            const response = await fetch('/brepublic/verify-otp',{
+                method:'post',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({otp})
+            })
+
+            const data = await response.json()
+            if(response.ok){
+                Toastify({
+                    text: 'OTP verified',
+                    duration: 3000, 
+                    gravity: 'bottom', 
+                    position: 'center', 
+                    backgroundColor: 'red', 
+                }).showToast();
+
+                closeOtpModal()
+                startOtpExpiryTimer()
+                location.assign('/brepublic/change-password')
+            }else{
+                console.log("otp verification failed",data.message)
+                document.getElementById('emailLabel').innerText = data.message
+                document.getElementById('emailLabel').style.color = 'red'
+                closeOtpModal()
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    })
+
+    function openOtpModal() {
+    const otpModal = document.getElementById('otpModal');
+    otpModal.classList.remove('hidden');
+    }
+
+    function closeOtpModal() {
+    const otpModal = document.getElementById('otpModal');
+    otpModal.classList.add('hidden');
+  }
+
+  function startOtpExpiryTimer() {
+        otpExpiryTimer = setInterval(() => {
+            updateTimerDisplay();
+            otpExpiryTime--;
+
+            if (otpExpiryTime <= 0) {
+                clearInterval(otpExpiryTimer);
+                closeOtpModal();
+            }
+        }, 1000);
+    }
+
+    function stopOtpExpiryTimer() {
+        clearInterval(otpExpiryTimer);
+        resetTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(otpExpiryTime / 60);
+        const seconds = otpExpiryTime % 60;
+
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        const timerDisplay = `${formattedMinutes}:${formattedSeconds}`;
+        document.getElementById('timerDisplay').innerText = timerDisplay;
+    }
+
+    function resetTimerDisplay() {
+        document.getElementById('timerDisplay').innerText = '00:00';
+    }
+</script>

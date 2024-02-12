@@ -87,6 +87,7 @@ module.exports.userRegPost = async (req,res)=>{
             // user_number:number,
             user_password:password,
         });
+        console.log("thu")
         const otpResponse = await OTP.findOne({email}).sort({createdAt:-1}).limit(1)
         if(!otpResponse|| otp !==otpResponse.otp){
              res.status(400).json({error:{otp:"Invalid OTP"}})
@@ -153,6 +154,30 @@ module.exports.userLoginPost =async (req,res)=>{
         console.log(errors)
         res.status(400).json({errors})
     }
+}
+
+module.exports.forgotPasswordView = async (req,res)=>{
+    res.render('user/findAccount')
+}
+
+module.exports.changePasswordView = async (req,res)=>{
+    res.render('user/resetPassword')
+}
+
+module.exports.updatePassword = async (req,res)=>{
+    const {email,newPassword} = req.body
+    console.log(email,newPassword)
+    console.log(req.body)
+
+    const user = await User.findOne({user_email:email})
+    console.log(user)
+    if(!user){
+        return res.status(400).json({message:'User not found'})
+    }
+    user.user_password = newPassword;
+    await user.save()
+
+    res.status(200).json({message:'Password updated successfully'})
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

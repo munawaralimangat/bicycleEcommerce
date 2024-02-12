@@ -3,15 +3,13 @@
     <%-include('../includes/userHomeNav')  %>
   </header>
   <section>
-
-    
         <div class="flex items-center justify-center h-screen bg-gray-500 bg-cover bg-no-repeat w-full"style="background-image: url('/images/david-hellmann-06ItjjY7ajU-unsplash.jpg')">
         <div class="w-full bg-gray-50 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-900 dark:border-gray-700">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign Up
             </h1>
-                <form class="space-y-4 md:space-y-5" action="brepublic/landing/register" method="post">
+                <form id="regForm" class="space-y-4 md:space-y-5" action="/brepublic/landing/register" method="post">
                   <div class="error-container"></div>
                   <div class=" text-red-600 firstName error"></div>
                   <div class="flex space-x-4">
@@ -79,7 +77,7 @@
       #mobile-menu-2 {
         display: none;
       }
-      #searchForm {
+      #searchForm1 {
         display: none;
       }
     </style>
@@ -96,7 +94,7 @@ function showOtpModal() {
     otpModal.classList.add('hidden');
   }
 
-    const form = document.querySelector('form');
+    const form = document.getElementById('regForm');
     const emailError = document.querySelector('.email.error')
     const passwordError = document.querySelector('.password.error')
     const numberError = document.querySelector('.number.error')
