@@ -25,98 +25,22 @@ module.exports.getAllOrdersData = async (req,res)=>{
 
     const Users = await User.countDocuments()
 
-
     const deliveredCount = orders.filter(order=> order.status==="Delivered").length;
     const notDeliveredCount = orders.filter(order=> order.status !== "Delivered" && order.status !== "Cancelled").length;
     const cancelledCount = orders.filter(order => order.status ==="Cancelled").length;
 
-    //group orders
-    const groupedOrders = orders.reduce((acc,order)=>{
-      const month = order.createdAt.getMonth()+1;
-     
-      const key = `${order.createdAt.getFullYear()}-${month}`;
-
-      if(!acc[key]){
-        acc[key]=[]
+    //total revenue
+    const totalYearOrders = await Orders.aggregate([
+      {
+        
       }
-
-      acc[key].push(order)
-      return acc
-    },{})
-    
-    const months = Object.keys(groupedOrders).sort()
-    console.log(months)
-
-    const monthlyData = months.map(month => {
-      const monthlyOrders = groupedOrders[month];
-      const revenue = monthlyOrders.reduce((total, order) => {
-          if (order.status !== 'Cancelled' && order.status ==="Delivered") {
-              total += order.totalPrice;
-          }
-          console.log("tt",total)
-          return total;
-      }, 0);
-  
-      const averageAmountPerBill = monthlyOrders.length > 0 ? 
-          monthlyOrders.reduce((total, order) => total + order.totalPrice, 0) / monthlyOrders.length : 0;
-  
-      return {
-          month,
-          revenue,
-          averageAmountPerBill
-      };
-  });
-
-  const monthlyONS = await Orders.aggregate([
-    {
-      $match: { status: 'Delivered' },
-    },
-    {
-      $group: {
-        _id: {
-          month: { $month: '$createdAt' },
-          year: { $year: '$createdAt' },
-        },
-        totalSales: { $sum: '$totalPrice' },
-        totalOrders: { $sum: 1 },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        month: '$_id.month',
-        year: '$_id.year',
-        totalSales: '$totalSales',
-        totalOrders: '$totalOrders',
-      },
-    },
-    {
-      $sort: { year: 1, month: 1 },
-    },
-  ])
-
-  // console.log(monthlyONS)
-
-  const chartData = monthlyONS.map(data => ({
-    month:'${data.year}-${data.month}',
-    totalSales:data.totalSales,
-    totalOrders:data.totalOrders,
-  }))
-
-
-  // console.log(chartData)
-
-
-  
-
+    ])
+   
     res.json({
       Users,
       deliveredCount,
       notDeliveredCount,
       cancelledCount,
-      months,
-      monthlyData,
-      chartData
     })
     
   } catch (error) {
