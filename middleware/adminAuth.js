@@ -5,7 +5,7 @@ const requireAuth = async (req,res,next)=>{
 
     const token = req.cookies.jwtad;
     if(token){
-        jwt.verify(token,'mwrmwr',(err,decodedToken)=>{
+        jwt.verify(token,process.env.JWTKEY,(err,decodedToken)=>{
             if(err){
                 console.log(err.message);
                 res.redirect('/admin/login')
@@ -25,7 +25,7 @@ const checkAdmin = async (req,res,next)=>{
     const token = await req.cookies.jwtad;
 
     if(token){
-        jwt.verify(token,'mwrmwr',async (err,decodedToken)=>{
+        jwt.verify(token,process.env.JWTKEY,async (err,decodedToken)=>{
             if(err){
                 console.log(err.message);
                 res.locals.user = null

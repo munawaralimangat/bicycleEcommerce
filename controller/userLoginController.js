@@ -45,10 +45,9 @@ const handleErrors = (err)=>{
     return errors;
 }
 
-
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id)=>{
-    return jwt.sign({id},'mwrmwr',{
+    return jwt.sign({id},process.env.JWTKEY,{
         expiresIn:maxAge
     })
 }
@@ -117,7 +116,7 @@ module.exports.userLoginView = async (req, res) => {
     }
 
     try {
-        const decodedToken = jwt.verify(jwtCookie, 'mwrmwr');
+        const decodedToken = jwt.verify(jwtCookie, process.env.JWTKEY);
         res.redirect('/brepublic/landing');
     } catch (error) {
         console.log(error);
