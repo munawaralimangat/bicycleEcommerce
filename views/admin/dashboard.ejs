@@ -15,9 +15,9 @@
                                 <div class="px-6 py-6 bg-gray-100 border border-gray-300 rounded-lg shadow-xl">
                                     <div class="flex items-center justify-between">
                                         <span class="font-bold text-sm text-indigo-600">Total Revenue</span>
-                                        <span
+                                        <!-- <span
                                             class="text-xs bg-gray-200 hover:bg-gray-500 text-gray-500 hover:text-gray-200 px-2 py-1 rounded-lg transition duration-200 cursor-default">30
-                                            days</span>
+                                            days</span> -->
                                     </div>
                                     <div class="flex items-center justify-between mt-6">
                                         <div>
@@ -48,9 +48,9 @@
                                 <div class="px-6 py-6 bg-gray-100 border border-gray-300 rounded-lg shadow-xl">
                                     <div class="flex items-center justify-between">
                                         <span class="font-bold text-sm text-green-600">Total Orders</span>
-                                        <span
+                                        <!-- <span
                                             class="text-xs bg-gray-200 hover:bg-gray-500 text-gray-500 hover:text-gray-200 px-2 py-1 rounded-lg transition duration-200 cursor-default">7
-                                            days</span>
+                                            days</span> -->
                                     </div>
                                     <div class="flex items-center justify-between mt-6">
                                         <div>
@@ -80,9 +80,9 @@
                                 <div class="px-6 py-6 bg-gray-100 border border-gray-300 rounded-lg shadow-xl">
                                     <div class="flex items-center justify-between">
                                         <span class="font-bold text-sm text-blue-600">Total Users</span>
-                                        <span
+                                        <!-- <span
                                             class="text-xs bg-gray-200 hover:bg-gray-500 text-gray-500 hover:text-gray-200 px-2 py-1 rounded-lg transition duration-200 cursor-default">7
-                                            days</span>
+                                            days</span> -->
                                     </div>
                                     <div class="flex items-center justify-between mt-6">
                                         <div>
@@ -156,9 +156,19 @@
                         const response = await fetch('/admin/all-orders-data')
                         const data = await response.json()
                         console.log(data)
+
+                        totalRevenue = document.getElementById('totalRevenue');
+                        totalRevenue.textContent = "$"+data.totalYearRevenue;
+
+                        totalOrders = document.getElementById('totalOrders');
+                        totalOrders.textContent = data.totalOrders;
+
+                        totalUsers = document.getElementById('totalUsers');
+                        totalUsers.textContent = data.Users
+                        console.log(data.totalSalesArray,data.averageBillAmountArray[0])
                         updatePieChart(pieChart, data.notDeliveredCount, data.deliveredCount, data.cancelledCount);
-                        updateBarChart(barChart)
-                        updateMultiBarChart(multiBarChart)
+                        updateBarChart(barChart,data.totalSalesArray,data.averageBillAmountArray)
+                        updateMultiBarChart(multiBarChart,data.totalSalesArray,data.averageBillAmountArray)
 
 
                     } catch (error) {
@@ -176,14 +186,14 @@
                             datasets: [{
                                 data: [0, 0, 0],
                                 backgroundColor: [
-                                    'rgba(255, 99, 132, 0.5)',
-                                    'rgba(54, 162, 235, 0.5)',
                                     'rgba(255, 206, 86, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)',
+                                    'rgba(255, 99, 132, 0.5)',
                                 ],
                                 borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
                                     'rgba(255, 206, 86, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 99, 132, 1)',
                                 ],
                                 borderWidth: 3,
                             }],
@@ -206,7 +216,7 @@
                         data: {
                             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                             datasets: [{
-                                label: 'Revenue',
+                                label: 'Total Sales',
                                 data: [],
                                 backgroundColor: 'rgba(255, 99, 132,0.5)',
                                 borderColor: 'rgba(255, 99, 132, 1)',
@@ -232,7 +242,11 @@
                     });
                 }
 
-                function updateBarChart() {
+                function updateBarChart(chart,totalSales,averageAmount) {
+                    console.log(totalSales[0].toString())
+                    chart.data.datasets[0].data = totalSales;
+                    chart.data.datasets[1].data = averageAmount;
+                    chart.update()
 
                 }
                 // multi bar chart
@@ -270,8 +284,11 @@
                 }
 
 
-                function updateMultiBarChart() {
-
+                function updateMultiBarChart(chart,totalSales,averageAmount) {
+                    console.log(totalSales[0].toString())
+                    chart.data.datasets[0].data = totalSales;
+                    chart.data.datasets[1].data = averageAmount;
+                    chart.update()
                 }
                 updateCharts()
             })

@@ -30,17 +30,105 @@ module.exports.getAllOrdersData = async (req,res)=>{
     const cancelledCount = orders.filter(order => order.status ==="Cancelled").length;
 
     //total revenue
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+
     const totalYearOrders = await Orders.aggregate([
       {
-        
+        $match: {
+          createdAt: {
+            $gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
+            $lt: new Date(`${currentYear + 1}-01-01T00:00:00.000Z`),
+          }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: { $cond: [{ $eq: ['$delivered', true] }, '$totalPrice', 0] } },
+          totalOrders: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          totalRevenue: 1,
+          totalOrders: 1
+        }
       }
-    ])
-   
+    ]);
+    const totalYearRevenue = totalYearOrders.length>0 ?totalYearOrders[0].totalRevenue : 0;
+    console.log(totalYearOrders)
+    const totalOrders = totalYearOrders.length>0 ?totalYearOrders[0].totalOrders : 0;
+    
+    const totalMonthlyOrders = await Orders.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
+            $lt: new Date(`${currentYear + 1}-01-01T00:00:00.000Z`),
+          },
+          delivered: true,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            month: { $month: '$createdAt' },
+          },
+          totalSales: { $sum: '$totalPrice' },
+          averageBillAmount: { $avg: '$totalPrice' },
+        },
+      },
+      {
+        $sort: {
+          '_id.month': 1,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          month: '$_id.month',
+          totalSales: 1,
+          averageBillAmount: 1,
+        },
+      },
+    ]);
+
+    const zeroArray = Array(12).fill(0);
+    const monthIndexMap = {
+      1: 0,  // January
+      2: 1,  // February
+      3: 2,  // March
+      4: 3,  // April
+      5: 4,  // May
+      6: 5,  // June
+      7: 6,  // July
+      8: 7,  // August
+      9: 8,  // September
+      10: 9, // October
+      11: 10, // November
+      12: 11, // December
+    };
+
+    const totalSalesArray = zeroArray.map((_, index) => totalMonthlyOrders.find(monthData => monthData.month === (index + 1))?.totalSales || 0);
+    const averageBillAmountArray = zeroArray.map((_, index) => totalMonthlyOrders.find(monthData => monthData.month === (index + 1))?.averageBillAmount || 0);
+
+    console.log(totalSalesArray)
+    console.log(averageBillAmountArray)
+
+    //bar chart
+    //total sales of a month , delivered: true
+    // average bill amount of a month , delivered : true
     res.json({
       Users,
       deliveredCount,
       notDeliveredCount,
       cancelledCount,
+      totalYearRevenue,
+      totalOrders,
+      totalSalesArray,
+      averageBillAmountArray
     })
     
   } catch (error) {
