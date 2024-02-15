@@ -37,8 +37,6 @@ module.exports.viewProduct = async (req, res) => {
                     'variations.size': variationSizeId.toString()
                 })
 
-                console.log('Other Products:', otherProduct);
-
                 console.log("Query criteria:", {
                 _id: { $ne: productId },
                 product_name: product.product_name,
@@ -49,6 +47,8 @@ module.exports.viewProduct = async (req, res) => {
                     console.log('Found another product with the same name and selected size:', otherProduct._id);
                     res.json({ otherProduct });
                     return;
+                }else{
+                    return res.status(404).json({message:"Product not found on this size"})
                 }
             }
         }

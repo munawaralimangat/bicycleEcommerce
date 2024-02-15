@@ -90,7 +90,7 @@ figure.zoom img {
                     </div>
                 </div> -->
                                 <div class="mb-4">
-                                    <span class="font-bold text-gray-700 dark:text-gray-300">Select Size:</span>
+                                    <span id="sizeErr" class="font-bold text-gray-700 dark:text-gray-300">Select Size:</span>
                                     <div class="flex items-center mt-2">
                                         <button
                                             class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600 focus:bg-gray-500"
@@ -154,22 +154,22 @@ figure.zoom img {
                                 let res = await fetch(`/brepublic/product/${productId}?size=${size}`);
                                 console.log("response1", res);
                                 if (!res.ok) {
-                                    // Handle non-successful response (e.g., 404 Not Found, 500 Internal Server Error)
                                     console.error(`Error: ${res.status} - ${res.statusText}`);
-                                    const responseBody = await res.text();
-                                    console.log("Response Body:", responseBody);
+                                    const responseBody = await res.json();
+
+                                    document.getElementById('sizeErr').textContent = responseBody.message
+                                    document.getElementById('sizeErr').style.color = 'red'
                                     return;
                                 }
 
                                 let data = await res.json();
-                                console.log("Response Body:", data.otherProduct);
+                                console.log("Response Body:", data.otherProduct.message);
 
-                                // Check if otherProduct is available and has an ID
+                                
                                 if (data.otherProduct && data.otherProduct._id) {
                                     const otherProductId = data.otherProduct._id;
                                     location.assign(`/brepublic/product/${otherProductId}`);
                                 } else {
-                                    // Handle the case where otherProduct or its ID is not available
                                     console.log('Other product or its ID not available');
                                 }
                                 console.log(data.product)
