@@ -419,7 +419,7 @@
                 if(orderData == 'cod'){
                     console.log('cod success');
                     // openSuccessModal()
-                    location.reload()
+                    location.assign(`/brepublic/success?userId=${userId}`)
                 }else{
                     console.log('razorpay success')
                     razorpay(orderData)

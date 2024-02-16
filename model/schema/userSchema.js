@@ -23,7 +23,8 @@ const userSchema = new mongoose.Schema({
     default:true
   },
   user_mobile: {
-    type: Number,
+    type: String,
+    default:null,
     unique:true,
   },
   user_password: {
