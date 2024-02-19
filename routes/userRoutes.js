@@ -10,7 +10,7 @@ const userWishlistController = require('../controller/wishlistController')
 const checkoutController = require('../controller/checkoutController')
 
 const {requireAuth,checkUser} = require('../middleware/authMiddleware')
-const router = express.Router()
+const router = express.Router();
 
 
 router.use('*',checkUser)
