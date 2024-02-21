@@ -23,16 +23,16 @@
             </div>
             <% if(wishlist){ %>
             <div class="mt-4">
-                <p class="text-2xl tracking-tight leading-6 text-gray-600 dark:text-gray-500">0 items</p>
+                <p class="text-2xl tracking-tight leading-6 text-gray-600 dark:text-gray-500">Item <%= wishlist.items.length %></p>
             </div>
             <% } %>
-            <% if(wishlist){ %>
+            <% if(!wishlist){ %>
               <div class="flex justify-center bg-white">
                 <img src="/images/Animation - 1707716355072.gif" class="h-full w-96" alt="">
               </div>
             <% } %>
             <div class="flex flex-col md:flex-row mt-10 lg:mt-12 gap-x-8 gap-y-10 lg:gap-y-0">
-                <% if (wishlist) { %>
+                <% if (wishlist.items.length>0) { %>
                     <% wishlist.items.forEach(items => { %>
                         <div
                       class="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">

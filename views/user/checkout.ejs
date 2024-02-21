@@ -158,7 +158,7 @@
                         <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
                             <p class="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
                             <% if(addresses.length === 0){ %>
-                                <p>no address</p>
+                                <p class="text-red-600">no address</p>
                                 <% }else{ %>
                                     <% addresses.forEach((address, index) => { %>
                                 <div class="flex items-center mb-2">
@@ -353,9 +353,6 @@
 
         const addressForm = document.getElementById('addressForm');
         const formData = new FormData(addressForm)
-        for (const pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-        }
         try {
              const response = await fetch('/brepublic/addAddress',{
                 method:'post',
@@ -394,9 +391,7 @@
         const couponAmount = document.getElementById('discountAmount').textContent;
         const numericPart = couponAmount.replace(/[^\d.-]/g, '');
         let couponDiscount = Number(numericPart.split())
-        console.log(numericPart)
         try {
-            console.log("pay",selectedPaymentMethod)
             if(!userId || !selectedAddressId || !selectedPaymentMethod){
                 alert("user id or selected address or pament method is missing")
             }
@@ -415,18 +410,13 @@
             })
             if(response.ok){
                 const orderData = await response.json();
-                console.log(orderData);
                 if(orderData == 'cod'){
-                    console.log('cod success');
                     // openSuccessModal()
                     location.assign(`/brepublic/success?userId=${userId}`)
                 }else{
-                    console.log('razorpay success')
                     razorpay(orderData)
                     // openSuccessModal()
                 }
-                
-                console.log('order created successfully')
                 
             }else{
                 console.error('Failed to create order',response.statusText)
@@ -460,7 +450,6 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     function razorpay(response){
-        console.log('ftgdftc',response.razorpayOrder.amount_due);
         var options = {
         "key": "rzp_test_aMClPt2TIB5qVt", // Enter the Key ID generated from the Dashboard
         "amount": response.razorpayOrder.amount_due, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
