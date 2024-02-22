@@ -13,8 +13,7 @@ const adminUserController = require('../controller/adminUserController');
 const adminProductController = require('../controller/adminProductController');
 const adminCategoryController = require('../controller/adminCategoryController');
 const adminOffersController = require('../controller/adminOffersController');
-const adminOrdersController = require('../controller/adminOrdersController')
-const { route } = require('./userroutes');
+const adminOrdersController = require('../controller/adminOrdersController');
 // const {loginCheck} = require('../auth/jwt')
 
 
