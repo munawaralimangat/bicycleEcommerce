@@ -117,7 +117,7 @@ module.exports.userLoginView = async (req, res) => {
 
     try {
         const decodedToken = jwt.verify(jwtCookie, process.env.JWTKEY);
-        res.redirect('/brepublic/landing');
+        res.redirect('/');
     } catch (error) {
         console.log(error);
         res.render('user/userLogin', {

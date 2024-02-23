@@ -93,7 +93,7 @@ const dashboardView = async (req,res)=>{
 const logOut = async (req, res) => {
   console.log("logout")
     res.cookie('jwtad', '',{maxAge:1})
-    res.redirect('/admin/login')
+    res.redirect('/admin')
 }
 
 

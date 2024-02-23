@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const routes = require('./routes/adminRutes');
 const userRoutes = require('./routes/userRoutes');
 app.use('/admin',routes);
-app.use('/brepublic',userRoutes)
+app.use('/',userRoutes)
 
 
 //cookies

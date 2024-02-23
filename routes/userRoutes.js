@@ -16,12 +16,12 @@ const router = express.Router();
 router.use('*',checkUser)
 
 //user landing controller
-router.get('/landing',userHomeController.userHomeView)
+router.get('/',userHomeController.userHomeView)
 
 //user login and signup controller
-router.get('/landing/register',userLoginController.userRegView)//signup get
+router.get('/register',userLoginController.userRegView)//signup get
 router.post('/landing/register',userLoginController.userRegPost)//signup post
-router.get('/landing/login',userLoginController.userLoginView)//login get
+router.get('/login',userLoginController.userLoginView)//login get
 router.post('/landing/login',userLoginController.userLoginPost)//login post
 
 //forgot password controller
@@ -46,7 +46,7 @@ router.put('/update-user/:userId',userProfileController.updateUser)
     // router.put('/cancel-order/:orderId',userProfileController.cancellOrder)
 
     //user home controller
-        router.get('/landing/userhome',requireAuth,userHomeController.userHomeView)
+        router.get('/userhome',requireAuth,userHomeController.userHomeView)
         router.get('/viewall',userHomeController.homeAllProducts)
         router.get('/logout',requireAuth,userHomeController.logout)
 

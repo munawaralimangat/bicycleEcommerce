@@ -63,5 +63,5 @@ module.exports.homeAllProducts = async (req, res) => {
 module.exports.logout = async (req,res)=>{
     console.log("logout")
     res.cookie('jwtus', '',{maxAge:1})
-    res.redirect('/brepublic/landing/login')
+    res.redirect('/login')
 }

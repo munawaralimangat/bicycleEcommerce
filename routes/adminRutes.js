@@ -21,7 +21,7 @@ const adminOrdersController = require('../controller/adminOrdersController');
 router.get('*',checkAdmin);
 
 //view
-router.get('/login',loginView);
+router.get('/',loginView);
 router.get('/dashboard',requireAuth, dashboardView);
 
 
