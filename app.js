@@ -49,7 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // main router
 const routes = require('./routes/adminRutes');
-const userRoutes = require('./routes/userroutes');
+const userRoutes = require('./routes/userRoutes');
 app.use('/admin',routes);
 app.use('/brepublic',userRoutes)
 
