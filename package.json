@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "nodemon": "nodemon app.js",
-    "test": "pm2 app.js --name web",
+    "test": "pm2 app.js",
     "build:css": "npx tailwindcss -i ./public/stylesheets/source.css -o ./public/stylesheets/style.css --watch"
   },
   "dependencies": {
