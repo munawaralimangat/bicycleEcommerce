@@ -53,7 +53,7 @@ module.exports.homeAllProducts = async (req, res) => {
         sizes.forEach(size => {
           sizeIdMap[size.size_name.toLowerCase()] = size._id;
         });
-        res.render('user/allproducts', { products: products ,sizes:sizeIdMap,categories:catMap });
+        res.render('user/allProducts', { products: products ,sizes:sizeIdMap,categories:catMap });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
