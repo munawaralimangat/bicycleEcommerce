@@ -91,7 +91,7 @@
                 
                 <div class="flex flex-wrap items-center justify-between gap-4 ">
                     <div class="py-10 text-center m-6">
-                        <a href="/brepublic/landing" class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3">
+                        <a href="/userhome" class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3">
                             Back to Shop 
                        </a>
                     </div>
@@ -125,7 +125,7 @@
             event.preventDefault();
             try {
                 const orderId = '<%=lastOrder._id%>';
-                const response = await fetch(`/brepublic/generate-invoice/${orderId}`);
+                const response = await fetch(`/generate-invoice/${orderId}`);
     
                 if (!response.ok) {
                     throw new Error('Failed to generate invoice');

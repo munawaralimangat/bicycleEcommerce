@@ -151,7 +151,7 @@ figure.zoom img {
                     <script>
                         async function selectSize(size, productId) {
                             try {
-                                let res = await fetch(`/brepublic/product/${productId}?size=${size}`);
+                                let res = await fetch(`/product/${productId}?size=${size}`);
                                 console.log("response1", res);
                                 if (!res.ok) {
                                     console.error(`Error: ${res.status} - ${res.statusText}`);
@@ -168,7 +168,7 @@ figure.zoom img {
                                 
                                 if (data.otherProduct && data.otherProduct._id) {
                                     const otherProductId = data.otherProduct._id;
-                                    location.assign(`/brepublic/product/${otherProductId}`);
+                                    location.assign(`/product/${otherProductId}`);
                                 } else {
                                     console.log('Other product or its ID not available');
                                 }

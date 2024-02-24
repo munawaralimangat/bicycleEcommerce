@@ -58,7 +58,7 @@
                         </li>
                     </ul>
                     <div class="flex justify-end mt-10">LogOut
-                        <a href="/brepublic/logout">
+                        <a href="/logout">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
                           </svg>
@@ -411,7 +411,7 @@
     <% }else{ %>
 
         <script>
-            window.location.href = "/brepublic/landing/login";
+            window.location.href = "/login";
           </script>
         
         <% } %>
@@ -481,7 +481,7 @@
 
         async function populateAddressDetails(addressId){
             try {
-                const response = await fetch(`/brepublic/get-address/${addressId}`);
+                const response = await fetch(`/get-address/${addressId}`);
                 const addressDetails = await response.json();
                 if(response.ok){
                     document.getElementById('editName').value = addressDetails.name;
@@ -528,7 +528,7 @@
             country: document.getElementById('editCountry').value,
             }
 
-            const response = await fetch(`/brepublic/edit-address/${currentAddressId}`,{
+            const response = await fetch(`/edit-address/${currentAddressId}`,{
                 method:'put',
                 headers:{
                     'Content-Type':'application/json'
@@ -576,7 +576,7 @@
 
     async function fetchUserData(userId){
         try {
-            const response = await fetch(`/brepublic/users/${userId}`)
+            const response = await fetch(`/users/${userId}`)
             const data = await response.json();
             return data
         } catch (error) {
@@ -593,7 +593,7 @@
         const mobile = document.getElementById('mobile').value;
         const email = document.getElementById('email').value;
 
-        const response = await fetch(`/brepublic/update-user/${userId}`,{
+        const response = await fetch(`/update-user/${userId}`,{
             method:'put',
             headers:{
                 'Content-Type':'application/json'
@@ -638,7 +638,7 @@
         const addressId = this.getAttribute('data-address-id');
         if (addressId) {
             try {
-                const response = await fetch(`/brepublic/delete-address/${addressId}`, {
+                const response = await fetch(`/delete-address/${addressId}`, {
                     method: 'delete',
                 });
 
@@ -685,7 +685,7 @@
         console.log(orderId)
         if (orderId) {
             try {
-                const response = await fetch(`/brepublic/cancel-request/${orderId}`, {
+                const response = await fetch(`/cancel-request/${orderId}`, {
                     method: 'put',
                 });
 
@@ -737,7 +737,7 @@
 
 
         try {
-            const response = await fetch('/brepublic/addAddress', {
+            const response = await fetch('/addAddress', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',

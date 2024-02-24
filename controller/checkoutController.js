@@ -35,7 +35,7 @@ module.exports.viewCheckout = async (req, res) => {
       .populate('coupon')
     if (!cart || cart.items.length === 0) {
       console.log("Cart not found or empty");
-      return res.redirect(`/brepublic/success?userId=${userId}`);
+      return res.redirect(`/success?userId=${userId}`);
     }
     const addresses = await Address.find({ userId });
     const coupons = await Coupon.find({})
@@ -208,11 +208,11 @@ module.exports.successPayment = async (req,res)=>{
   const userId = req.query.userId;
   console.log(userId)
   if(!userId){
-    return res.redirect(`/brepublic/cart?userId=${userId}`)
+    return res.redirect(`/cart?userId=${userId}`)
   }
   const user = await User.findById(userId)
   if(!user){
-    return res.redirect(`/brepublic/cart?userId=${userId}`)
+    return res.redirect(`/cart?userId=${userId}`)
   }
   const lastOrder = await Order.findOne({user:userId}).sort({ createdAt: -1 })
   .populate({

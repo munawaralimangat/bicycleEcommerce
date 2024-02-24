@@ -64,8 +64,8 @@
                   <!-- <a href="#" class="font-medium text-gray-900 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Most Popular</a>
                   <a href="#" class="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Best Rating</a>
                   <a href="#" class="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Newest</a> -->
-                  <a href="/brepublic/roadbikes?sort=lowToHigh" class="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Price: Low to High</a>
-                  <a href="/brepublic/roadbikes?sort=HighToLow" class="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-4">Price: High to Low</a>
+                  <a href="/roadbikes?sort=lowToHigh" class="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Price: Low to High</a>
+                  <a href="/roadbikes?sort=HighToLow" class="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-4">Price: High to Low</a>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@
                     <% roadBikesProducts.forEach((product, index) => { %>
                       <div
                       class="relative flex mb-6 m-4 w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                      <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="/brepublic/product/<%=product._id  %>">
+                      <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="/product/<%=product._id  %>">
                         <img class="object-cover w-full" src="/uploads/<%= product.front_image.filename %>" alt="product image" />
                         <span class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39%
                           OFF</span>

@@ -3,7 +3,7 @@ async function addToCart(productId, userId) {
     console.log('product', productId);
   
     try {
-        const response = await fetch('/brepublic/addtocart', {
+        const response = await fetch('/addtocart', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',

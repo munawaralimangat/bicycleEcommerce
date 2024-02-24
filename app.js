@@ -73,8 +73,8 @@ app.get('/read-cookies',(req,res)=>{
 })
 
 app.listen(PORT,()=>{
-  console.log(`server is running on http://localhost:${PORT}/admin/login`)
-  console.log(`server is running on http://localhost:${PORT}/brepublic/landing`)
+  console.log(`server is running on http://localhost:${PORT}/admin`)
+  console.log(`server is running on http://localhost:${PORT}`)
 })
 
 

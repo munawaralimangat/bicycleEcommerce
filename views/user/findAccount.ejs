@@ -68,7 +68,7 @@
             return;
         }
         try {
-            const response = await fetch('/brepublic/send-otp',{
+            const response = await fetch('/send-otp',{
                 method:'post',
                 headers:{
                     'Content-Type':'application/json'
@@ -104,7 +104,7 @@
     submitOTPBtn.addEventListener('click',async (event)=>{
         const otp = otpInput.value;
         try {
-            const response = await fetch('/brepublic/verify-otp',{
+            const response = await fetch('/verify-otp',{
                 method:'post',
                 headers:{
                     'Content-Type':'application/json'
@@ -124,7 +124,7 @@
 
                 closeOtpModal()
                 startOtpExpiryTimer()
-                location.assign('/brepublic/change-password')
+                location.assign('/change-password')
             }else{
                 console.log("otp verification failed",data.message)
                 document.getElementById('emailLabel').innerText = data.message

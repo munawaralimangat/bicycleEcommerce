@@ -88,6 +88,7 @@ module.exports.userRegPost = async (req,res)=>{
         });
         console.log("thu")
         const otpResponse = await OTP.findOne({email}).sort({createdAt:-1}).limit(1)
+        console.log(otpResponse)
         if(!otpResponse|| otp !==otpResponse.otp){
              res.status(400).json({error:{otp:"Invalid OTP"}})
              return
@@ -188,7 +189,7 @@ module.exports.updatePassword = async (req,res)=>{
 // module.exports.logout =(req,res)=>{
 //     console.log("logout")
 //     res.cookie('jwtus', '',{maxAge:1})
-//     res.redirect('/brepublic/landing/login')
+//     res.redirect('/landing/login')
 // }
 
 

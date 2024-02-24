@@ -354,7 +354,7 @@
         const addressForm = document.getElementById('addressForm');
         const formData = new FormData(addressForm)
         try {
-             const response = await fetch('/brepublic/addAddress',{
+             const response = await fetch('/addAddress',{
                 method:'post',
                 headers:{
                     'Content-Type':'application/json'
@@ -372,7 +372,7 @@
              })
              if(response.ok){
                 const savedAddress = await response.json()
-                location.assign(`/brepublic/Checkout?userId=${userId}`)
+                location.assign(`/Checkout?userId=${userId}`)
              }else{
                 console.error('Error saving address:', response.statusText);
              }
@@ -396,7 +396,7 @@
                 alert("user id or selected address or pament method is missing")
             }
             
-            const response = await fetch('/brepublic/placeorder',{
+            const response = await fetch('/placeorder',{
                 method:'post',
                 headers:{
                     'Content-Type':'application/json'
@@ -412,7 +412,7 @@
                 const orderData = await response.json();
                 if(orderData == 'cod'){
                     // openSuccessModal()
-                    location.assign(`/brepublic/success?userId=${userId}`)
+                    location.assign(`/success?userId=${userId}`)
                 }else{
                     razorpay(orderData)
                     // openSuccessModal()

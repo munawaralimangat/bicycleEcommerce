@@ -139,7 +139,7 @@
 
                   <% } %>
         </div>
-        <a href="/brepublic/landing" class="flex font-semibold text-indigo-600 dark:text-white text-sm mt-10">
+        <a href="/landing" class="flex font-semibold text-indigo-600 dark:text-white text-sm mt-10">
           <svg class="fill-current mr-2 text-indigo-600 dark:text-white w-4" viewBox="0 0 448 512">
             <path
               d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
@@ -152,7 +152,7 @@
               class=" mt-4 sm:hidden bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
           </a>
           <% }else{ %>
-            <a href="/brepublic/Checkout?userId=<%=user._id  %>">
+            <a href="/Checkout?userId=<%=user._id  %>">
               <button id="checkoutButton"
                 class="mt-4 sm:hidden bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
             </a>
@@ -217,7 +217,7 @@
                 total=subtotal - discountAmount + shippingCost; %>$<%=total.toFixed() %>
             </span>
           </div>
-          <!-- <a href="/brepublic/Checkout?userId=<%=user._id  %>">
+          <!-- <a href="/Checkout?userId=<%=user._id  %>">
             <button id="checkoutButton"
               class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
           </a> -->
@@ -227,7 +227,7 @@
                 class="hidden sm:block bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
             </a>
             <% }else{ %>
-              <a href="/brepublic/Checkout?userId=<%=user._id  %>">
+              <a href="/Checkout?userId=<%=user._id  %>">
                 <button id="checkoutButton"
                   class="hidden sm:block bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
               </a>
@@ -269,7 +269,7 @@
           return;
         }
         try {
-          const response = await fetch(`/brepublic/${action}/${itemId}`, {
+          const response = await fetch(`/${action}/${itemId}`, {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
@@ -290,7 +290,7 @@
       //remove from cart
       async function removeProduct(productId, userId) {
         try {
-          const res = await fetch(`/brepublic/removefromcart?userId=${userId}&productId=${productId}`, {
+          const res = await fetch(`/removefromcart?userId=${userId}&productId=${productId}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
@@ -373,7 +373,7 @@
 
             if (selectedCouponId !== "Select coupon") {
               try {
-                const response = await fetch(`/brepublic/getcoupon?value=${selectedCouponId}`);
+                const response = await fetch(`/getcoupon?value=${selectedCouponId}`);
                 console.log(response);
 
                 if (!response.ok) {
@@ -417,7 +417,7 @@
           })
 
           async function saveCouponToCart(couponId,userId) {
-            const response = await fetch(`/brepublic/savecoupon?couponId=${couponId}&userId=${userId}`, { method: 'POST' });
+            const response = await fetch(`/savecoupon?couponId=${couponId}&userId=${userId}`, { method: 'POST' });
 
             if (!response.ok) {
               console.log("Error saving coupon to cart");
@@ -426,7 +426,7 @@
 
           async function removeCouponFromCart(userId) {
             console.log("yo",userId)
-            const response = await fetch(`/brepublic/removecoupon?userId=${userId}`, { method: 'DELETE' });
+            const response = await fetch(`/removecoupon?userId=${userId}`, { method: 'DELETE' });
 
             if (!response.ok) {
               console.log("Error removing coupon from cart");

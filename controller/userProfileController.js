@@ -9,7 +9,7 @@ module.exports.viewProfile = async (req,res)=>{
     try {
         const userId = req.query.userId;
         if(!userId){
-            return res.redirect('/brepublic/landing/login')
+            return res.redirect('/landing/login')
         }
         const addresses = await Address.find({userId:userId})
 

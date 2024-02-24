@@ -3,7 +3,7 @@ async function addToWishlist(productId, userId) {
     console.log(userId);
 
     try {
-        const response = await fetch('/brepublic/addtowishlist', {
+        const response = await fetch('/addtowishlist', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',

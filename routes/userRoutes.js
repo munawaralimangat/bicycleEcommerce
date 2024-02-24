@@ -20,9 +20,9 @@ router.get('/',userHomeController.userHomeView)
 
 //user login and signup controller
 router.get('/register',userLoginController.userRegView)//signup get
-router.post('/landing/register',userLoginController.userRegPost)//signup post
+router.post('/register',userLoginController.userRegPost)//signup post
 router.get('/login',userLoginController.userLoginView)//login get
-router.post('/landing/login',userLoginController.userLoginPost)//login post
+router.post('/login',userLoginController.userLoginPost)//login post
 
 //forgot password controller
 router.get('/forgot-password',userLoginController.forgotPasswordView)

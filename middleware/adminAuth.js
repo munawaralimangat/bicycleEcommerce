@@ -8,7 +8,7 @@ const requireAuth = async (req,res,next)=>{
         jwt.verify(token,process.env.JWTKEY,(err,decodedToken)=>{
             if(err){
                 console.log(err.message);
-                res.redirect('/admin/login')
+                res.redirect('/admin')
             }else{
                 console.log(decodedToken)
                 next()
@@ -16,7 +16,7 @@ const requireAuth = async (req,res,next)=>{
         })
     }else{
         console.log("no token ")
-        res.redirect('/admin/login')
+        res.redirect('/admin')
     }
 }
 

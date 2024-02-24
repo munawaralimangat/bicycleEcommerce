@@ -8,7 +8,7 @@ const requireAuth = async (req,res,next)=>{
         jwt.verify(token,'mwrmwr',(err,decodedToken)=>{
             if(err){
                 console.log(err.message);
-                res.redirect('/brepublic/landing/login')
+                res.redirect('/login')
             }else{
                 console.log(decodedToken)
                 next()
@@ -16,7 +16,7 @@ const requireAuth = async (req,res,next)=>{
         })
     }else{
         console.log("no token ")
-        res.redirect('/brepublic/landing/login')
+        res.redirect('/login')
     }
 }
 

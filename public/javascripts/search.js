@@ -22,7 +22,7 @@ async function handleSearch(searchInput, searchForm) {
 
     const searchQuery = searchInput.value.trim();
 
-        const searchUrl = `/brepublic/search?q=${searchQuery}`;
+        const searchUrl = `/search?q=${searchQuery}`;
 
         try {
             const response = await fetch(searchUrl, { method: 'GET' });
@@ -56,7 +56,7 @@ async function handleSearch(searchInput, searchForm) {
 //         const searchQuery = searchInput.value.trim();
 
 //         if (searchQuery !== "") {
-//             const searchUrl = `/brepublic/search?q=${searchQuery}`;
+//             const searchUrl = `/search?q=${searchQuery}`;
 
 //             fetch(searchUrl, {
 //                 method: 'GET'
