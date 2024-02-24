@@ -1,5 +1,6 @@
-
-  const user = document.getElementById('userId').textContent
+  
+  const userElement = document.getElementById('userId');
+  const user = userElement ? userElement.textContent : null;
   $(document).ready(function (){
     $('.size-checkbox, .category-checkbox ').on('change',function(){
       fetchAndDisplayProducts()
