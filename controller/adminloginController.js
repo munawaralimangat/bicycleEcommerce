@@ -13,7 +13,6 @@ const cookieParser = require('cookie-parser')
 dotenv.config({path:'config.env'})
 
 const handleErrors = (err)=>{
-  console.log(err.message,err.code)
   let errors = {email:"",password:""}
   console.log(errors)
   //incorrect email
@@ -68,7 +67,6 @@ const loginView = async (req, res, next) => {
 // login admin
 const loginAdmin = async (req, res, next) => {
   const {email,password} = req.body
-  console.log(req.body)
 
   try {
     const admin = await Admin.login(email,password)
@@ -87,7 +85,6 @@ const loginAdmin = async (req, res, next) => {
 //dashboaed view
 const dashboardView = async (req,res)=>{
   res.render('admin/dashboard')
-  console.log(req.method)
 }
 
 const logOut = async (req, res) => {
