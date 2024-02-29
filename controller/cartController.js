@@ -62,6 +62,9 @@ module.exports.addToCart = async (req,res)=>{
     try {
         const {userId,productId,quantity}=req.body
         console.log(req.body)
+        if(!userId){
+             res.render('/login')
+        }
         //check if the product exists
         const product = await Product.findById(productId);
         if(!product){

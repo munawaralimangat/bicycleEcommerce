@@ -64,8 +64,8 @@ router.get('/mountainbikes',userCategoryController.viewMountain)
 router.get('/roadbikes',userCategoryController.viewRoadBikes)
 
 //cart routes
-router.get('/cart',userCartController.viewCart);
-router.post('/addtocart',userCartController.addToCart);
+router.get('/cart',requireAuth,userCartController.viewCart);
+router.post('/addtocart',requireAuth,userCartController.addToCart);
 router.get('/cartItem',userCartController.getCart)
 router.put('/increment/:itemId',userCartController.incrementQuantity);
 router.put('/decrement/:itemId',userCartController.decrementQuantity);
@@ -77,14 +77,14 @@ router.post('/savecoupon',userCartController.saveCouponToCart)
 router.delete('/removecoupon',userCartController.removeCouponFromCart)
 
 //wishlist route
-router.get('/wishlist',userWishlistController.viewWishlist);
-router.post('/addtowishlist',userWishlistController.addToWishlist);
+router.get('/wishlist',requireAuth,userWishlistController.viewWishlist);
+router.post('/addtowishlist',requireAuth,userWishlistController.addToWishlist);
 router.delete('/removefromwishlist',userWishlistController.removeFromWishlist);
 
 //checkout routes
-router.get('/checkout',checkoutController.viewCheckout);
-router.post('/placeorder',checkoutController.placeOrder);
-router.get('/success',checkoutController.successPayment)
+router.get('/checkout',requireAuth,checkoutController.viewCheckout);
+router.post('/placeorder',requireAuth,checkoutController.placeOrder);
+router.get('/success',requireAuth,checkoutController.successPayment)
 
 //address routes
 router.get('/get-address/:addressId',userProfileController.getOneAddress);

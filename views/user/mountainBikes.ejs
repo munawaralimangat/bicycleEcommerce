@@ -137,7 +137,7 @@
                         <% if (product.variations[0].quantity < 1) { %>
                           <p class="text-red-700">Out of stock</p>
                         <% } else { %>
-                          Add to cart
+                          <p id="noAddCart">Add to cart</p>
                         <% } %>
                       </a>
                       
@@ -245,6 +245,11 @@
       }
     }
 
+    </script>
+    <script>
+      document.getElementById('noAddCart').addEventListener('click',function(){
+        location.assign('/login')
+      })
     </script>
 
 
