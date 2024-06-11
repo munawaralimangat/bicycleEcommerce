@@ -16,7 +16,7 @@ const router = express.Router();
 router.use('*',checkUser)
 
 //user landing controller
-router.get('/',userHomeController.userHomeView)
+router.get('/',userHomeController.userHomeView) 
 
 //user login and signup controller
 router.get('/register',userLoginController.userRegView)//signup get

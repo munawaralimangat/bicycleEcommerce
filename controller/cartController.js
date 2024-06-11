@@ -68,7 +68,7 @@ module.exports.addToCart = async (req,res)=>{
         //check if the product exists
         const product = await Product.findById(productId);
         if(!product){
-            return res.status(404).json({error:"product not found"})
+            return res.status(404).json({ error: "product not found" })
         }
         let cart = await Cart.findOne({user:userId})
 
